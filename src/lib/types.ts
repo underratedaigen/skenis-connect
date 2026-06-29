@@ -92,8 +92,8 @@ export type AuditLog = {
   entityType: string;
   entityId: string;
   action: string;
-  oldValue: unknown;
-  newValue: unknown;
+  oldValue: unknown | null;
+  newValue: unknown | null;
   createdAt: string;
   user?: {
     email: string | null;
