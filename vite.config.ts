@@ -7,9 +7,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    tanstackRouter({
-      target: "react"
-    }),
     tanstackStart(),
     react(),
     tailwindcss()
