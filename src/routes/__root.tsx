@@ -37,27 +37,18 @@ export const Route = createRootRoute({
     ],
     links: [{ rel: "stylesheet", href: appCss }]
   }),
-  shellComponent: RootDocument,
-  component: RootComponent
+  component: RootDocument
 });
 
-function RootComponent() {
-  return (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools position="bottom-right" />
-    </>
-  );
-}
-
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
   return (
     <html lang="lt">
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        <Outlet />
+        <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>
