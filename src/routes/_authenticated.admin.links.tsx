@@ -13,16 +13,24 @@ import type { QrBatch, RedirectLink, RedirectStatus } from "@/lib/types";
 import { redirectStatuses } from "@/lib/types";
 
 export const Route = createFileRoute("/_authenticated/admin/links")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    token: typeof search.token === "string" ? search.token : "",
-    company: typeof search.company === "string" ? search.company : "",
-    batch: typeof search.batch === "string" ? search.batch : "",
-    status:
+  validateSearch: (search: Record<string, unknown>) => {
+    const result: {
+      token?: string;
+      company?: string;
+      batch?: string;
+      status?: RedirectStatus;
+    } = {};
+    if (typeof search.token === "string" && search.token) result.token = search.token;
+    if (typeof search.company === "string" && search.company) result.company = search.company;
+    if (typeof search.batch === "string" && search.batch) result.batch = search.batch;
+    if (
       typeof search.status === "string" &&
       redirectStatuses.includes(search.status as RedirectStatus)
-        ? (search.status as RedirectStatus)
-        : undefined
-  }),
+    ) {
+      result.status = search.status as RedirectStatus;
+    }
+    return result;
+  },
   head: () => ({
     meta: [{ title: "QR nuorodos | Skenis.lt" }]
   }),
@@ -63,12 +71,15 @@ function LinksPage() {
   function onSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const statusValue = String(form.get("status") || "");
     navigate({
       search: {
-        token: String(form.get("token") || ""),
-        company: String(form.get("company") || ""),
-        batch: String(form.get("batch") || ""),
-        status: String(form.get("status") || "") || undefined
+        token: String(form.get("token") || "") || undefined,
+        company: String(form.get("company") || "") || undefined,
+        batch: String(form.get("batch") || "") || undefined,
+        status: redirectStatuses.includes(statusValue as RedirectStatus)
+          ? (statusValue as RedirectStatus)
+          : undefined
       }
     });
   }
@@ -97,15 +108,15 @@ function LinksPage() {
         <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_0.7fr_auto]">
           <label className="grid gap-2">
             <span className="admin-label">Token</span>
-            <input className="admin-input" name="token" defaultValue={search.token} />
+            <input className="admin-input" name="token" defaultValue={search.token ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Įmonė</span>
-            <input className="admin-input" name="company" defaultValue={search.company} />
+            <input className="admin-input" name="company" defaultValue={search.company ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Partija</span>
-            <select className="admin-input" name="batch" defaultValue={search.batch}>
+            <select className="admin-input" name="batch" defaultValue={search.batch ?? ""}>
               <option value="">Visos partijos</option>
               {batches.map((batch) => (
                 <option key={batch.id} value={batch.id}>
@@ -116,7 +127,7 @@ function LinksPage() {
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Statusas</span>
-            <select className="admin-input" name="status" defaultValue={search.status || ""}>
+            <select className="admin-input" name="status" defaultValue={search.status ?? ""}>
               <option value="">Visi</option>
               {redirectStatuses.map((status) => (
                 <option key={status} value={status}>
