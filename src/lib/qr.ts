@@ -1,6 +1,6 @@
-import QRCode from "qrcode";
-
 export async function createQrSvg(value: string) {
+  const QRCode = await import("qrcode");
+
   return QRCode.toString(value, {
     type: "svg",
     errorCorrectionLevel: "M",

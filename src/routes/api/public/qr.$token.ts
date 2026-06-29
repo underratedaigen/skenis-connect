@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createQrSvg } from "@/lib/qr";
 import { isValidToken } from "@/lib/tokens";
 
 export const Route = createFileRoute("/api/public/qr/$token")({
@@ -26,6 +25,7 @@ export const Route = createFileRoute("/api/public/qr/$token")({
           return new Response("QR kodas nerastas.", { status: 404 });
         }
 
+        const { createQrSvg } = await import("@/lib/qr");
         const svg = await createQrSvg(data.short_url);
 
         return new Response(svg, {

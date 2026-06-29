@@ -1,4 +1,3 @@
-import JSZip from "jszip";
 import type { QrBatch, RedirectLink } from "@/lib/types";
 import { productTypeLabels, redirectStatusLabels } from "@/lib/labels";
 
@@ -23,6 +22,7 @@ function row(values: unknown[], index: number) {
 }
 
 export async function buildBatchWorkbook(batch: BatchForExport, baseUrl: string) {
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
   const rows: string[] = [];
 

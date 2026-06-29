@@ -1,4 +1,3 @@
-import JSZip from "jszip";
 import { createQrSvg } from "@/lib/qr";
 
 type LinkForZip = {
@@ -7,6 +6,7 @@ type LinkForZip = {
 };
 
 export async function buildQrZip(links: LinkForZip[]) {
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
   const manifestRows = ["file_name,token,short_url"];
 

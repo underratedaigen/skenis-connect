@@ -1,7 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { buildQrZip } from "@/lib/zip-export";
-import { buildBatchWorkbook } from "@/lib/xlsx-export";
 import { mapBatch, mapLink } from "@/lib/supabase-mappers";
 import { blankToNull, getAdminContext, writeAudit } from "@/lib/supabase-common";
 import { generateSecureToken, sanitizeTokenPrefix } from "@/lib/tokens";
@@ -172,6 +170,7 @@ export const exportBatchXlsx = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const detail = await getBatchDetail({ data });
+    const { buildBatchWorkbook } = await import("@/lib/xlsx-export");
     const baseUrl = (
       process.env.VITE_PUBLIC_APP_URL ||
       process.env.APP_URL ||
@@ -194,6 +193,7 @@ export const exportBatchQrZip = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const detail = await getBatchDetail({ data });
+    const { buildQrZip } = await import("@/lib/zip-export");
     const bytes = await buildQrZip(
       detail.links.map((link) => ({
         token: link.token,
