@@ -118,6 +118,7 @@ const AuthenticatedAdminLinksTokenQrRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
   '/kontaktai': typeof KontaktaiRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/taisykles': typeof TaisyklesRoute
@@ -136,6 +137,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
   '/kontaktai': typeof KontaktaiRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/taisykles': typeof TaisyklesRoute
@@ -175,6 +177,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/kontaktai'
     | '/privatumo-politika'
     | '/taisykles'
@@ -193,6 +196,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
     | '/kontaktai'
     | '/privatumo-politika'
     | '/taisykles'
@@ -242,18 +246,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/taisykles': {
-      id: '/taisykles'
-      path: '/taisykles'
-      fullPath: '/taisykles'
-      preLoaderRoute: typeof TaisyklesRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/privatumo-politika': {
-      id: '/privatumo-politika'
-      path: '/privatumo-politika'
-      fullPath: '/privatumo-politika'
-      preLoaderRoute: typeof PrivatumoPolitikaRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kontaktai': {
@@ -263,32 +267,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KontaktaiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
+    '/privatumo-politika': {
+      id: '/privatumo-politika'
+      path: '/privatumo-politika'
+      fullPath: '/privatumo-politika'
+      preLoaderRoute: typeof PrivatumoPolitikaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/r/$token': {
-      id: '/r/$token'
-      path: '/r/$token'
-      fullPath: '/r/$token'
-      preLoaderRoute: typeof RTokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
+    '/taisykles': {
+      id: '/taisykles'
+      path: '/taisykles'
+      fullPath: '/taisykles'
+      preLoaderRoute: typeof TaisyklesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -298,11 +288,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/r/$token': {
+      id: '/r/$token'
+      path: '/r/$token'
+      fullPath: '/r/$token'
+      preLoaderRoute: typeof RTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/leads': {
+      id: '/_authenticated/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AuthenticatedAdminLeadsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/links': {
+      id: '/_authenticated/admin/links'
+      path: '/links'
+      fullPath: '/admin/links'
+      preLoaderRoute: typeof AuthenticatedAdminLinksRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/api/public/leads': {
@@ -312,39 +323,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/links': {
-      id: '/_authenticated/admin/links'
-      path: '/links'
-      fullPath: '/admin/links'
-      preLoaderRoute: typeof AuthenticatedAdminLinksRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/leads': {
-      id: '/_authenticated/admin/leads'
-      path: '/leads'
-      fullPath: '/admin/leads'
-      preLoaderRoute: typeof AuthenticatedAdminLeadsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/api/public/qr/$token': {
-      id: '/api/public/qr/$token'
-      path: '/api/public/qr/$token'
-      fullPath: '/api/public/qr/$token'
-      preLoaderRoute: typeof ApiPublicQrTokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin/links/$token': {
-      id: '/_authenticated/admin/links/$token'
-      path: '/$token'
-      fullPath: '/admin/links/$token'
-      preLoaderRoute: typeof AuthenticatedAdminLinksTokenRouteImport
-      parentRoute: typeof AuthenticatedAdminLinksRoute
-    }
-    '/_authenticated/admin/batches/new': {
-      id: '/_authenticated/admin/batches/new'
-      path: '/batches/new'
-      fullPath: '/admin/batches/new'
-      preLoaderRoute: typeof AuthenticatedAdminBatchesNewRouteImport
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/batches/$id': {
@@ -353,6 +336,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/batches/$id'
       preLoaderRoute: typeof AuthenticatedAdminBatchesIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/batches/new': {
+      id: '/_authenticated/admin/batches/new'
+      path: '/batches/new'
+      fullPath: '/admin/batches/new'
+      preLoaderRoute: typeof AuthenticatedAdminBatchesNewRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/links/$token': {
+      id: '/_authenticated/admin/links/$token'
+      path: '/$token'
+      fullPath: '/admin/links/$token'
+      preLoaderRoute: typeof AuthenticatedAdminLinksTokenRouteImport
+      parentRoute: typeof AuthenticatedAdminLinksRoute
+    }
+    '/api/public/qr/$token': {
+      id: '/api/public/qr/$token'
+      path: '/api/public/qr/$token'
+      fullPath: '/api/public/qr/$token'
+      preLoaderRoute: typeof ApiPublicQrTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/links/$token/qr': {
       id: '/_authenticated/admin/links/$token/qr'
@@ -438,12 +442,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
