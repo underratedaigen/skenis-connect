@@ -37,8 +37,23 @@ export const Route = createRootRoute({
     ],
     links: [{ rel: "stylesheet", href: appCss }]
   }),
-  shellComponent: RootDocument,
-  component: RootComponent
+  component: RootDocument
+});
+
+function RootDocument() {
+  return (
+    <html lang="lt">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <Outlet />
+        <TanStackRouterDevtools position="bottom-right" />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 });
 
 function RootComponent() {
