@@ -19,7 +19,7 @@ function LinkQrPreviewPage() {
           <h1 className="text-3xl font-bold tracking-normal text-ink">QR peržiūra</h1>
           <p className="mt-2 text-sm text-slate-600">{shortUrl}</p>
         </div>
-        <Link to="/admin/links/$token" params={{ token }} search={{}} className="admin-button-secondary">
+        <Link to="/admin/links/$token" params={{ token }} className="admin-button-secondary">
           Grįžti į nuorodą
         </Link>
       </div>
