@@ -111,6 +111,7 @@ function Get-RelativeGitPath {
 $ExcludedPathParts = @(
   ".git",
   ".next",
+  ".tools",
   "node_modules",
   "coverage",
   "dist"

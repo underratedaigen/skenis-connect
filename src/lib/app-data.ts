@@ -35,6 +35,13 @@ export type LinkDetail = {
   lastScanAt: string | null;
 };
 
+type PublicRedirectRow = {
+  id: string;
+  token: string;
+  status: RedirectStatus;
+  destination_url: string | null;
+};
+
 function blankToNull(value: string | null | undefined) {
   return value?.trim() ? value.trim() : null;
 }
@@ -432,11 +439,12 @@ export async function resolveRedirectToken(token: string) {
 
   if (error) throw new Error(error.message);
   if (!data) return { type: "missing" as const };
+  const link = data as PublicRedirectRow;
 
   const now = new Date().toISOString();
 
   await supabase.from("scan_events").insert({
-    redirect_link_id: data.id,
+    redirect_link_id: link.id,
     user_agent: navigator.userAgent.slice(0, 1000),
     ip_hash: hashIp(null),
     referrer: document.referrer.slice(0, 1000) || null,
@@ -444,13 +452,13 @@ export async function resolveRedirectToken(token: string) {
   });
 
   await supabase.rpc("increment_redirect_scan", {
-    _redirect_link_id: data.id,
+    _redirect_link_id: link.id,
     _last_scanned_at: now
   });
 
   return getRedirectOutcome({
-    status: data.status as RedirectStatus,
-    destinationUrl: data.destination_url
+    status: link.status,
+    destinationUrl: link.destination_url
   });
 }
 
@@ -470,7 +478,11 @@ export async function exportBatchQrZip(links: RedirectLink[]) {
 }
 
 export function bytesToDownload(bytes: Uint8Array, fileName: string, mimeType: string) {
-  const blob = new Blob([bytes], { type: mimeType });
+  const arrayBuffer = bytes.buffer.slice(
+    bytes.byteOffset,
+    bytes.byteOffset + bytes.byteLength
+  ) as ArrayBuffer;
+  const blob = new Blob([arrayBuffer], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
