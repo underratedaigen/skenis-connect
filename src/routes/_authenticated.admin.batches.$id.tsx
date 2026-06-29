@@ -168,6 +168,7 @@ function BatchDetailPage() {
                     <Link
                       to="/admin/links/$token"
                       params={{ token: link.token }}
+                      search={{}}
                       className="font-medium text-brand-700 hover:text-brand-600"
                     >
                       {link.shortUrl}

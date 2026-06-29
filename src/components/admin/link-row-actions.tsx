@@ -30,6 +30,7 @@ export function LinkRowActions({
       <Link
         to="/admin/links/$token"
         params={{ token }}
+        search={{}}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:border-brand-500 hover:text-brand-700 focus-ring"
         title="Redaguoti"
       >
@@ -38,6 +39,7 @@ export function LinkRowActions({
       <Link
         to="/admin/links/$token/qr"
         params={{ token }}
+        search={{}}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:border-brand-500 hover:text-brand-700 focus-ring"
         title="QR peržiūra"
       >

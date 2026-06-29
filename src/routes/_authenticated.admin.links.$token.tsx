@@ -106,7 +106,7 @@ function LinkDetailPage() {
           <p className="mt-2 text-sm text-slate-600">{link.shortUrl}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link to="/admin/links/$token/qr" params={{ token: link.token }} className="admin-button-secondary">
+          <Link to="/admin/links/$token/qr" params={{ token: link.token }} search={{}} className="admin-button-secondary">
             <QrCode aria-hidden className="mr-2 h-4 w-4" />
             QR peržiūra
           </Link>
@@ -114,7 +114,7 @@ function LinkDetailPage() {
             <ExternalLink aria-hidden className="mr-2 h-4 w-4" />
             Atidaryti short URL
           </a>
-          <Link to="/admin/links" className="admin-button-secondary">
+          <Link to="/admin/links" search={{}} className="admin-button-secondary">
             Grįžti
           </Link>
         </div>

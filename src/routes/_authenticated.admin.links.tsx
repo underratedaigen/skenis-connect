@@ -13,10 +13,12 @@ import type { QrBatch, RedirectLink, RedirectStatus } from "@/lib/types";
 import { redirectStatuses } from "@/lib/types";
 
 export const Route = createFileRoute("/_authenticated/admin/links")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    token: typeof search.token === "string" ? search.token : "",
-    company: typeof search.company === "string" ? search.company : "",
-    batch: typeof search.batch === "string" ? search.batch : "",
+  validateSearch: (
+    search: Record<string, unknown>
+  ): { token?: string; company?: string; batch?: string; status?: RedirectStatus } => ({
+    token: typeof search.token === "string" ? search.token : undefined,
+    company: typeof search.company === "string" ? search.company : undefined,
+    batch: typeof search.batch === "string" ? search.batch : undefined,
     status:
       typeof search.status === "string" &&
       redirectStatuses.includes(search.status as RedirectStatus)
@@ -65,10 +67,12 @@ function LinksPage() {
     const form = new FormData(event.currentTarget);
     navigate({
       search: {
-        token: String(form.get("token") || ""),
-        company: String(form.get("company") || ""),
-        batch: String(form.get("batch") || ""),
-        status: String(form.get("status") || "") || undefined
+        token: String(form.get("token") || "") || undefined,
+        company: String(form.get("company") || "") || undefined,
+        batch: String(form.get("batch") || "") || undefined,
+        status: redirectStatuses.includes(String(form.get("status")) as RedirectStatus)
+          ? (String(form.get("status")) as RedirectStatus)
+          : undefined
       }
     });
   }
@@ -97,15 +101,15 @@ function LinksPage() {
         <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_0.7fr_auto]">
           <label className="grid gap-2">
             <span className="admin-label">Token</span>
-            <input className="admin-input" name="token" defaultValue={search.token} />
+            <input className="admin-input" name="token" defaultValue={search.token ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Įmonė</span>
-            <input className="admin-input" name="company" defaultValue={search.company} />
+            <input className="admin-input" name="company" defaultValue={search.company ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Partija</span>
-            <select className="admin-input" name="batch" defaultValue={search.batch}>
+            <select className="admin-input" name="batch" defaultValue={search.batch ?? ""}>
               <option value="">Visos partijos</option>
               {batches.map((batch) => (
                 <option key={batch.id} value={batch.id}>
