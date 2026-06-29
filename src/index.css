@@ -15,6 +15,8 @@ body {
   background: #ffffff;
   color: #101820;
   font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -28,7 +30,7 @@ body {
   }
 
   .input {
-    @apply w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink shadow-sm transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink shadow-sm transition placeholder:text-slate-400 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
 
   .label {
@@ -43,8 +45,20 @@ body {
     @apply inline-flex items-center justify-center rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink shadow-sm transition hover:border-brand-500 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
 
+  .button-light {
+    @apply inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-ink shadow-soft transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink;
+  }
+
+  .button-ghost-light {
+    @apply inline-flex items-center justify-center rounded-lg border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink;
+  }
+
+  .section-kicker {
+    @apply text-xs font-bold uppercase tracking-[0.18em] text-brand-700;
+  }
+
   .admin-input {
-    @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm transition hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
 
   .admin-label {
@@ -69,5 +83,9 @@ body {
 
   .admin-table td {
     @apply border-b border-slate-100 px-4 py-3 align-top text-slate-700;
+  }
+
+  .admin-table tbody tr {
+    @apply transition hover:bg-slate-50;
   }
 }

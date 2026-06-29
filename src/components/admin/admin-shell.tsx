@@ -1,15 +1,15 @@
 import { BarChart3, ClipboardList, LogOut, PackagePlus, QrCode } from "lucide-react";
 import type React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { AdminSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin", label: "Apžvalga", icon: BarChart3 },
-  { href: "/admin/batches/new", label: "Generuoti partiją", icon: PackagePlus },
-  { href: "/admin/links", label: "QR nuorodos", icon: QrCode },
-  { href: "/admin/leads", label: "Užklausos", icon: ClipboardList }
+  { href: "/admin", label: "Apžvalga", icon: BarChart3, end: true },
+  { href: "/admin/batches/new", label: "Generuoti partiją", icon: PackagePlus, end: false },
+  { href: "/admin/links", label: "QR nuorodos", icon: QrCode, end: false },
+  { href: "/admin/leads", label: "Užklausos", icon: ClipboardList, end: false }
 ] as const;
 
 export function AdminShell({
@@ -38,19 +38,32 @@ export function AdminShell({
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-              <Link
+              <NavLink
                 key={item.href}
                 to={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
-                )}
+                end={item.end}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition",
+                    isActive
+                      ? "bg-brand-50 text-brand-700"
+                      : "text-slate-700 hover:bg-slate-50 hover:text-ink"
+                  )
+                }
               >
                 <Icon aria-hidden className="h-4 w-4" />
                 {item.label}
-              </Link>
+              </NavLink>
             );
           })}
         </nav>
+
+        <div className="absolute bottom-5 left-5 right-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Prisijungta kaip
+          </p>
+          <p className="mt-1 truncate text-sm font-semibold text-ink">{user.email}</p>
+        </div>
       </aside>
 
       <div className="lg:pl-72">
@@ -58,7 +71,7 @@ export function AdminShell({
           <div className="flex min-h-16 items-center justify-between gap-4 px-5 sm:px-8">
             <div>
               <p className="text-sm font-semibold text-ink">Skenis.lt administravimas</p>
-              <p className="text-xs text-slate-500">{user.email}</p>
+              <p className="text-xs text-slate-500 lg:hidden">{user.email}</p>
             </div>
             <div className="flex items-center gap-2">
               <Link
@@ -80,14 +93,22 @@ export function AdminShell({
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
-              <Link
-                key={item.href}
-                to={item.href}
-                  className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
+                <NavLink
+                  key={item.href}
+                  to={item.href}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
+                      isActive
+                        ? "bg-brand-50 text-brand-700"
+                        : "text-slate-700 hover:bg-slate-50 hover:text-ink"
+                    )
+                  }
                 >
                   <Icon aria-hidden className="h-4 w-4" />
                   {item.label}
-                </Link>
+                </NavLink>
               );
             })}
           </nav>

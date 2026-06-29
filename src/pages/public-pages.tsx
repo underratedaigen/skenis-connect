@@ -1,0 +1,448 @@
+import {
+  ArrowRight,
+  BadgeCheck,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  Factory,
+  Hotel,
+  Link2,
+  QrCode,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  Stethoscope,
+  Wrench
+} from "lucide-react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { LeadForm } from "@/components/lead-form";
+import { PublicLayout } from "@/components/public/site-layout";
+
+function useDocumentTitle(title: string) {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+}
+
+const products = [
+  {
+    name: "Akrilinė Google Review kortelė",
+    price: "nuo 4,90 €",
+    text: "Plona, patvari kortelė kasai, registratūrai ar laukimo zonai.",
+    fit: "Registratūroms, kasoms, salonams"
+  },
+  {
+    name: "Stalinis Google Review stendas",
+    price: "nuo 9,90 €",
+    text: "Matomas stendas restoranų stalams, klinikų laukiamiesiems ir aptarnavimo zonoms.",
+    fit: "Restoranams, klinikoms, viešbučiams"
+  },
+  {
+    name: "NFC + QR Google Review kortelė",
+    price: "netrukus",
+    text: "Ateities produktas klientams, kurie nori skenavimo ir NFC palietimo viename.",
+    fit: "Premium aptarnavimo vietoms"
+  }
+];
+
+const steps = [
+  "Įmonė užsisako korteles arba stendus.",
+  "Mes sugeneruojame individualius QR kodus.",
+  "QR kodai pagaminami ir pritvirtinami prie kortelių arba stendų.",
+  "Kiekvienas QR kodas admin sistemoje priskiriamas konkrečiai įmonei.",
+  "Klientai skenuoja ir patenka į Google review puslapį."
+];
+
+const benefits = [
+  "Programuojami QR kodai",
+  "Galima keisti redirect nuorodą net po pagaminimo",
+  "Individualus kodas kiekvienai kortelei",
+  "Tinka restoranams, grožio salonams, odontologijos klinikoms, autoservisams, viešbučiams ir parduotuvėms",
+  "Galima sekti skenavimų statistiką"
+];
+
+const proofPoints = [
+  {
+    title: "Nuolatinė Skenis nuoroda",
+    text: "Fiziniame gaminyje lieka skenis.lt/r/... adresas, todėl Google nuorodą galima keisti vėliau."
+  },
+  {
+    title: "Paruošta gamybai",
+    text: "Partijos eksportuojamos su tokenais, short URL ir gamintojo pastabomis."
+  },
+  {
+    title: "Aiški administracija",
+    text: "Kiekviena kortelė turi statusą, priskirtą įmonę ir skenavimų statistiką."
+  }
+];
+
+const industries = [
+  { label: "Restoranai", icon: Store },
+  { label: "Grožio salonai", icon: Sparkles },
+  { label: "Odontologijos klinikos", icon: Stethoscope },
+  { label: "Autoservisai", icon: Wrench },
+  { label: "Viešbučiai", icon: Hotel },
+  { label: "Parduotuvės", icon: Building2 }
+];
+
+export function HomePage() {
+  useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
+
+  return (
+    <PublicLayout>
+      <main>
+        <HeroSection />
+        <ProofStrip />
+        <ProcessSection />
+        <ProductsSection />
+        <BenefitsSection />
+        <EthicsSection />
+        <OrderSection />
+      </main>
+    </PublicLayout>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="relative min-h-[calc(78svh-73px)] overflow-hidden bg-ink text-white">
+      <img
+        src="/images/skenis-hero.png"
+        alt="Skenis akriliniai Google Review QR stendai"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,24,32,0.78),rgba(16,24,32,0.48)_45%,rgba(16,24,32,0.18))]" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink/65 to-transparent" />
+      <div className="relative mx-auto flex min-h-[calc(78svh-73px)] max-w-7xl items-center px-5 py-9 sm:py-10">
+        <div className="max-w-3xl">
+          <p className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-sm font-semibold text-white backdrop-blur">
+            Programuojami QR kodai fiziniams produktams
+          </p>
+          <h1 className="mt-5 text-4xl font-bold tracking-normal sm:text-5xl lg:text-6xl">
+            Daugiau Google atsiliepimų su išmaniais QR stendais
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-100">
+            Programuojamos akrilinės kortelės ir stendai, kurie nukreipia
+            klientus tiesiai į jūsų Google atsiliepimų puslapį.
+          </p>
+          <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+            <Link2 aria-hidden className="h-4 w-4 shrink-0 text-brand-100" />
+            <span className="truncate">https://skenis.lt/r/8fK29xQp</span>
+          </div>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a href="#uzsakymas" className="button-light">
+              Užsakyti korteles
+              <ArrowRight aria-hidden className="ml-2 h-4 w-4" />
+            </a>
+            <a href="#kaip-veikia" className="button-ghost-light">
+              Kaip tai veikia?
+            </a>
+          </div>
+          <div className="mt-7 hidden max-w-2xl gap-3 text-sm text-slate-100 sm:grid sm:grid-cols-3">
+            <HeroFact value="1 QR" label="viena nuolatinė Skenis nuoroda" />
+            <HeroFact value="100%" label="keičiama po gamybos" />
+            <HeroFact value="24/7" label="skenavimų statistika" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProofStrip() {
+  return (
+    <section className="border-b border-line bg-white">
+      <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-3">
+        {proofPoints.map((point) => (
+          <div key={point.title} className="flex gap-3">
+            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+              <BadgeCheck aria-hidden className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="text-sm font-bold tracking-normal text-ink">{point.title}</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-600">{point.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function HeroFact({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="border-l border-white/25 pl-4">
+      <p className="text-2xl font-bold">{value}</p>
+      <p className="mt-1 leading-5 text-slate-200">{label}</p>
+    </div>
+  );
+}
+
+function ProcessSection() {
+  return (
+    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-20">
+      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <div>
+          <p className="section-kicker">Procesas</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+            Vienas fizinis QR kodas. Lanksti nuoroda visam produkto gyvenimui.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Gamybai siunčiamas tik nuolatinis Skenis adresas. Galutinę Google
+            review nuorodą priskiriate tada, kai klientas jau aiškus.
+          </p>
+          <div className="mt-6 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
+            <Link2 aria-hidden className="mr-2 inline h-4 w-4" />
+            https://skenis.lt/r/A7K92LQD → Google review URL
+          </div>
+        </div>
+        <div className="grid gap-3">
+          {steps.map((step, index) => (
+            <div key={step} className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-panel">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink text-sm font-bold text-white">
+                {index + 1}
+              </span>
+              <p className="pt-1 text-sm leading-6 text-slate-700">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductsSection() {
+  return (
+    <section id="produktai" className="bg-mist py-20">
+      <div className="mx-auto max-w-7xl px-5">
+        <div className="max-w-2xl">
+          <p className="section-kicker">Produktai</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+            Akriliniai sprendimai kasdieniam klientų srautui
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Kainodara konfigūruojama pagal kiekį, maketą ir gamybos terminą.
+          </p>
+        </div>
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {products.map((product, index) => (
+            <article key={product.name} className="group overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-panel">
+              <ProductMockup compact={index === 0} dark={index !== 2} />
+              <div className="p-6">
+              <h3 className="text-xl font-bold tracking-normal">{product.name}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{product.text}</p>
+              <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {product.fit}
+              </p>
+              <p className="mt-6 text-2xl font-bold text-brand-700">{product.price}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductMockup({ compact, dark }: { compact: boolean; dark: boolean }) {
+  return (
+    <div className="relative h-44 overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)]">
+      <div className="absolute inset-x-0 bottom-0 h-16 bg-white/55" />
+      <div
+        className={
+          compact
+            ? "absolute left-1/2 top-8 h-24 w-40 -translate-x-1/2 rounded-md border border-white/70 bg-white/45 p-2 shadow-soft backdrop-blur"
+            : "absolute left-1/2 top-5 h-32 w-24 -translate-x-1/2 rounded-md border border-white/70 bg-white/45 p-2 shadow-soft backdrop-blur"
+        }
+      >
+        <div className={dark ? "h-full rounded bg-ink p-3 text-brand-100" : "h-full rounded bg-white p-3 text-brand-700 ring-1 ring-line"}>
+          <div className="mx-auto mb-2 flex justify-center gap-1">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <span key={index} className="h-1.5 w-1.5 rounded-full bg-current" />
+            ))}
+          </div>
+          <div className="mx-auto grid h-16 w-16 grid-cols-4 gap-1 bg-white p-1">
+            {Array.from({ length: 16 }).map((_, index) => (
+              <span
+                key={index}
+                className={index % 3 === 0 || index === 5 || index === 10 ? "bg-ink" : "bg-slate-200"}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <QrCode aria-hidden className="absolute bottom-4 right-5 h-5 w-5 text-brand-700" />
+    </div>
+  );
+}
+
+function BenefitsSection() {
+  return (
+    <section id="privalumai" className="mx-auto max-w-7xl px-5 py-20">
+      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <p className="section-kicker">Privalumai</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+            Sukurta verslams, kuriems reikia aiškios kontrolės
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Kortelės ir stendai atrodo kaip fizinis produktas, bet veikia kaip
+            valdoma skaitmeninė sistema.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {benefits.map((benefit) => (
+            <div key={benefit} className="flex gap-3 rounded-lg border border-line bg-white p-4 shadow-sm">
+              <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+              <p className="text-sm leading-6 text-slate-700">{benefit}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-12 rounded-lg border border-line bg-mist p-5">
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <p className="section-kicker">Kam tinka</p>
+            <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {industries.map((industry) => {
+              const Icon = industry.icon;
+              return (
+                <div key={industry.label} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                  <Icon aria-hidden className="h-4 w-4 text-brand-700" />
+                  {industry.label}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EthicsSection() {
+  return (
+    <section className="bg-ink py-12 text-white">
+      <div className="mx-auto flex max-w-7xl gap-4 px-5">
+        <ShieldCheck aria-hidden className="mt-1 h-6 w-6 shrink-0 text-brand-100" />
+        <p className="max-w-4xl text-sm leading-7 text-slate-200">
+          Skenis padeda patogiai paprašyti realių klientų palikti atsiliepimą.
+          Nesiūlykite atlygio už atsiliepimus ir neskatinkite tik teigiamų
+          įvertinimų.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function OrderSection() {
+  return (
+    <section id="uzsakymas" className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <p className="section-kicker">Užklausa</p>
+        <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+          Pasiruošę gamybai ar tik renkatės kiekį?
+        </h2>
+        <p className="mt-4 text-base leading-7 text-slate-600">
+          Parašykite kiekį, produkto tipą ir, jei turite, Google review
+          nuorodą. Atsakysime su gamybos galimybėmis ir kaina.
+        </p>
+        <div className="mt-6 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+          <ClipboardCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+          <p>
+            Galime paruošti QR partiją gamintojui prieš galutinį kiekvienos
+            kortelės priskyrimą klientui.
+          </p>
+        </div>
+        <div className="mt-3 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+          <Factory aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+          <p>
+            XLSX eksportas turi tokeną, trumpą nuorodą, produkto tipą ir
+            gamintojo pastabas kiekvienai fizinei kortelei.
+          </p>
+        </div>
+      </div>
+      <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
+        <LeadForm />
+      </div>
+    </section>
+  );
+}
+
+export function ContactPage() {
+  useDocumentTitle("Kontaktai | Skenis.lt");
+  return (
+    <PublicLayout>
+      <main className="mx-auto max-w-4xl px-5 py-20">
+        <p className="section-kicker">Kontaktai</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-normal">Kontaktai</h1>
+        <p className="mt-5 text-lg leading-8 text-slate-700">
+          Parašykite dėl programuojamų QR kortelių, stendų, gamybos ar
+          individualaus užsakymo.
+        </p>
+        <div className="mt-8 rounded-lg border border-line bg-white p-6 shadow-sm">
+          <LeadForm />
+        </div>
+      </main>
+    </PublicLayout>
+  );
+}
+
+export function PrivacyPage() {
+  useDocumentTitle("Privatumo politika | Skenis.lt");
+  return (
+    <PublicLayout>
+      <main className="mx-auto max-w-3xl px-5 py-20 text-slate-700">
+        <h1 className="text-4xl font-bold tracking-normal text-ink">Privatumo politika</h1>
+        <p className="mt-6 leading-7">
+          Renkame tik tuos duomenis, kurie būtini užklausoms apdoroti, QR
+          nuorodoms administruoti ir skenavimų statistikai pateikti. Skenavimų
+          analitikoje saugomas IP maišos kodas, o ne žalias IP adresas.
+        </p>
+        <p className="mt-4 leading-7">
+          Užklausose pateiktus kontaktinius duomenis naudojame susisiekti dėl
+          užsakymo, maketo ir gamybos. Duomenys nėra parduodami trečiosioms
+          šalims.
+        </p>
+      </main>
+    </PublicLayout>
+  );
+}
+
+export function TermsPage() {
+  useDocumentTitle("Taisyklės | Skenis.lt");
+  return (
+    <PublicLayout>
+      <main className="mx-auto max-w-3xl px-5 py-20 text-slate-700">
+        <h1 className="text-4xl font-bold tracking-normal text-ink">Taisyklės</h1>
+        <p className="mt-6 leading-7">
+          Skenis teikia programuojamų QR kortelių ir stendų gamybos bei
+          administravimo paslaugą. Klientas atsako už pateiktos Google review
+          nuorodos teisingumą ir teisėtą atsiliepimų rinkimo praktiką.
+        </p>
+        <p className="mt-4 leading-7">
+          Draudžiama siūlyti atlygį už atsiliepimus ar skatinti tik teigiamus
+          įvertinimus.
+        </p>
+      </main>
+    </PublicLayout>
+  );
+}
+
+export function NotFoundPage() {
+  useDocumentTitle("Puslapis nerastas | Skenis.lt");
+  return (
+    <PublicLayout>
+      <main className="mx-auto max-w-3xl px-5 py-24">
+        <h1 className="text-4xl font-bold tracking-normal">Puslapis nerastas</h1>
+        <p className="mt-4 text-slate-600">Patikrinkite adresą arba grįžkite į pradžią.</p>
+        <Link to="/" className="button-primary mt-8">
+          Į pradžią
+        </Link>
+      </main>
+    </PublicLayout>
+  );
+}

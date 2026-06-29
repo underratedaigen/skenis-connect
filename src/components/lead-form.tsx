@@ -1,6 +1,7 @@
+import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import type React from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { productTypeLabels } from "@/lib/labels";
 import { leadCreateSchema } from "@/lib/validation";
 
@@ -34,6 +35,15 @@ export function LeadForm() {
     }
 
     const data = parsed.data;
+
+    if (!isSupabaseConfigured) {
+      setState({
+        status: "error",
+        message: "Supabase aplinkos kintamieji dar nesukonfigūruoti."
+      });
+      return;
+    }
+
     const { error } = await supabase.from("leads").insert({
       name: data.name,
       company_name: data.companyName,
@@ -116,7 +126,11 @@ export function LeadForm() {
 
       <label className="grid gap-2">
         <span className="label">Komentaras</span>
-        <textarea className="input min-h-28 resize-y" name="message" />
+        <textarea
+          className="input min-h-28 resize-y"
+          name="message"
+          placeholder="Kiek kortelių reikia, kur jos bus naudojamos, ar turite maketą?"
+        />
       </label>
 
       {state.status === "error" ? (
@@ -126,9 +140,10 @@ export function LeadForm() {
       ) : null}
 
       {state.status === "success" ? (
-        <p className="rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700">
-          Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.
-        </p>
+        <div className="flex gap-3 rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm leading-6 text-brand-700">
+          <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0" />
+          <p>Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.</p>
+        </div>
       ) : null}
 
       <button className="button-primary w-full sm:w-fit" disabled={state.status === "loading"}>

@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { getDeviceType, hashIp } from "@/lib/analytics";
 import { getRedirectOutcome } from "@/lib/redirect-policy";
 import { mapBatch, mapLead, mapLink, mapScan } from "@/lib/supabase-mappers";
@@ -46,6 +46,12 @@ function blankToNull(value: string | null | undefined) {
   return value?.trim() ? value.trim() : null;
 }
 
+function requireSupabaseConfigured() {
+  if (!isSupabaseConfigured) {
+    throw new Error("Supabase aplinkos kintamieji dar nesukonfigūruoti.");
+  }
+}
+
 export function getAppBaseUrl() {
   const configured = import.meta.env.VITE_PUBLIC_APP_URL;
 
@@ -56,6 +62,8 @@ export function getAppBaseUrl() {
 }
 
 export async function getCurrentAdmin(): Promise<AdminSession | null> {
+  if (!isSupabaseConfigured) return null;
+
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) return null;
@@ -130,6 +138,7 @@ async function generateUniqueTokens(quantity: number, prefix?: string | null) {
 }
 
 export async function createBatch(formData: Record<string, FormDataEntryValue>) {
+  requireSupabaseConfigured();
   const parsed = batchCreateSchema.parse(formData);
   const admin = await getCurrentAdmin();
 
@@ -176,6 +185,7 @@ export async function createBatch(formData: Record<string, FormDataEntryValue>) 
 }
 
 export async function listBatches() {
+  requireSupabaseConfigured();
   const { data, error } = await supabase
     .from("qr_batches")
     .select("*")
@@ -187,6 +197,7 @@ export async function listBatches() {
 }
 
 export async function getBatchDetail(batchId: string) {
+  requireSupabaseConfigured();
   const [{ data: batch, error: batchError }, { data: links, error: linksError }] =
     await Promise.all([
       supabase.from("qr_batches").select("*").eq("id", batchId).single(),
@@ -207,6 +218,7 @@ export async function getBatchDetail(batchId: string) {
 }
 
 export async function getDashboard(): Promise<DashboardData> {
+  requireSupabaseConfigured();
   const [
     totalLinks,
     activeLinks,
@@ -267,6 +279,8 @@ export async function listLinks(filters: {
   batch?: string;
   status?: RedirectStatus | "";
 }) {
+  requireSupabaseConfigured();
+
   let query = supabase
     .from("redirect_links")
     .select("*, qr_batches(id, name)")
@@ -285,6 +299,7 @@ export async function listLinks(filters: {
 }
 
 export async function getLinkDetail(token: string): Promise<LinkDetail> {
+  requireSupabaseConfigured();
   const { data: linkRow, error: linkError } = await supabase
     .from("redirect_links")
     .select("*, qr_batches(id, name)")
@@ -342,6 +357,7 @@ export async function getLinkDetail(token: string): Promise<LinkDetail> {
 }
 
 export async function updateRedirectLink(token: string, formData: Record<string, FormDataEntryValue>) {
+  requireSupabaseConfigured();
   const parsed = redirectLinkUpdateSchema.parse(formData);
   const admin = await getCurrentAdmin();
 
@@ -380,6 +396,7 @@ export async function updateRedirectLink(token: string, formData: Record<string,
 }
 
 export async function setRedirectLinkStatus(token: string, status: RedirectStatus) {
+  requireSupabaseConfigured();
   const admin = await getCurrentAdmin();
   if (!admin) throw new Error("Admin sesija nerasta.");
 
@@ -408,6 +425,7 @@ export async function setRedirectLinkStatus(token: string, status: RedirectStatu
 }
 
 export async function listLeads() {
+  requireSupabaseConfigured();
   const { data, error } = await supabase
     .from("leads")
     .select("*")
@@ -419,6 +437,7 @@ export async function listLeads() {
 }
 
 export async function updateLeadStatus(id: string, status: LeadStatus) {
+  requireSupabaseConfigured();
   const { data, error } = await supabase
     .from("leads")
     .update({ status })
@@ -432,6 +451,7 @@ export async function updateLeadStatus(id: string, status: LeadStatus) {
 
 export async function resolveRedirectToken(token: string) {
   if (!isValidToken(token)) return { type: "missing" as const };
+  requireSupabaseConfigured();
 
   const { data, error } = await supabase
     .rpc("get_redirect_link_public", { _token: token })
