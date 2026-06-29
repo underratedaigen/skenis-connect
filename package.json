@@ -45,6 +45,7 @@
     "@tanstack/react-start-plugin": "1.121.0",
     "@tanstack/react-start-server": "1.121.0",
     "@tanstack/router-core": "1.121.0",
+    "@tanstack/router-devtools-core": "1.121.0",
     "@tanstack/router-generator": "1.121.0",
     "@tanstack/router-plugin": "1.121.0",
     "@tanstack/router-utils": "1.121.0",
