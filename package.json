@@ -39,7 +39,7 @@
     "vite": "^7.0.0",
     "vitest": "^2.1.5"
   },
-  "resolutions": {
+  "overrides": {
     "@tanstack/directive-functions-plugin": "1.121.0",
     "@tanstack/react-start-client": "1.121.0",
     "@tanstack/react-start-plugin": "1.121.0",
