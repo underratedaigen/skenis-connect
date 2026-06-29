@@ -10,13 +10,17 @@ import type { Lead, LeadStatus } from "@/lib/types";
 import { leadStatuses } from "@/lib/types";
 
 export const Route = createFileRoute("/_authenticated/admin/leads")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    company: typeof search.company === "string" ? search.company : "",
-    status:
-      typeof search.status === "string" && leadStatuses.includes(search.status as LeadStatus)
-        ? (search.status as LeadStatus)
-        : undefined
-  }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const result: { company?: string; status?: LeadStatus } = {};
+    if (typeof search.company === "string" && search.company) result.company = search.company;
+    if (
+      typeof search.status === "string" &&
+      leadStatuses.includes(search.status as LeadStatus)
+    ) {
+      result.status = search.status as LeadStatus;
+    }
+    return result;
+  },
   head: () => ({
     meta: [{ title: "Užklausos | Skenis.lt" }]
   }),
@@ -52,10 +56,13 @@ function LeadsPage() {
   function onSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const statusValue = String(form.get("status") || "");
     navigate({
       search: {
-        company: String(form.get("company") || ""),
-        status: String(form.get("status") || "") || undefined
+        company: String(form.get("company") || "") || undefined,
+        status: leadStatuses.includes(statusValue as LeadStatus)
+          ? (statusValue as LeadStatus)
+          : undefined
       }
     });
   }
