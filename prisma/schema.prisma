@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+}
+
+enum ProductType {
+  CARD
+  STAND
+  NFC_CARD
+  OTHER
+}
+
+enum RedirectStatus {
+  UNASSIGNED
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  PAID
+  IN_PRODUCTION
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  role         Role       @default(ADMIN)
+  auditLogs    AuditLog[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model QrBatch {
+  id               String         @id @default(cuid())
+  name             String
+  productType      ProductType
+  quantity         Int
+  tokenPrefix      String?
+  note             String?
+  manufacturerNote String?        @db.Text
+  links            RedirectLink[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([createdAt])
+  @@index([productType])
+}
+
+model RedirectLink {
+  id             String         @id @default(cuid())
+  token          String         @unique
+  batchId        String?
+  batch          QrBatch?       @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  shortUrl       String
+  status         RedirectStatus @default(UNASSIGNED)
+  productType    ProductType
+  companyName    String?
+  contactName    String?
+  contactEmail   String?
+  contactPhone   String?
+  destinationUrl String?        @db.Text
+  notes          String?        @db.Text
+  scanCount      Int            @default(0)
+  lastScannedAt  DateTime?
+  scans          ScanEvent[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([status])
+  @@index([productType])
+  @@index([companyName])
+  @@index([batchId])
+  @@index([lastScannedAt])
+  @@index([createdAt])
+}
+
+model ScanEvent {
+  id             String       @id @default(cuid())
+  redirectLinkId String
+  redirectLink   RedirectLink @relation(fields: [redirectLinkId], references: [id], onDelete: Cascade)
+  userAgent      String?      @db.Text
+  ipHash         String?
+  referrer       String?      @db.Text
+  deviceType     String?
+  country        String?
+  city           String?
+  createdAt      DateTime     @default(now())
+
+  @@index([redirectLinkId, createdAt])
+  @@index([createdAt])
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  name            String
+  companyName     String
+  email           String
+  phone           String?
+  quantity        Int
+  productType     ProductType
+  googleReviewUrl String?    @db.Text
+  message         String?    @db.Text
+  status          LeadStatus  @default(NEW)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([companyName])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  entityType String
+  entityId   String
+  action     String
+  oldValue   Json?
+  newValue   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([createdAt])
+}
