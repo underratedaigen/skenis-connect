@@ -66,11 +66,7 @@ function AdminDashboardPage() {
         <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <h2 className="font-bold tracking-normal">Naujausi skenavimai</h2>
-            <Link
-              to="/admin/links"
-              search={{ token: "", company: "", batch: "", status: undefined }}
-              className="text-sm font-semibold text-brand-700"
-            >
+            <Link to="/admin/links" className="text-sm font-semibold text-brand-700">
               Visos nuorodos
             </Link>
           </div>
@@ -82,7 +78,6 @@ function AdminDashboardPage() {
                     <Link
                       to="/admin/links/$token"
                       params={{ token: scan.redirectLink?.token || "" }}
-                      search={{ token: "", company: "", batch: "", status: undefined }}
                       className="font-semibold text-ink hover:text-brand-700"
                     >
                       {scan.redirectLink?.companyName || scan.redirectLink?.token || "QR"}
@@ -101,11 +96,7 @@ function AdminDashboardPage() {
         <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <h2 className="font-bold tracking-normal">Naujausios užklausos</h2>
-            <Link
-              to="/admin/leads"
-              search={{ company: "", status: undefined }}
-              className="text-sm font-semibold text-brand-700"
-            >
+            <Link to="/admin/leads" className="text-sm font-semibold text-brand-700">
               Visos užklausos
             </Link>
           </div>

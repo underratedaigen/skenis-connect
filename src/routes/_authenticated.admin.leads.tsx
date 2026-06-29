@@ -52,13 +52,10 @@ function LeadsPage() {
   function onSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const rawStatus = String(form.get("status") || "");
     navigate({
       search: {
         company: String(form.get("company") || ""),
-        status: leadStatuses.includes(rawStatus as LeadStatus)
-          ? (rawStatus as LeadStatus)
-          : undefined
+        status: String(form.get("status") || "") || undefined
       }
     });
   }

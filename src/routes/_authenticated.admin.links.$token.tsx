@@ -10,15 +10,6 @@ import { formatDate, formatNumber } from "@/lib/utils";
 import type { AuditLog, RedirectLink, ScanEvent } from "@/lib/types";
 import { redirectStatuses } from "@/lib/types";
 
-type LinkDetail = {
-  link: RedirectLink;
-  todayScans: number;
-  sevenDayScans: number;
-  thirtyDayScans: number;
-  scans: ScanEvent[];
-  auditLogs: AuditLog[];
-};
-
 export const Route = createFileRoute("/_authenticated/admin/links/$token")({
   head: () => ({
     meta: [{ title: "QR nuoroda | Skenis.lt" }]
@@ -43,7 +34,7 @@ function LinkDetailPage() {
 
   async function load() {
     const accessToken = await getAdminAccessToken();
-    const detail = (await getLinkDetail({ data: { accessToken, token } })) as LinkDetail;
+    const detail = await getLinkDetail({ data: { accessToken, token } });
     setLink(detail.link);
     setTodayScans(detail.todayScans);
     setSevenDayScans(detail.sevenDayScans);
@@ -115,12 +106,7 @@ function LinkDetailPage() {
           <p className="mt-2 text-sm text-slate-600">{link.shortUrl}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link
-            to="/admin/links/$token/qr"
-            params={{ token: link.token }}
-            search={{ token: "", company: "", batch: "", status: undefined }}
-            className="admin-button-secondary"
-          >
+          <Link to="/admin/links/$token/qr" params={{ token: link.token }} className="admin-button-secondary">
             <QrCode aria-hidden className="mr-2 h-4 w-4" />
             QR peržiūra
           </Link>
@@ -128,11 +114,7 @@ function LinkDetailPage() {
             <ExternalLink aria-hidden className="mr-2 h-4 w-4" />
             Atidaryti short URL
           </a>
-          <Link
-            to="/admin/links"
-            search={{ token: "", company: "", batch: "", status: undefined }}
-            className="admin-button-secondary"
-          >
+          <Link to="/admin/links" className="admin-button-secondary">
             Grįžti
           </Link>
         </div>

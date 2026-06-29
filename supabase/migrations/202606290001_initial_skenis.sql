@@ -57,21 +57,6 @@ begin
 end;
 $$;
 
-create or replace function public.increment_redirect_scan(
-  _redirect_link_id uuid,
-  _last_scanned_at timestamptz
-)
-returns void
-language sql
-security definer
-set search_path = public
-as $$
-  update public.redirect_links
-  set scan_count = scan_count + 1,
-      last_scanned_at = _last_scanned_at
-  where id = _redirect_link_id;
-$$;
-
 create table if not exists public.qr_batches (
   id uuid primary key default gen_random_uuid(),
   name text not null,
@@ -102,6 +87,21 @@ create table if not exists public.redirect_links (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+create or replace function public.increment_redirect_scan(
+  _redirect_link_id uuid,
+  _last_scanned_at timestamptz
+)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.redirect_links
+  set scan_count = scan_count + 1,
+      last_scanned_at = _last_scanned_at
+  where id = _redirect_link_id;
+$$;
 
 create table if not exists public.scan_events (
   id uuid primary key default gen_random_uuid(),

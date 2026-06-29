@@ -63,15 +63,12 @@ function LinksPage() {
   function onSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const rawStatus = String(form.get("status") || "");
     navigate({
       search: {
         token: String(form.get("token") || ""),
         company: String(form.get("company") || ""),
         batch: String(form.get("batch") || ""),
-        status: redirectStatuses.includes(rawStatus as RedirectStatus)
-          ? (rawStatus as RedirectStatus)
-          : undefined
+        status: String(form.get("status") || "") || undefined
       }
     });
   }

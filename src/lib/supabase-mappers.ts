@@ -1,15 +1,10 @@
 import type {
   AuditLog,
-  JsonValue,
   Lead,
   QrBatch,
   RedirectLink,
   ScanEvent
 } from "@/lib/types";
-
-function toJsonValue(value: unknown): JsonValue {
-  return JSON.parse(JSON.stringify(value ?? null)) as JsonValue;
-}
 
 export function mapBatch(row: any): QrBatch {
   return {
@@ -99,8 +94,8 @@ export function mapAudit(row: any): AuditLog {
     entityType: row.entity_type,
     entityId: row.entity_id,
     action: row.action,
-    oldValue: toJsonValue(row.old_value),
-    newValue: toJsonValue(row.new_value),
+    oldValue: row.old_value,
+    newValue: row.new_value,
     createdAt: row.created_at,
     user: row.users || null
   };
