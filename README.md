@@ -1,6 +1,6 @@
 # Skenis.lt
 
-TanStack Start + Vite implementation for **Skenis.lt**, a Lithuanian B2B platform for programmable Google review QR acrylic cards and table stands.
+Production foundation for **Skenis.lt**, a Lithuanian B2B platform for programmable Google review QR acrylic cards and table stands.
 
 Every physical QR code points to a permanent Skenis short URL:
 
@@ -12,16 +12,26 @@ The admin can assign or change the final Google review destination later.
 
 ## Stack
 
-- TanStack Start v1
-- TanStack Router file routes
-- Vite 7 on port 8080
-- React 19
-- Tailwind CSS v4
+- Vite 5
+- React 18
+- React Router DOM
+- Tailwind CSS 3 + PostCSS
 - Supabase/Lovable Cloud
+- Supabase Auth for admin login
 - Zod validation
 - JSZip XLSX/QR ZIP generation
 - QR SVG generation
 - Vitest focused tests
+
+This intentionally follows the standard Lovable Vite app structure:
+
+```text
+index.html
+src/main.tsx
+src/App.tsx
+src/index.css
+vite.config.ts
+```
 
 ## Scripts
 
@@ -29,17 +39,11 @@ The admin can assign or change the final Google review destination later.
 bun install
 bun run dev
 bun run build
-bun run start
+bun run preview
 bun test
 ```
 
-Lovable preview expects:
-
-```bash
-bun run dev
-```
-
-which serves on `http://localhost:8080`.
+Lovable preview serves the Vite dev server on `http://localhost:8080`.
 
 ## Environment
 
@@ -47,16 +51,13 @@ which serves on `http://localhost:8080`.
 VITE_PUBLIC_APP_URL="https://skenis.lt"
 VITE_SUPABASE_URL="https://your-project.supabase.co"
 VITE_SUPABASE_ANON_KEY="your-supabase-anon-key"
-SUPABASE_URL="https://your-project.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
-IP_HASH_SECRET="replace-with-a-random-secret"
 ```
+
+No service-role key is used in the frontend app. Admin access uses Supabase Auth plus `public.user_roles`.
 
 ## Database
 
 Run Supabase migrations in `supabase/migrations`.
-
-Admin access uses Supabase Auth plus `public.user_roles`; roles are not stored on profiles.
 
 To grant an authenticated user admin rights:
 
@@ -64,6 +65,8 @@ To grant an authenticated user admin rights:
 insert into public.user_roles (user_id, role)
 values ('USER_UUID_FROM_AUTH_USERS', 'admin');
 ```
+
+The public QR redirect flow uses the `get_redirect_link_public(token)` security-definer RPC so anonymous visitors can resolve only the fields required for redirect behavior.
 
 ## Features
 
@@ -75,14 +78,12 @@ values ('USER_UUID_FROM_AUTH_USERS', 'admin');
 - Manufacturer XLSX export
 - QR SVG ZIP export
 - Individual QR redirect programming
-- Scan analytics with hashed IP values
+- Scan analytics
 - Audit logs for admin changes
 - Safe Google review/Maps URL validation
 - Branded QR status pages
 
 ## Notes
 
-- QR ZIP exports use SVG files for Worker compatibility.
-- XLSX export is generated as OpenXML with JSZip, avoiding Node-only Excel libraries.
-- The redirect page runs through TanStack Start and records scans before redirecting.
 - Keep `VITE_PUBLIC_APP_URL` stable before generating real production QR batches.
+- QR short URLs remain permanent; only the final destination URL changes.

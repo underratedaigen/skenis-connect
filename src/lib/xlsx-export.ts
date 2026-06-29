@@ -60,7 +60,7 @@ export async function buildBatchWorkbook(batch: BatchForExport, baseUrl: string)
           index + 1,
           link.token,
           link.shortUrl,
-          `${baseUrl}/api/public/qr/${link.token}`,
+          `QR_${link.token}.svg`,
           productTypeLabels[link.productType],
           redirectStatusLabels[link.status],
           link.companyName || "",

@@ -1,13 +1,18 @@
 import { useState } from "react";
 import type React from "react";
-import { createLead } from "@/lib/leads.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { productTypeLabels } from "@/lib/labels";
+import { leadCreateSchema } from "@/lib/validation";
 
 type FormState =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "success" }
   | { status: "error"; message: string };
+
+function blankToNull(value: string | undefined) {
+  return value?.trim() ? value.trim() : null;
+}
 
 export function LeadForm() {
   const [state, setState] = useState<FormState>({ status: "idle" });
@@ -18,25 +23,38 @@ export function LeadForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
+    const parsed = leadCreateSchema.safeParse(Object.fromEntries(formData.entries()));
 
-    try {
-      await createLead({ data: payload });
-    } catch (error) {
+    if (!parsed.success) {
       setState({
         status: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Nepavyko išsiųsti užklausos. Bandykite dar kartą."
+        message: parsed.error.issues[0]?.message || "Patikrinkite formos laukus."
+      });
+      return;
+    }
+
+    const data = parsed.data;
+    const { error } = await supabase.from("leads").insert({
+      name: data.name,
+      company_name: data.companyName,
+      email: data.email,
+      phone: blankToNull(data.phone),
+      quantity: data.quantity,
+      product_type: data.productType,
+      google_review_url: blankToNull(data.googleReviewUrl),
+      message: blankToNull(data.message)
+    });
+
+    if (error) {
+      setState({
+        status: "error",
+        message: error.message || "Nepavyko išsiųsti užklausos. Bandykite dar kartą."
       });
       return;
     }
 
     form.reset();
-    setState({
-      status: "success"
-    });
+    setState({ status: "success" });
   }
 
   return (

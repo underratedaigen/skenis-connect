@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "@tanstack/react-router";
 import { BarChart3, ClipboardList, LogOut, PackagePlus, QrCode } from "lucide-react";
 import type React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { AdminSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ export function AdminShell({
 
   async function logout() {
     await supabase.auth.signOut();
-    await navigate({ to: "/admin/login" });
+    navigate("/admin/login", { replace: true });
   }
 
   return (
@@ -80,9 +80,9 @@ export function AdminShell({
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
-                <Link
-                  key={item.href}
-                  to={item.href}
+              <Link
+                key={item.href}
+                to={item.href}
                   className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
                 >
                   <Icon aria-hidden className="h-4 w-4" />

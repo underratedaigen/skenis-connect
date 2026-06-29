@@ -1,30 +1,21 @@
-import { fileURLToPath } from "node:url";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-export default defineConfig({
-  plugins: [
-    tanstackStart({
-      tsr: {
-        target: "react",
-        autoCodeSplitting: false,
-        codeSplittingOptions: {
-          addHmr: false
-        }
-      }
-    }),
-    react(),
-    tailwindcss()
-  ],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url))
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
+    hmr: {
+      overlay: false
     }
   },
-  server: {
-    host: true,
-    port: 8080
+  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src")
+    },
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"]
   }
-});
+}));
