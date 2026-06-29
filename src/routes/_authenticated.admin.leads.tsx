@@ -84,11 +84,11 @@ function LeadsPage() {
         <div className="grid gap-4 md:grid-cols-[1fr_0.8fr_auto]">
           <label className="grid gap-2">
             <span className="admin-label">Įmonė</span>
-            <input className="admin-input" name="company" defaultValue={search.company} />
+            <input className="admin-input" name="company" defaultValue={search.company ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Statusas</span>
-            <select className="admin-input" name="status" defaultValue={search.status || ""}>
+            <select className="admin-input" name="status" defaultValue={search.status ?? ""}>
               <option value="">Visi</option>
               {leadStatuses.map((status) => (
                 <option key={status} value={status}>
