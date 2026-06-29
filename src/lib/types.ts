@@ -86,22 +86,14 @@ export type Lead = {
   updatedAt: string;
 };
 
-export type AuditValue =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: AuditValue }
-  | AuditValue[];
-
 export type AuditLog = {
   id: string;
   userId: string | null;
   entityType: string;
   entityId: string;
   action: string;
-  oldValue: AuditValue;
-  newValue: AuditValue;
+  oldValue: unknown;
+  newValue: unknown;
   createdAt: string;
   user?: {
     email: string | null;
