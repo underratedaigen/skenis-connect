@@ -11,7 +11,7 @@ export default defineConfig({
       target: "react",
       autoCodeSplitting: false
     }),
-    tanstackStart(),
+    tanstackStart({ router: { autoCodeSplitting: false } }),
     react(),
     tailwindcss()
   ],
