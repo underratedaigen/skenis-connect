@@ -7,11 +7,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [
     tanstackStart({
-      tsr: {
-        target: "react",
-        autoCodeSplitting: false,
-        codeSplittingOptions: {
-          addHmr: false
+      router: {
+        plugin: {
+          hmr: {
+            style: "webpack"
+          }
         }
       }
     }),
