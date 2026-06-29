@@ -1,6 +1,6 @@
-"use client";
-
 import { useState } from "react";
+import type React from "react";
+import { createLead } from "@/lib/leads.functions";
 import { productTypeLabels } from "@/lib/labels";
 
 type FormState =
@@ -20,19 +20,15 @@ export function LeadForm() {
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
-    const response = await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      const body = (await response.json().catch(() => null)) as {
-        message?: string;
-      } | null;
+    try {
+      await createLead({ data: payload });
+    } catch (error) {
       setState({
         status: "error",
-        message: body?.message || "Nepavyko išsiųsti užklausos. Bandykite dar kartą."
+        message:
+          error instanceof Error
+            ? error.message
+            : "Nepavyko išsiųsti užklausos. Bandykite dar kartą."
       });
       return;
     }

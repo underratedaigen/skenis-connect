@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
 export function RedirectStatusPage({
   title,
@@ -19,7 +19,7 @@ export function RedirectStatusPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-mist px-5 py-12">
       <section className="w-full max-w-lg rounded-lg border border-line bg-white p-7 text-center shadow-panel">
-        <Link href="/" className="text-sm font-bold text-brand-700">
+        <Link to="/" className="text-sm font-bold text-brand-700">
           Skenis.lt
         </Link>
         <div className={`mx-auto mt-8 rounded-lg border px-5 py-4 text-sm ${toneClass}`}>

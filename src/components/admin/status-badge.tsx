@@ -1,5 +1,5 @@
-import type { RedirectStatus } from "@prisma/client";
 import { redirectStatusLabels } from "@/lib/labels";
+import type { RedirectStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const tones: Record<RedirectStatus, string> = {

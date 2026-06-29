@@ -1,131 +1,88 @@
 # Skenis.lt
 
-Production foundation for **Skenis.lt**, a Lithuanian B2B platform for programmable Google review QR acrylic cards and table stands.
+TanStack Start + Vite implementation for **Skenis.lt**, a Lithuanian B2B platform for programmable Google review QR acrylic cards and table stands.
 
-Every physical QR code points to a permanent Skenis short URL such as:
+Every physical QR code points to a permanent Skenis short URL:
 
 ```text
 https://skenis.lt/r/8fK29xQp
 ```
 
-The final Google review destination can be assigned or changed later in the admin dashboard.
-
-## Features
-
-- Public Lithuanian marketing and order page
-- Lead/order capture stored in PostgreSQL
-- Protected `/admin` dashboard
-- Batch QR short-link generator
-- XLSX export for manufacturers
-- QR PNG ZIP export for batches
-- Individual redirect programming
-- `/r/[token]` scan endpoint with branded fallback pages
-- Scan analytics with IP hashing instead of raw IP storage
-- Google review/Maps URL validation
-- Audit logs for admin changes
-- Seeded demo admin and demo data
-- Vitest coverage for token generation, URL validation, and redirect policy
+The admin can assign or change the final Google review destination later.
 
 ## Stack
 
-- Next.js App Router
-- TypeScript
-- Tailwind CSS
-- PostgreSQL
-- Prisma ORM
-- Signed HTTP-only admin session cookie
+- TanStack Start v1
+- TanStack Router file routes
+- Vite 7 on port 8080
+- React 19
+- Tailwind CSS v4
+- Supabase/Lovable Cloud
 - Zod validation
-- ExcelJS
-- qrcode
-- JSZip
-- Vitest
+- JSZip XLSX/QR ZIP generation
+- QR SVG generation
+- Vitest focused tests
 
-## Setup
-
-1. Install dependencies:
+## Scripts
 
 ```bash
-npm install
+bun install
+bun run dev
+bun run build
+bun run start
+bun test
 ```
 
-1. Copy environment variables:
+Lovable preview expects:
 
 ```bash
-cp .env.example .env
+bun run dev
 ```
 
-1. Update `.env`:
+which serves on `http://localhost:8080`.
+
+## Environment
 
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/skenis?schema=public"
-NEXT_PUBLIC_APP_URL="https://skenis.lt"
-SESSION_SECRET="replace-with-at-least-32-random-characters"
-IP_HASH_SECRET="replace-with-a-different-random-secret"
-SEED_ADMIN_EMAIL="admin@skenis.lt"
-SEED_ADMIN_PASSWORD="SkenisDemo2026!"
+VITE_PUBLIC_APP_URL="https://skenis.lt"
+VITE_SUPABASE_URL="https://your-project.supabase.co"
+VITE_SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
+IP_HASH_SECRET="replace-with-a-random-secret"
 ```
 
-1. Run the database migration:
+## Database
 
-```bash
-npm run db:migrate
+Run Supabase migrations in `supabase/migrations`.
+
+Admin access uses Supabase Auth plus `public.user_roles`; roles are not stored on profiles.
+
+To grant an authenticated user admin rights:
+
+```sql
+insert into public.user_roles (user_id, role)
+values ('USER_UUID_FROM_AUTH_USERS', 'admin');
 ```
 
-1. Seed demo data:
+## Features
 
-```bash
-npm run db:seed
-```
+- Public Lithuanian landing and contact/order form
+- Supabase lead storage
+- Supabase Auth admin login
+- Admin dashboard metrics
+- QR batch generator
+- Manufacturer XLSX export
+- QR SVG ZIP export
+- Individual QR redirect programming
+- Scan analytics with hashed IP values
+- Audit logs for admin changes
+- Safe Google review/Maps URL validation
+- Branded QR status pages
 
-1. Start development:
+## Notes
 
-```bash
-npm run dev
-```
-
-Open:
-
-- Public site: `http://localhost:3000`
-- Admin: `http://localhost:3000/admin`
-
-Default seeded admin:
-
-```text
-admin@skenis.lt / SkenisDemo2026!
-```
-
-Change this before production.
-
-## Production Notes
-
-- Set `NEXT_PUBLIC_APP_URL=https://skenis.lt` before generating production QR batches.
-- Use long random values for `SESSION_SECRET` and `IP_HASH_SECRET`.
-- Run migrations with `npm run db:deploy`.
-- Put the app behind HTTPS.
-- Keep the database backed up; QR tokens are permanent production assets.
-- Restrict database and admin access to trusted operators.
-
-## Admin Workflow
-
-1. Go to `/admin/batches/new`.
-1. Enter quantity, batch name, product type, and manufacturer notes.
-1. Generate the batch.
-1. Download XLSX and optional QR PNG ZIP.
-1. Send manufacturing files to the producer.
-1. Open a QR link record and assign the company plus Google review URL.
-1. Future scans keep using the same short URL but redirect to the updated destination.
-
-## Testing
-
-```bash
-npm run typecheck
-npm run lint
-npm test
-```
-
-## Known Limitations
-
-- Admin auth is intentionally simple: email/password with a signed session cookie. For multiple teams, add password reset, MFA, and stricter role permissions.
-- QR ZIP generation is in-memory. For very large production runs, move ZIP generation to a background job or object storage.
-- Geolocation is intentionally skipped to avoid unnecessary tracking.
-- Pricing is hardcoded placeholder copy in the public page; connect it to a product/pricing table when commercial pricing is finalized.
+- QR ZIP exports use SVG files for Worker compatibility.
+- XLSX export is generated as OpenXML with JSZip, avoiding Node-only Excel libraries.
+- The redirect page runs through TanStack Start and records scans before redirecting.
+- Keep `VITE_PUBLIC_APP_URL` stable before generating real production QR batches.

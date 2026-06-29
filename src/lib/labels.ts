@@ -1,4 +1,4 @@
-import type { LeadStatus, ProductType, RedirectStatus } from "@prisma/client";
+import type { LeadStatus, ProductType, RedirectStatus } from "@/lib/types";
 
 export const productTypeLabels: Record<ProductType, string> = {
   CARD: "Akrilinė Google Review kortelė",

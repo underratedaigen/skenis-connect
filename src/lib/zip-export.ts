@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { createQrPngBuffer } from "@/lib/qr";
+import { createQrSvg } from "@/lib/qr";
 
 type LinkForZip = {
   token: string;
@@ -11,16 +11,16 @@ export async function buildQrZip(links: LinkForZip[]) {
   const manifestRows = ["file_name,token,short_url"];
 
   for (const link of links) {
-    const fileName = `QR_${link.token}.png`;
-    const buffer = await createQrPngBuffer(link.shortUrl);
-    zip.file(fileName, buffer);
+    const fileName = `QR_${link.token}.svg`;
+    const svg = await createQrSvg(link.shortUrl);
+    zip.file(fileName, svg);
     manifestRows.push(`${fileName},${link.token},${link.shortUrl}`);
   }
 
   zip.file("manifest.csv", manifestRows.join("\n"));
 
   return zip.generateAsync({
-    type: "nodebuffer",
+    type: "uint8array",
     compression: "DEFLATE",
     compressionOptions: { level: 6 }
   });

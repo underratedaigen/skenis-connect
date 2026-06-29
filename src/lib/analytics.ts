@@ -1,15 +1,11 @@
-import { createHash } from "crypto";
-import { prisma } from "@/lib/prisma";
-import { getIpHashSecret } from "@/lib/env";
-
-type ScanInput = {
+export type ScanInput = {
   redirectLinkId: string;
   userAgent?: string | null;
   ip?: string | null;
   referrer?: string | null;
 };
 
-function getDeviceType(userAgent?: string | null) {
+export function getDeviceType(userAgent?: string | null) {
   const value = userAgent?.toLowerCase() || "";
 
   if (!value) return "unknown";
@@ -20,33 +16,16 @@ function getDeviceType(userAgent?: string | null) {
   return "desktop";
 }
 
-export function hashIp(ip?: string | null) {
+export function hashIp(ip?: string | null, secret = "skenis-privacy-salt") {
   if (!ip) return null;
 
-  return createHash("sha256")
-    .update(`${getIpHashSecret()}:${ip}`)
-    .digest("hex");
-}
+  let hash = 0;
+  const input = `${secret}:${ip}`;
 
-export async function recordScan(input: ScanInput) {
-  const now = new Date();
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash << 5) - hash + input.charCodeAt(i);
+    hash |= 0;
+  }
 
-  await prisma.$transaction([
-    prisma.scanEvent.create({
-      data: {
-        redirectLinkId: input.redirectLinkId,
-        userAgent: input.userAgent?.slice(0, 1000),
-        ipHash: hashIp(input.ip),
-        referrer: input.referrer?.slice(0, 1000),
-        deviceType: getDeviceType(input.userAgent)
-      }
-    }),
-    prisma.redirectLink.update({
-      where: { id: input.redirectLinkId },
-      data: {
-        scanCount: { increment: 1 },
-        lastScannedAt: now
-      }
-    })
-  ]);
+  return Math.abs(hash).toString(16).padStart(8, "0");
 }

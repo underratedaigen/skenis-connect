@@ -1,7 +1,18 @@
-import { randomInt } from "crypto";
-
 const TOKEN_ALPHABET =
   "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
+function randomIndex(max: number) {
+  const cryptoApi = globalThis.crypto;
+
+  if (!cryptoApi?.getRandomValues) {
+    return Math.floor(Math.random() * max);
+  }
+
+  const value = new Uint32Array(1);
+  cryptoApi.getRandomValues(value);
+
+  return value[0] % max;
+}
 
 export function sanitizeTokenPrefix(prefix: string | null | undefined) {
   if (!prefix) return "";
@@ -14,7 +25,7 @@ export function generateSecureToken(length = 10, prefix?: string | null) {
   let token = "";
 
   for (let i = 0; i < length; i += 1) {
-    token += TOKEN_ALPHABET[randomInt(0, TOKEN_ALPHABET.length)];
+    token += TOKEN_ALPHABET[randomIndex(TOKEN_ALPHABET.length)];
   }
 
   return `${safePrefix}${token}`;

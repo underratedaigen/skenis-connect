@@ -1,114 +1,126 @@
-import ExcelJS from "exceljs";
-import type { ProductType, RedirectLink, RedirectStatus } from "@prisma/client";
+import JSZip from "jszip";
+import type { QrBatch, RedirectLink } from "@/lib/types";
 import { productTypeLabels, redirectStatusLabels } from "@/lib/labels";
-import { getPublicBaseUrl } from "@/lib/env";
 
-type BatchForExport = {
-  id: string;
-  name: string;
-  productType: ProductType;
-  manufacturerNote: string | null;
-  createdAt: Date;
-  links: Array<
-    Pick<
-      RedirectLink,
-      | "token"
-      | "shortUrl"
-      | "productType"
-      | "status"
-      | "companyName"
-      | "destinationUrl"
-      | "createdAt"
-    >
-  >;
+type BatchForExport = QrBatch & {
+  links: RedirectLink[];
 };
 
-export async function buildBatchWorkbook(batch: BatchForExport) {
-  const workbook = new ExcelJS.Workbook();
-  workbook.creator = "Skenis.lt";
-  workbook.created = new Date();
+function xmlEscape(value: unknown) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
-  const sheet = workbook.addWorksheet("QR kodai", {
-    views: [{ state: "frozen", ySplit: 5 }]
-  });
+function cell(value: unknown) {
+  return `<c t="inlineStr"><is><t>${xmlEscape(value)}</t></is></c>`;
+}
 
-  sheet.addRow(["Batch name", batch.name]);
-  sheet.addRow(["Batch ID", batch.id]);
-  sheet.addRow(["Manufacturer notes", batch.manufacturerNote || ""]);
-  sheet.addRow(["Created date", batch.createdAt]);
-  sheet.addRow([]);
+function row(values: unknown[], index: number) {
+  return `<row r="${index}">${values.map(cell).join("")}</row>`;
+}
 
-  sheet.addRow([
-    "Batch name",
-    "Batch ID",
-    "Row number",
-    "Token",
-    "Short URL",
-    "QR code image URL",
-    "Product type",
-    "Status",
-    "Assigned company name",
-    "Final redirect URL",
-    "Manufacturer notes",
-    "Created date"
-  ]);
+export async function buildBatchWorkbook(batch: BatchForExport, baseUrl: string) {
+  const zip = new JSZip();
+  const rows: string[] = [];
 
-  const headerRow = sheet.getRow(6);
-  headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
-  headerRow.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FF101820" }
-  };
-
-  const baseUrl = getPublicBaseUrl();
+  rows.push(row(["Batch name", batch.name], 1));
+  rows.push(row(["Batch ID", batch.id], 2));
+  rows.push(row(["Manufacturer notes", batch.manufacturerNote || ""], 3));
+  rows.push(row(["Created date", batch.createdAt], 4));
+  rows.push(row([], 5));
+  rows.push(
+    row(
+      [
+        "Batch name",
+        "Batch ID",
+        "Row number",
+        "Token",
+        "Short URL",
+        "QR code image URL",
+        "Product type",
+        "Status",
+        "Assigned company name",
+        "Final redirect URL",
+        "Manufacturer notes",
+        "Created date"
+      ],
+      6
+    )
+  );
 
   batch.links.forEach((link, index) => {
-    const row = sheet.addRow([
-      batch.name,
-      batch.id,
-      index + 1,
-      link.token,
-      link.shortUrl,
-      `${baseUrl}/api/qr/${link.token}`,
-      productTypeLabels[link.productType],
-      redirectStatusLabels[link.status as RedirectStatus],
-      link.companyName || "",
-      link.destinationUrl || "",
-      batch.manufacturerNote || "",
-      link.createdAt
-    ]);
-
-    row.getCell(5).value = {
-      text: link.shortUrl,
-      hyperlink: link.shortUrl
-    };
-    row.getCell(6).value = {
-      text: `${baseUrl}/api/qr/${link.token}`,
-      hyperlink: `${baseUrl}/api/qr/${link.token}`
-    };
+    rows.push(
+      row(
+        [
+          batch.name,
+          batch.id,
+          index + 1,
+          link.token,
+          link.shortUrl,
+          `${baseUrl}/api/public/qr/${link.token}`,
+          productTypeLabels[link.productType],
+          redirectStatusLabels[link.status],
+          link.companyName || "",
+          link.destinationUrl || "",
+          batch.manufacturerNote || "",
+          link.createdAt
+        ],
+        index + 7
+      )
+    );
   });
 
-  sheet.columns = [
-    { width: 32 },
-    { width: 28 },
-    { width: 12 },
-    { width: 20 },
-    { width: 34 },
-    { width: 42 },
-    { width: 32 },
-    { width: 18 },
-    { width: 30 },
-    { width: 46 },
-    { width: 36 },
-    { width: 24 }
-  ];
+  zip.file(
+    "[Content_Types].xml",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>`
+  );
 
-  sheet.eachRow((row) => {
-    row.eachCell((cell) => {
-      cell.alignment = { vertical: "middle", wrapText: true };
-    });
+  zip.file(
+    "_rels/.rels",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`
+  );
+
+  zip.file(
+    "xl/workbook.xml",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheets>
+    <sheet name="QR kodai" sheetId="1" r:id="rId1"/>
+  </sheets>
+</workbook>`
+  );
+
+  zip.file(
+    "xl/_rels/workbook.xml.rels",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+</Relationships>`
+  );
+
+  zip.file(
+    "xl/worksheets/sheet1.xml",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <sheetData>${rows.join("")}</sheetData>
+</worksheet>`
+  );
+
+  return zip.generateAsync({
+    type: "uint8array",
+    compression: "DEFLATE",
+    compressionOptions: { level: 6 }
   });
-
-  return workbook;
 }

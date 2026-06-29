@@ -1,4 +1,4 @@
-import type { RedirectStatus } from "@prisma/client";
+import type { RedirectStatus } from "@/lib/types";
 import { isSafeGoogleReviewUrl } from "@/lib/validation";
 
 export type RedirectOutcome =

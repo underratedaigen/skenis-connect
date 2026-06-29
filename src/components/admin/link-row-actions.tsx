@@ -1,6 +1,4 @@
-"use client";
-
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import { Copy, ExternalLink, Pencil, QrCode } from "lucide-react";
 import { useState } from "react";
 
@@ -30,14 +28,16 @@ export function LinkRowActions({
         <Copy aria-hidden className="h-4 w-4" />
       </button>
       <Link
-        href={`/admin/links/${token}`}
+        to="/admin/links/$token"
+        params={{ token }}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:border-brand-500 hover:text-brand-700 focus-ring"
         title="Redaguoti"
       >
         <Pencil aria-hidden className="h-4 w-4" />
       </Link>
       <Link
-        href={`/admin/links/${token}/qr`}
+        to="/admin/links/$token/qr"
+        params={{ token }}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:border-brand-500 hover:text-brand-700 focus-ring"
         title="QR peržiūra"
       >

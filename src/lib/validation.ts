@@ -1,5 +1,5 @@
-import { LeadStatus, ProductType, RedirectStatus } from "@prisma/client";
 import { z } from "zod";
+import { leadStatuses, productTypes, redirectStatuses } from "@/lib/types";
 
 export function isSafeGoogleReviewUrl(value: string) {
   try {
@@ -36,9 +36,9 @@ export function isSafeGoogleReviewUrl(value: string) {
   }
 }
 
-export const productTypeSchema = z.nativeEnum(ProductType);
-export const redirectStatusSchema = z.nativeEnum(RedirectStatus);
-export const leadStatusSchema = z.nativeEnum(LeadStatus);
+export const productTypeSchema = z.enum(productTypes);
+export const redirectStatusSchema = z.enum(redirectStatuses);
+export const leadStatusSchema = z.enum(leadStatuses);
 
 export const optionalGoogleReviewUrlSchema = z
   .string()
@@ -75,31 +75,26 @@ export const batchCreateSchema = z.object({
   manufacturerNote: z.string().trim().max(2000).optional().or(z.literal(""))
 });
 
-export const redirectLinkUpdateSchema = z
-  .object({
-    companyName: z.string().trim().max(180).optional().or(z.literal("")),
-    contactName: z.string().trim().max(120).optional().or(z.literal("")),
-    contactEmail: z
-      .string()
-      .trim()
-      .email("Įveskite teisingą el. pašto adresą.")
-      .max(180)
-      .optional()
-      .or(z.literal("")),
-    contactPhone: z.string().trim().max(80).optional().or(z.literal("")),
-    destinationUrl: optionalGoogleReviewUrlSchema,
-    notes: z.string().trim().max(2000).optional().or(z.literal("")),
-    status: redirectStatusSchema
-  })
-  .refine(
-    (value) => value.status !== "ACTIVE" || Boolean(value.destinationUrl),
-    {
-      path: ["destinationUrl"],
-      message: "Aktyviam QR kodui būtina Google atsiliepimų nuoroda."
-    }
-  );
-
-export const loginSchema = z.object({
-  email: z.string().trim().email(),
-  password: z.string().min(8)
+export const redirectLinkUpdateBaseSchema = z.object({
+  companyName: z.string().trim().max(180).optional().or(z.literal("")),
+  contactName: z.string().trim().max(120).optional().or(z.literal("")),
+  contactEmail: z
+    .string()
+    .trim()
+    .email("Įveskite teisingą el. pašto adresą.")
+    .max(180)
+    .optional()
+    .or(z.literal("")),
+  contactPhone: z.string().trim().max(80).optional().or(z.literal("")),
+  destinationUrl: optionalGoogleReviewUrlSchema,
+  notes: z.string().trim().max(2000).optional().or(z.literal("")),
+  status: redirectStatusSchema
 });
+
+export const redirectLinkUpdateSchema = redirectLinkUpdateBaseSchema.refine(
+  (value) => value.status !== "ACTIVE" || Boolean(value.destinationUrl),
+  {
+    path: ["destinationUrl"],
+    message: "Aktyviam QR kodui būtina Google atsiliepimų nuoroda."
+  }
+);
