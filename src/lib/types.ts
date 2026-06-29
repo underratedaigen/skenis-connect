@@ -26,6 +26,14 @@ export type AdminSession = {
   name: string | null;
 };
 
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
 export type QrBatch = {
   id: string;
   name: string;
@@ -92,8 +100,8 @@ export type AuditLog = {
   entityType: string;
   entityId: string;
   action: string;
-  oldValue: unknown;
-  newValue: unknown;
+  oldValue: JsonValue;
+  newValue: JsonValue;
   createdAt: string;
   user?: {
     email: string | null;
