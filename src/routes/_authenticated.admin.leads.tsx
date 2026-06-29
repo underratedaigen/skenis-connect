@@ -10,8 +10,8 @@ import type { Lead, LeadStatus } from "@/lib/types";
 import { leadStatuses } from "@/lib/types";
 
 export const Route = createFileRoute("/_authenticated/admin/leads")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    company: typeof search.company === "string" ? search.company : "",
+  validateSearch: (search: Record<string, unknown>): { company?: string; status?: LeadStatus } => ({
+    company: typeof search.company === "string" ? search.company : undefined,
     status:
       typeof search.status === "string" && leadStatuses.includes(search.status as LeadStatus)
         ? (search.status as LeadStatus)
@@ -54,8 +54,10 @@ function LeadsPage() {
     const form = new FormData(event.currentTarget);
     navigate({
       search: {
-        company: String(form.get("company") || ""),
-        status: String(form.get("status") || "") || undefined
+        company: String(form.get("company") || "") || undefined,
+        status: leadStatuses.includes(String(form.get("status")) as LeadStatus)
+          ? (String(form.get("status")) as LeadStatus)
+          : undefined
       }
     });
   }
@@ -77,7 +79,7 @@ function LeadsPage() {
         <div className="grid gap-4 md:grid-cols-[1fr_0.8fr_auto]">
           <label className="grid gap-2">
             <span className="admin-label">Įmonė</span>
-            <input className="admin-input" name="company" defaultValue={search.company} />
+            <input className="admin-input" name="company" defaultValue={search.company ?? ""} />
           </label>
           <label className="grid gap-2">
             <span className="admin-label">Statusas</span>
