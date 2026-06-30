@@ -66,6 +66,10 @@ function App() {
             element={<AdminGuard>{() => <AdminDashboardPage />}</AdminGuard>}
           />
           <Route
+            path="/admin/batches"
+            element={<AdminGuard>{() => <BatchesPage />}</AdminGuard>}
+          />
+          <Route
             path="/admin/batches/new"
             element={<AdminGuard>{() => <NewBatchPage />}</AdminGuard>}
           />
