@@ -537,6 +537,14 @@ export function BatchDetailPage() {
             <QrCode aria-hidden className="mr-2 h-4 w-4" />
             View generated links
           </Link>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-2 text-sm font-semibold text-red-600 transition hover:border-red-500 hover:bg-red-50 disabled:opacity-60"
+          >
+            <Trash2 aria-hidden className="mr-2 h-4 w-4" />
+            {deleting ? "Trinama..." : "Ištrinti partiją"}
+          </button>
         </div>
       </div>
 
