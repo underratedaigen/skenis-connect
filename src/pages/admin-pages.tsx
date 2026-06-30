@@ -437,11 +437,13 @@ export function NewBatchPage() {
 export function BatchDetailPage() {
   useDocumentTitle("QR partija | Skenis.lt");
   const { id } = useParams();
+  const navigate = useNavigate();
   const [search] = useSearchParams();
   const [state, setState] = useState<LoadState<{ batch: QrBatch; links: RedirectLink[] }>>({
     status: "loading"
   });
   const [downloading, setDownloading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!id) return;
