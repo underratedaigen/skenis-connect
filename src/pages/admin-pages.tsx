@@ -487,6 +487,22 @@ export function BatchDetailPage() {
     }
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    const confirmed = window.confirm(
+      `Ar tikrai ištrinti partiją "${batch.name}" ir visas ${links.length} jos QR nuorodas? Šio veiksmo atšaukti nebus galima.`
+    );
+    if (!confirmed) return;
+    setDeleting(true);
+    try {
+      await deleteBatch(id);
+      navigate("/admin/batches", { replace: true });
+    } catch (error) {
+      alert(getErrorMessage(error, "Nepavyko ištrinti partijos."));
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="grid gap-8">
       {search.get("created") ? (
