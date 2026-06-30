@@ -18,6 +18,9 @@ const AdminDashboardPage = lazy(() =>
 const BatchDetailPage = lazy(() =>
   import("@/pages/admin-pages").then((module) => ({ default: module.BatchDetailPage }))
 );
+const BatchesPage = lazy(() =>
+  import("@/pages/admin-pages").then((module) => ({ default: module.BatchesPage }))
+);
 const LeadsPage = lazy(() =>
   import("@/pages/admin-pages").then((module) => ({ default: module.LeadsPage }))
 );
@@ -61,6 +64,10 @@ function App() {
           <Route
             path="/admin"
             element={<AdminGuard>{() => <AdminDashboardPage />}</AdminGuard>}
+          />
+          <Route
+            path="/admin/batches"
+            element={<AdminGuard>{() => <BatchesPage />}</AdminGuard>}
           />
           <Route
             path="/admin/batches/new"

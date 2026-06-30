@@ -1,4 +1,4 @@
-import { BarChart3, ClipboardList, LogOut, PackagePlus, QrCode } from "lucide-react";
+import { BarChart3, ClipboardList, LogOut, PackagePlus, Package, QrCode } from "lucide-react";
 import type React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/admin", label: "Apžvalga", icon: BarChart3, end: true },
   { href: "/admin/batches/new", label: "Generuoti partiją", icon: PackagePlus, end: false },
+  { href: "/admin/batches", label: "Partijos", icon: Package, end: false },
   { href: "/admin/links", label: "QR nuorodos", icon: QrCode, end: false },
   { href: "/admin/leads", label: "Užklausos", icon: ClipboardList, end: false }
 ] as const;

@@ -196,6 +196,36 @@ export async function listBatches() {
   return (data || []).map(mapBatch);
 }
 
+export async function deleteBatch(batchId: string) {
+  requireSupabaseConfigured();
+  const admin = await getCurrentAdmin();
+  if (!admin) throw new Error("Admin sesija nerasta.");
+
+  const { data: batchRow, error: fetchError } = await supabase
+    .from("qr_batches")
+    .select("*")
+    .eq("id", batchId)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  const { error: linksError } = await supabase
+    .from("redirect_links")
+    .delete()
+    .eq("batch_id", batchId);
+
+  if (linksError) throw new Error(linksError.message);
+
+  const { error: batchError } = await supabase
+    .from("qr_batches")
+    .delete()
+    .eq("id", batchId);
+
+  if (batchError) throw new Error(batchError.message);
+
+  await writeAudit(admin.id, "DELETE_BATCH", "QrBatch", batchId, batchRow, null);
+}
+
 export async function getBatchDetail(batchId: string) {
   requireSupabaseConfigured();
   const [{ data: batch, error: batchError }, { data: links, error: linksError }] =

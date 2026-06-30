@@ -8,7 +8,8 @@ import {
   Link2,
   PackageCheck,
   QrCode,
-  ShieldCheck
+  ShieldCheck,
+  Trash2
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type React from "react";
@@ -35,6 +36,7 @@ import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import {
   bytesToDownload,
   createBatch,
+  deleteBatch,
   exportBatchQrZip,
   exportBatchXlsx,
   getBatchDetail,
@@ -435,11 +437,13 @@ export function NewBatchPage() {
 export function BatchDetailPage() {
   useDocumentTitle("QR partija | Skenis.lt");
   const { id } = useParams();
+  const navigate = useNavigate();
   const [search] = useSearchParams();
   const [state, setState] = useState<LoadState<{ batch: QrBatch; links: RedirectLink[] }>>({
     status: "loading"
   });
   const [downloading, setDownloading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -483,6 +487,22 @@ export function BatchDetailPage() {
     }
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    const confirmed = window.confirm(
+      `Ar tikrai ištrinti partiją "${batch.name}" ir visas ${links.length} jos QR nuorodas? Šio veiksmo atšaukti nebus galima.`
+    );
+    if (!confirmed) return;
+    setDeleting(true);
+    try {
+      await deleteBatch(id);
+      navigate("/admin/batches", { replace: true });
+    } catch (error) {
+      alert(getErrorMessage(error, "Nepavyko ištrinti partijos."));
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="grid gap-8">
       {search.get("created") ? (
@@ -517,6 +537,14 @@ export function BatchDetailPage() {
             <QrCode aria-hidden className="mr-2 h-4 w-4" />
             View generated links
           </Link>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-2 text-sm font-semibold text-red-600 transition hover:border-red-500 hover:bg-red-50 disabled:opacity-60"
+          >
+            <Trash2 aria-hidden className="mr-2 h-4 w-4" />
+            {deleting ? "Trinama..." : "Ištrinti partiją"}
+          </button>
         </div>
       </div>
 
@@ -967,3 +995,112 @@ export function LeadsPage() {
     </div>
   );
 }
+
+export function BatchesPage() {
+  useDocumentTitle("QR partijos | Skenis.lt");
+  const [state, setState] = useState<LoadState<QrBatch[]>>({ status: "loading" });
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  function reload() {
+    setState({ status: "loading" });
+    listBatches()
+      .then((data) => setState({ status: "ready", data }))
+      .catch((error) =>
+        setState({ status: "error", message: getErrorMessage(error, "Nepavyko įkelti partijų.") })
+      );
+  }
+
+  useEffect(reload, []);
+
+  async function handleDelete(batch: QrBatch) {
+    const confirmed = window.confirm(
+      `Ar tikrai ištrinti partiją "${batch.name}" ir visas jos QR nuorodas (${batch.quantity} vnt.)? Šio veiksmo atšaukti nebus galima.`
+    );
+    if (!confirmed) return;
+    setDeletingId(batch.id);
+    try {
+      await deleteBatch(batch.id);
+      reload();
+    } catch (error) {
+      alert(getErrorMessage(error, "Nepavyko ištrinti partijos."));
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
+  return (
+    <div className="grid gap-6">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <h1 className="text-3xl font-bold tracking-normal text-ink">QR partijos</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Visos sugeneruotos partijos. Ištrynus partiją bus pašalintos ir visos jos QR nuorodos.
+          </p>
+        </div>
+        <Link to="/admin/batches/new" className="admin-button">
+          Generuoti partiją
+        </Link>
+      </div>
+
+      {state.status === "loading" ? <AdminLoading /> : null}
+      {state.status === "error" ? <AdminError message={state.message} /> : null}
+      {state.status === "ready" ? (
+        state.data.length ? (
+          <AdminTablePanel title="Visos partijos">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Pavadinimas</th>
+                  <th>Tipas</th>
+                  <th>Kiekis</th>
+                  <th>Prefiksas</th>
+                  <th>Sukurta</th>
+                  <th>Veiksmai</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.data.map((batch) => (
+                  <tr key={batch.id}>
+                    <td>
+                      <Link
+                        to={`/admin/batches/${batch.id}`}
+                        className="font-medium text-brand-700 hover:text-brand-600"
+                      >
+                        {batch.name}
+                      </Link>
+                    </td>
+                    <td>{productTypeLabels[batch.productType]}</td>
+                    <td>{formatNumber(batch.quantity)}</td>
+                    <td>{batch.tokenPrefix || "—"}</td>
+                    <td>{formatDate(batch.createdAt)}</td>
+                    <td>
+                      <div className="flex flex-wrap gap-2">
+                        <Link
+                          to={`/admin/batches/${batch.id}`}
+                          className="admin-button-secondary"
+                        >
+                          Atidaryti
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(batch)}
+                          disabled={deletingId === batch.id}
+                          className="inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-2 text-sm font-semibold text-red-600 transition hover:border-red-500 hover:bg-red-50 disabled:opacity-60"
+                        >
+                          <Trash2 aria-hidden className="mr-2 h-4 w-4" />
+                          {deletingId === batch.id ? "Trinama..." : "Ištrinti"}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTablePanel>
+        ) : (
+          <EmptyAdminText>Partijų dar nėra. Sugeneruokite pirmąją.</EmptyAdminText>
+        )
+      ) : null}
+    </div>
+  );
+}
+
