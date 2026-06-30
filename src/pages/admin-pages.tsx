@@ -36,6 +36,7 @@ import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import {
   bytesToDownload,
   createBatch,
+  deleteBatch,
   exportBatchQrZip,
   exportBatchXlsx,
   getBatchDetail,
