@@ -374,13 +374,17 @@ export function NewBatchPage() {
           <div className="grid gap-5 sm:grid-cols-2">
             <label className="grid gap-2">
               <span className="admin-label">Kiekis</span>
-              <select className="admin-input" name="quantity" defaultValue="50">
-                {[1, 10, 50, 100, 500, 1000].map((quantity) => (
-                  <option key={quantity} value={quantity}>
-                    {quantity}
-                  </option>
-                ))}
-              </select>
+              <input
+                className="admin-input"
+                name="quantity"
+                type="number"
+                min={1}
+                max={1000}
+                step={1}
+                defaultValue={50}
+                required
+              />
+              <span className="text-xs text-slate-500">Nuo 1 iki 1000.</span>
             </label>
 
             <label className="grid gap-2">
