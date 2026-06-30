@@ -579,7 +579,7 @@ export function BatchDetailPage() {
             </tr>
           </thead>
           <tbody>
-            {links.slice(0, 60).map((link) => (
+            {links.map((link) => (
               <tr key={link.id}>
                 <td className="font-mono text-xs">{link.token}</td>
                 <td>
