@@ -8,7 +8,8 @@ import {
   Link2,
   PackageCheck,
   QrCode,
-  ShieldCheck
+  ShieldCheck,
+  Trash2
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type React from "react";
