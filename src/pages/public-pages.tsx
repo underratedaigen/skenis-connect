@@ -598,13 +598,14 @@ function OrderModal({ onClose }: { onClose: () => void }) {
 
           <div>
             <p className="section-kicker">Užklausa</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-normal sm:text-3xl">
+            <h2 className="mt-3 text-xl font-bold tracking-normal sm:text-2xl md:text-3xl">
               Pasiruošę gamybai ar tik renkatės kiekį?
             </h2>
-            <p className="mt-4 text-base leading-7 text-slate-600">
+            <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
               Parašykite kiekį, produkto tipą ir, jei turite, Google review
               nuorodą. Atsakysime su gamybos galimybėmis ir kaina.
             </p>
+
             <div className="mt-6 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
               <ClipboardCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
               <p>
