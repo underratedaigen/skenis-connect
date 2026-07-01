@@ -181,6 +181,14 @@ function Footer() {
           <a href="https://skenis.lt" className="transition hover:text-white">
             skenis.lt
           </a>
+          <Link
+            to="/admin/login"
+            aria-label="Admin"
+            title="Admin"
+            className="mt-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-white hover:text-white"
+          >
+            <Lock className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </nav>
       </div>
     </footer>
