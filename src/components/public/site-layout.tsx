@@ -5,13 +5,13 @@ import type React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
+const navLinks: { href: string; label: string; route?: boolean }[] = [
   { href: "/#kaip-veikia", label: "Kaip veikia" },
   { href: "/#produktai", label: "Produktai" },
   { href: "/#privalumai", label: "Privalumai" },
   { href: "/kontaktai", label: "Kontaktai", route: true },
   { href: "/admin/login", label: "Admin", route: true }
-] as const;
+];
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
