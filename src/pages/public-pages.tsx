@@ -273,11 +273,11 @@ function ProcessSection() {
             Gamybai siunčiamas tik nuolatinis Skenis adresas. Galutinę Google
             review nuorodą priskiriate tada, kai klientas jau aiškus.
           </p>
-          <div className="mt-6 flex items-center gap-2 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
+          <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
             <Link2 aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
-            <span className="truncate">https://skenis.lt/r/A7K92LQD</span>
+            <span className="min-w-0 break-all">https://skenis.lt/r/A7K92LQD</span>
             <ArrowRight aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
-            <span className="truncate">Google review URL</span>
+            <span>Google review URL</span>
           </div>
         </div>
         <div className="grid gap-3">
