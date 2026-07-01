@@ -117,15 +117,20 @@ function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-24 md:py-32">
-      {/* Blurred gradient blobs */}
+    <section className="relative overflow-hidden bg-white py-20 md:py-28">
+      {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-3xl"
+        className="pointer-events-none absolute right-[-10%] top-1/2 h-[720px] w-[720px] -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(45,212,191,0.9), rgba(20,184,166,0.35) 45%, rgba(255,255,255,0) 75%)"
+        }}
       />
+      {/* Soft supporting blob on left */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-100/70 blur-3xl"
+        className="pointer-events-none absolute -left-40 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-100/60 blur-3xl"
       />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:gap-10">
@@ -136,7 +141,7 @@ function HeroSection() {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-slate-700"
+            className="inline-flex items-center rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"
           >
             Programuojami QR kodai fiziniams produktams
           </motion.p>
@@ -171,14 +176,14 @@ function HeroSection() {
           >
             <a
               href="#uzsakymas"
-              className="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:scale-[1.02] hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              className="group inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-xl hover:shadow-black/20 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               Užsakyti korteles
-              <ArrowRight aria-hidden className="ml-2 h-4 w-4" />
+              <ArrowRight aria-hidden className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
               href="#kaip-veikia"
-              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:border-ink hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-ink transition-all duration-200 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               Kaip tai veikia?
             </a>
@@ -189,15 +194,16 @@ function HeroSection() {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-8 flex items-center gap-4"
+            className="mt-12 flex items-center gap-4"
           >
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((i) => (
-                <Star key={i} className="h-4 w-4 fill-brand-500 text-brand-500" aria-hidden />
+                <Star key={i} className="h-6 w-6 fill-brand-500 text-brand-500" aria-hidden />
               ))}
             </div>
-            <p className="text-sm text-gray-500">
-              {/* placeholder */}Įmonės jau naudoja Skenis atsiliepimams rinkti
+            <p className="text-base text-gray-600">
+              {/* placeholder */}
+              <span className="font-bold text-ink">Įmonės</span> jau naudoja Skenis atsiliepimams rinkti
             </p>
           </motion.div>
         </div>
@@ -212,11 +218,7 @@ function HeroSection() {
           <motion.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 3, ease: "easeInOut", repeat: Infinity }}
-            className="relative overflow-hidden rounded-3xl shadow-2xl shadow-black/5"
-            style={{
-              background:
-                "radial-gradient(120% 100% at 0% 0%, rgba(28,155,141,0.18), rgba(28,155,141,0.04) 55%, rgba(255,255,255,0) 80%), linear-gradient(180deg, #f5f8fa, #ffffff)"
-            }}
+            className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl shadow-black/10"
           >
             <img
               src="/images/skenis-hero.png"

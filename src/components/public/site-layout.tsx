@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Lock, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Link } from "react-router-dom";
@@ -9,8 +9,7 @@ const navLinks: { href: string; label: string; route?: boolean }[] = [
   { href: "/#kaip-veikia", label: "Kaip veikia" },
   { href: "/#produktai", label: "Produktai" },
   { href: "/#privalumai", label: "Privalumai" },
-  { href: "/kontaktai", label: "Kontaktai", route: true },
-  { href: "/admin/login", label: "Admin", route: true }
+  { href: "/kontaktai", label: "Kontaktai", route: true }
 ];
 
 function Navbar() {
@@ -60,7 +59,7 @@ function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="/#uzsakymas"
-            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
+            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
           >
             Užsakyti
           </a>
@@ -182,6 +181,14 @@ function Footer() {
           <a href="https://skenis.lt" className="transition hover:text-white">
             skenis.lt
           </a>
+          <Link
+            to="/admin/login"
+            aria-label="Admin"
+            title="Admin"
+            className="mt-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-white hover:text-white"
+          >
+            <Lock className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </nav>
       </div>
     </footer>
