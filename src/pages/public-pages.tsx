@@ -304,10 +304,10 @@ function ProductsSection({ onOrder }: { onOrder: () => void }) {
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {products.map((product) => (
-            <a
+            <button
               key={product.name}
-              href="#uzsakymas"
-              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              onClick={onOrder}
+              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
                 <img
@@ -330,7 +330,7 @@ function ProductsSection({ onOrder }: { onOrder: () => void }) {
                   </span>
                 </div>
               </div>
-            </a>
+            </button>
           ))}
         </div>
       </div>
