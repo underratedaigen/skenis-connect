@@ -262,7 +262,7 @@ function HeroFact({ value, label }: { value: string; label: string }) {
 
 function ProcessSection() {
   return (
-    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-20">
+    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div>
           <p className="section-kicker">Procesas</p>
