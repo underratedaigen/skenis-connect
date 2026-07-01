@@ -289,7 +289,7 @@ function ProcessSection() {
   );
 }
 
-function ProductsSection() {
+function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
     <section id="produktai" className="bg-mist py-20">
       <div className="mx-auto max-w-7xl px-5">
