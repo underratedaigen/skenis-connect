@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -14,9 +14,10 @@ import {
   Star,
   Store,
   Stethoscope,
-  Wrench
+  Wrench,
+  X
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
@@ -80,23 +81,26 @@ const industries = [
 
 export function HomePage() {
   useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
+  const [orderOpen, setOrderOpen] = useState(false);
 
   return (
     <PublicLayout>
       <main>
-        <HeroSection />
+        <HeroSection onOrder={() => setOrderOpen(true)} />
         <ProofStrip />
         <ProcessSection />
-        <ProductsSection />
+        <ProductsSection onOrder={() => setOrderOpen(true)} />
         <BenefitsSection />
         <EthicsSection />
-        <OrderSection />
+        <AnimatePresence>
+          {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
+        </AnimatePresence>
       </main>
     </PublicLayout>
   );
 }
 
-function HeroSection() {
+function HeroSection({ onOrder }: { onOrder: () => void }) {
   const fadeUp = {
     hidden: { opacity: 0, y: 24 },
     show: (i: number) => ({
@@ -164,13 +168,13 @@ function HeroSection() {
             variants={fadeUp}
             className="mt-8 flex flex-col gap-3 sm:flex-row"
           >
-            <a
-              href="#uzsakymas"
+            <button
+              onClick={onOrder}
               className="group inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-xl hover:shadow-black/20 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               Užsakyti korteles
               <ArrowRight aria-hidden className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
+            </button>
             <a
               href="#kaip-veikia"
               className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-ink transition-all duration-200 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
@@ -285,7 +289,7 @@ function ProcessSection() {
   );
 }
 
-function ProductsSection() {
+function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
     <section id="produktai" className="bg-mist py-20">
       <div className="mx-auto max-w-7xl px-5">
@@ -300,10 +304,10 @@ function ProductsSection() {
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {products.map((product) => (
-            <a
+            <button
               key={product.name}
-              href="#uzsakymas"
-              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              onClick={onOrder}
+              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
                 <img
@@ -326,7 +330,7 @@ function ProductsSection() {
                   </span>
                 </div>
               </div>
-            </a>
+            </button>
           ))}
         </div>
       </div>
@@ -458,6 +462,64 @@ function OrderSection() {
         <LeadForm />
       </div>
     </section>
+  );
+}
+
+function OrderModal({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4 sm:pt-20"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 24, scale: 0.96 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-2xl sm:p-8"
+      >
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          aria-label="Uždaryti"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="section-kicker">Užklausa</p>
+            <h2 className="mt-3 text-2xl font-bold tracking-normal sm:text-3xl">
+              Pasiruošę gamybai ar tik renkatės kiekį?
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Parašykite kiekį, produkto tipą ir, jei turite, Google review
+              nuorodą. Atsakysime su gamybos galimybėmis ir kaina.
+            </p>
+            <div className="mt-6 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+              <ClipboardCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+              <p>
+                Galime paruošti QR partiją gamintojui prieš galutinį kiekvienos
+                kortelės priskyrimą klientui.
+              </p>
+            </div>
+            <div className="mt-3 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+              <Factory aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+              <p>
+                XLSX eksportas turi tokeną, trumpą nuorodą, produkto tipą ir
+                gamintojo pastabas kiekvienai fizinei kortelei.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
+            <LeadForm />
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
