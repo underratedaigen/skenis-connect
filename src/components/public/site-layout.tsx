@@ -59,7 +59,7 @@ function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="/#uzsakymas"
-            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
+            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
           >
             Užsakyti
           </a>
