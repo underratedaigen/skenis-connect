@@ -576,7 +576,7 @@ function OrderModal({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4 sm:pt-20"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-2 backdrop-blur-sm sm:p-4 sm:pt-20"
       onClick={onClose}
     >
       <motion.div
@@ -585,16 +585,17 @@ function OrderModal({ onClose }: { onClose: () => void }) {
         exit={{ opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-2xl sm:p-8"
+        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-8"
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="absolute right-3 top-3 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 sm:right-4 sm:top-4"
           aria-label="Uždaryti"
         >
           <X className="h-5 w-5" />
         </button>
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8">
+
           <div>
             <p className="section-kicker">Užklausa</p>
             <h2 className="mt-3 text-2xl font-bold tracking-normal sm:text-3xl">
