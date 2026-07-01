@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Lock, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Link } from "react-router-dom";
@@ -9,8 +9,7 @@ const navLinks: { href: string; label: string; route?: boolean }[] = [
   { href: "/#kaip-veikia", label: "Kaip veikia" },
   { href: "/#produktai", label: "Produktai" },
   { href: "/#privalumai", label: "Privalumai" },
-  { href: "/kontaktai", label: "Kontaktai", route: true },
-  { href: "/admin/login", label: "Admin", route: true }
+  { href: "/kontaktai", label: "Kontaktai", route: true }
 ];
 
 function Navbar() {
