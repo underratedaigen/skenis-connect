@@ -54,7 +54,7 @@ body {
   }
 
   .section-kicker {
-    @apply text-xs font-bold uppercase tracking-[0.18em] text-brand-700;
+    @apply inline-flex items-center rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-700;
   }
 
   .admin-input {
