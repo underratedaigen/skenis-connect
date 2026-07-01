@@ -299,18 +299,34 @@ function ProductsSection() {
           </p>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {products.map((product, index) => (
-            <article key={product.name} className="group overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-panel">
-              <ProductMockup compact={index === 0} dark={index !== 2} />
-              <div className="p-6">
-              <h3 className="text-xl font-bold tracking-normal">{product.name}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{product.text}</p>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {product.fit}
-              </p>
-              <p className="mt-6 text-2xl font-bold text-brand-700">{product.price}</p>
+          {products.map((product) => (
+            <a
+              key={product.name}
+              href="#uzsakymas"
+              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+            >
+              <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
+                <img
+                  src={productImage.url}
+                  alt={product.name}
+                  className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
-            </article>
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="text-xl font-bold tracking-normal">{product.name}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{product.text}</p>
+                <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  {product.fit}
+                </p>
+                <div className="mt-6 flex items-center justify-between">
+                  <p className="text-2xl font-bold text-brand-700">{product.price}</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-700 transition group-hover:gap-2">
+                    Užsakyti
+                    <ArrowRight aria-hidden className="h-4 w-4" />
+                  </span>
+                </div>
+              </div>
+            </a>
           ))}
         </div>
       </div>
