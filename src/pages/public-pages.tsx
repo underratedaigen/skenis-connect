@@ -14,9 +14,10 @@ import {
   Star,
   Store,
   Stethoscope,
-  Wrench
+  Wrench,
+  X
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
