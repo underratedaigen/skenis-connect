@@ -211,9 +211,9 @@ function HeroSection() {
             className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl shadow-black/10"
           >
             <img
-              src="/images/skenis-hero.png"
-              alt="Skenis akriliniai Google Review QR stendai"
-              className="h-full w-full object-cover"
+              src={productImage.url}
+              alt="Akrilinė NFC + QR Google Reviews kortelė"
+              className="h-full w-full object-contain"
             />
           </motion.div>
         </motion.div>
