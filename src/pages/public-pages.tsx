@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -10,6 +11,7 @@ import {
   QrCode,
   ShieldCheck,
   Sparkles,
+  Star,
   Store,
   Stethoscope,
   Wrench
