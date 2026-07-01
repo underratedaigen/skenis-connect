@@ -147,7 +147,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 text-5xl font-bold tracking-tight text-ink md:text-6xl"
+            className="mt-5 text-4xl font-bold tracking-tight text-ink sm:text-5xl md:text-6xl"
           >
             Daugiau Google atsiliepimų su išmaniais QR stendais
           </motion.h1>
@@ -157,7 +157,8 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 max-w-xl text-lg leading-8 text-gray-600"
+            className="mt-5 max-w-xl text-base leading-7 text-gray-600 sm:text-lg sm:leading-8"
+
           >
             Programuojamos akrilinės kortelės ir stendai, kurie nukreipia
             klientus tiesiai į jūsų Google atsiliepimų puslapį.
