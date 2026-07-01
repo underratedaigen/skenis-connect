@@ -621,7 +621,8 @@ function OrderModal({ onClose }: { onClose: () => void }) {
               </p>
             </div>
           </div>
-          <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
+          <div className="rounded-lg border border-line bg-white p-4 shadow-panel sm:p-6">
+
             <LeadForm />
           </div>
         </div>
