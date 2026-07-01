@@ -417,6 +417,107 @@ function BenefitsSection() {
   );
 }
 
+function TestimonialsSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  const stats = [
+    { value: "500+", label: "nuskaitymų per mėnesį" },
+    { value: "98%", label: "klientų rekomenduoja" },
+    { value: "3×", label: "daugiau atsiliepimų per mėnesį" }
+  ];
+
+  const reviews = [
+    {
+      quote: "Per savaitę po QR stendo pastatymo ant baro gavome daugiau atsiliepimų nei per visą praėjusį mėnesį. Klientams tereikia nuskenuoti ir viskas aišku.",
+      name: "Tomas R.",
+      role: "baro savininkas",
+      initials: "TR"
+    },
+    {
+      quote: "Patiko, kad nuoroda visada ta pati — jei kada reikės pakeisti Google profilį, kortelės keisti nereikės. Labai patogu ilgalaikiam naudojimui.",
+      name: "Ieva K.",
+      role: "grožio salono administratorė",
+      initials: "IK"
+    },
+    {
+      quote: "Užsakymas ir gamyba buvo greita, o admin sistemoje matau, kiek kartų kortelė buvo nuskenuota. Naudinga sekant, ar stendas iš viso veikia.",
+      name: "Mantas P.",
+      role: "kavinės vadovas",
+      initials: "MP"
+    }
+  ];
+
+  return (
+    <section id="atsiliepimai" className="bg-white py-20">
+      <div className="mx-auto max-w-7xl px-5" ref={ref}>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="section-kicker">Ką galvoja mūsų klientai?</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+            Įmonės, kurios jau renka daugiau atsiliepimų
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Realūs rezultatai iš verslų, kurie jau naudoja Skenis programuojamus QR stendus ir korteles.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-8 sm:grid-cols-3">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+              className="text-center"
+            >
+              <p className="text-3xl font-bold text-ink md:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-sm text-slate-600">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {reviews.map((review, i) => (
+            <motion.div
+              key={review.name}
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.25 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+              className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:shadow-md"
+            >
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <Star
+                    key={j}
+                    className="h-4 w-4 fill-brand-500 text-brand-500"
+                    aria-hidden
+                  />
+                ))}
+              </div>
+              <p className="mt-4 flex-1 text-sm leading-6 text-slate-700">
+                &ldquo;{review.quote}&rdquo;
+              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-white">
+                  {review.initials}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-ink">{review.name}</p>
+                  <p className="text-xs text-slate-500">{review.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <p className="mt-8 text-center text-xs text-slate-400">
+          Pavyzdiniai atsiliepimai — bus pakeisti realiais klientų atsiliepimais prieš paleidimą
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function EthicsSection() {
   return (
     <section className="bg-ink py-12 text-white">
