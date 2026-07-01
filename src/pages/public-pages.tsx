@@ -81,17 +81,20 @@ const industries = [
 
 export function HomePage() {
   useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
+  const [orderOpen, setOrderOpen] = useState(false);
 
   return (
     <PublicLayout>
       <main>
-        <HeroSection />
+        <HeroSection onOrder={() => setOrderOpen(true)} />
         <ProofStrip />
         <ProcessSection />
-        <ProductsSection />
+        <ProductsSection onOrder={() => setOrderOpen(true)} />
         <BenefitsSection />
         <EthicsSection />
-        <OrderSection />
+        <AnimatePresence>
+          {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
+        </AnimatePresence>
       </main>
     </PublicLayout>
   );
