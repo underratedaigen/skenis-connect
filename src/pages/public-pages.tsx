@@ -532,50 +532,6 @@ function EthicsSection() {
   );
 }
 
-function CtaSection({ onOrder }: { onOrder: () => void }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section className="relative overflow-hidden bg-gray-950 py-24 text-white">
-      {/* Soft teal radial glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-teal-500/10 blur-3xl"
-      />
-      {/* Dot pattern overlay */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"
-      />
-
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 24 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="relative mx-auto max-w-3xl px-5 text-center"
-      >
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-          Pasiruošę gauti daugiau atsiliepimų?
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-gray-300">
-          Užsisakykite programuojamas QR korteles ir pradėkite rinkti realius
-          klientų atsiliepimus jau šiandien.
-        </p>
-        <div className="mt-10">
-          <button
-            onClick={onOrder}
-            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-semibold text-black shadow-lg transition-all duration-200 hover:scale-105 hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-gray-950"
-          >
-            Užsakyti korteles
-          </button>
-        </div>
-      </motion.div>
-    </section>
-  );
-}
-
 function OrderSection() {
   return (
     <section id="uzsakymas" className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
