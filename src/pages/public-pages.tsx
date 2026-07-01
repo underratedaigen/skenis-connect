@@ -466,7 +466,7 @@ function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
