@@ -29,24 +29,13 @@ function useDocumentTitle(title: string) {
 
 const products = [
   {
-    name: "Akrilinė Google Review kortelė",
-    price: "nuo 4,90 €",
-    text: "Plona, patvari kortelė kasai, registratūrai ar laukimo zonai.",
-    fit: "Registratūroms, kasoms, salonams"
-  },
-  {
-    name: "Stalinis Google Review stendas",
-    price: "nuo 9,90 €",
-    text: "Matomas stendas restoranų stalams, klinikų laukiamiesiems ir aptarnavimo zonoms.",
-    fit: "Restoranams, klinikoms, viešbučiams"
-  },
-  {
-    name: "NFC + QR Google Review kortelė",
-    price: "netrukus",
-    text: "Ateities produktas klientams, kurie nori skenavimo ir NFC palietimo viename.",
-    fit: "Premium aptarnavimo vietoms"
+    name: "Akrilinė NFC + QR Google Reviews kortelė",
+    price: "19,99 €",
+    text: "Akrilinė kortelė su NFC ir QR kodu — klientas priliečia telefoną arba nuskaito kodą ir patenka į Google atsiliepimų puslapį.",
+    fit: "Restoranams, klinikoms, salonams, viešbučiams"
   }
 ];
+
 
 const steps = [
   "Įmonė užsisako korteles arba stendus.",
