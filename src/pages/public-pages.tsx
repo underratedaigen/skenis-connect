@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -17,7 +17,7 @@ import {
   Wrench,
   X
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
@@ -91,6 +91,7 @@ export function HomePage() {
         <ProcessSection />
         <ProductsSection onOrder={() => setOrderOpen(true)} />
         <BenefitsSection />
+        <TestimonialsSection />
         <EthicsSection />
         <AnimatePresence>
           {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
