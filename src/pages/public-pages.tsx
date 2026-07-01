@@ -396,7 +396,7 @@ function BenefitsSection() {
           ))}
         </div>
       </div>
-      <div className="mt-12 rounded-lg border border-line bg-mist p-5">
+      <div className="mt-12 rounded-lg border border-brand-100 bg-brand-50/40 p-5">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <p className="section-kicker">Kam tinka</p>
