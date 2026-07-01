@@ -112,11 +112,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 md:py-28">
+    <section className="relative overflow-hidden bg-white py-14 md:py-28">
       {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-1/2 h-[720px] w-[720px] -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-30 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-40"
         style={{
           background:
             "radial-gradient(circle at center, rgba(45,212,191,0.9), rgba(20,184,166,0.35) 45%, rgba(255,255,255,0) 75%)"
@@ -125,10 +125,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
       {/* Soft supporting blob on left */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-100/60 blur-3xl"
+        className="pointer-events-none absolute -left-40 bottom-0 h-[280px] w-[280px] rounded-full bg-brand-100/60 blur-3xl md:h-[380px] md:w-[380px]"
       />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:gap-10">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 md:grid-cols-2 md:gap-10">
+
         {/* Left */}
         <div>
           <motion.p
@@ -146,7 +147,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 text-5xl font-bold tracking-tight text-ink md:text-6xl"
+            className="mt-5 text-4xl font-bold tracking-tight text-ink sm:text-5xl md:text-6xl"
           >
             Daugiau Google atsiliepimų su išmaniais QR stendais
           </motion.h1>
@@ -156,7 +157,8 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 max-w-xl text-lg leading-8 text-gray-600"
+            className="mt-5 max-w-xl text-base leading-7 text-gray-600 sm:text-lg sm:leading-8"
+
           >
             Programuojamos akrilinės kortelės ir stendai, kurie nukreipia
             klientus tiesiai į jūsų Google atsiliepimų puslapį.
@@ -189,18 +191,19 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-12 flex items-center gap-4"
+            className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4"
           >
             <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((i) => (
-                <Star key={i} className="h-6 w-6 fill-brand-500 text-brand-500" aria-hidden />
+                <Star key={i} className="h-5 w-5 fill-brand-500 text-brand-500 sm:h-6 sm:w-6" aria-hidden />
               ))}
             </div>
-            <p className="text-base text-gray-600">
+            <p className="text-sm text-gray-600 sm:text-base">
               {/* placeholder */}
               <span className="font-bold text-ink">Įmonės</span> jau naudoja Skenis atsiliepimams rinkti
             </p>
           </motion.div>
+
         </div>
 
         {/* Right */}
@@ -259,7 +262,7 @@ function HeroFact({ value, label }: { value: string; label: string }) {
 
 function ProcessSection() {
   return (
-    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-20">
+    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div>
           <p className="section-kicker">Procesas</p>
@@ -294,7 +297,7 @@ function ProcessSection() {
 
 function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
-    <section id="produktai" className="bg-brand-50/30 py-20">
+    <section id="produktai" className="bg-brand-50/30 py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5">
         <div className="max-w-2xl">
           <p className="section-kicker">Produktai</p>
@@ -375,7 +378,7 @@ function ProductMockup({ compact, dark }: { compact: boolean; dark: boolean }) {
 
 function BenefitsSection() {
   return (
-    <section id="privalumai" className="mx-auto max-w-7xl px-5 py-20">
+    <section id="privalumai" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p className="section-kicker">Privalumai</p>
@@ -402,7 +405,7 @@ function BenefitsSection() {
             <p className="section-kicker">Kam tinka</p>
             <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
             {industries.map((industry) => {
               const Icon = industry.icon;
               return (
@@ -451,7 +454,7 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section id="atsiliepimai" className="bg-white py-20">
+    <section id="atsiliepimai" className="bg-white py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5" ref={ref}>
         <div className="mx-auto max-w-2xl text-center">
           <p className="section-kicker">Ką galvoja mūsų klientai?</p>
@@ -463,7 +466,7 @@ function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -472,8 +475,9 @@ function TestimonialsSection() {
               transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
               className="text-center"
             >
-              <p className="text-3xl font-bold text-ink md:text-4xl">{stat.value}</p>
-              <p className="mt-1 text-sm text-slate-600">{stat.label}</p>
+              <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
+
             </motion.div>
           ))}
         </div>
@@ -572,7 +576,7 @@ function OrderModal({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4 sm:pt-20"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-2 backdrop-blur-sm sm:p-4 sm:pt-20"
       onClick={onClose}
     >
       <motion.div
@@ -581,25 +585,27 @@ function OrderModal({ onClose }: { onClose: () => void }) {
         exit={{ opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-2xl sm:p-8"
+        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-8"
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="absolute right-3 top-3 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500 sm:right-4 sm:top-4"
           aria-label="Uždaryti"
         >
           <X className="h-5 w-5" />
         </button>
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8">
+
           <div>
             <p className="section-kicker">Užklausa</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-normal sm:text-3xl">
+            <h2 className="mt-3 text-xl font-bold tracking-normal sm:text-2xl md:text-3xl">
               Pasiruošę gamybai ar tik renkatės kiekį?
             </h2>
-            <p className="mt-4 text-base leading-7 text-slate-600">
+            <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
               Parašykite kiekį, produkto tipą ir, jei turite, Google review
               nuorodą. Atsakysime su gamybos galimybėmis ir kaina.
             </p>
+
             <div className="mt-6 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
               <ClipboardCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
               <p>
@@ -615,7 +621,8 @@ function OrderModal({ onClose }: { onClose: () => void }) {
               </p>
             </div>
           </div>
-          <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
+          <div className="rounded-lg border border-line bg-white p-4 shadow-panel sm:p-6">
+
             <LeadForm />
           </div>
         </div>
