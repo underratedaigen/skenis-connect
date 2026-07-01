@@ -93,6 +93,7 @@ export function HomePage() {
         <BenefitsSection />
         <TestimonialsSection />
         <EthicsSection />
+        <CtaSection onOrder={() => setOrderOpen(true)} />
         <AnimatePresence>
           {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
         </AnimatePresence>
