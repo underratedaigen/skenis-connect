@@ -270,15 +270,17 @@ function ProcessSection() {
             Gamybai siunčiamas tik nuolatinis Skenis adresas. Galutinę Google
             review nuorodą priskiriate tada, kai klientas jau aiškus.
           </p>
-          <div className="mt-6 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
-            <Link2 aria-hidden className="mr-2 inline h-4 w-4" />
-            https://skenis.lt/r/A7K92LQD → Google review URL
+          <div className="mt-6 flex items-center gap-2 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
+            <Link2 aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
+            <span className="truncate">https://skenis.lt/r/A7K92LQD</span>
+            <ArrowRight aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
+            <span className="truncate">Google review URL</span>
           </div>
         </div>
         <div className="grid gap-3">
           {steps.map((step, index) => (
-            <div key={step} className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-panel">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink text-sm font-bold text-white">
+            <div key={step} className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-100 hover:shadow-panel">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white shadow-sm shadow-brand-600/20">
                 {index + 1}
               </span>
               <p className="pt-1 text-sm leading-6 text-slate-700">{step}</p>
