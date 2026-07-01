@@ -294,7 +294,7 @@ function ProcessSection() {
 
 function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
-    <section id="produktai" className="bg-mist py-20">
+    <section id="produktai" className="bg-brand-50/30 py-20">
       <div className="mx-auto max-w-7xl px-5">
         <div className="max-w-2xl">
           <p className="section-kicker">Produktai</p>
