@@ -465,6 +465,64 @@ function OrderSection() {
   );
 }
 
+function OrderModal({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4 sm:pt-20"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 24, scale: 0.96 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative mx-auto w-full max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-2xl sm:p-8"
+      >
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          aria-label="Uždaryti"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="section-kicker">Užklausa</p>
+            <h2 className="mt-3 text-2xl font-bold tracking-normal sm:text-3xl">
+              Pasiruošę gamybai ar tik renkatės kiekį?
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Parašykite kiekį, produkto tipą ir, jei turite, Google review
+              nuorodą. Atsakysime su gamybos galimybėmis ir kaina.
+            </p>
+            <div className="mt-6 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+              <ClipboardCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+              <p>
+                Galime paruošti QR partiją gamintojui prieš galutinį kiekvienos
+                kortelės priskyrimą klientui.
+              </p>
+            </div>
+            <div className="mt-3 flex gap-3 rounded-lg border border-line bg-white p-4 text-sm leading-6 text-slate-700 shadow-sm">
+              <Factory aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+              <p>
+                XLSX eksportas turi tokeną, trumpą nuorodą, produkto tipą ir
+                gamintojo pastabas kiekvienai fizinei kortelei.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
+            <LeadForm />
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export function ContactPage() {
   useDocumentTitle("Kontaktai | Skenis.lt");
   return (
