@@ -405,7 +405,7 @@ function BenefitsSection() {
             <p className="section-kicker">Kam tinka</p>
             <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
             {industries.map((industry) => {
               const Icon = industry.icon;
               return (
