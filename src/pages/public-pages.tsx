@@ -105,50 +105,129 @@ export function HomePage() {
 }
 
 function HeroSection() {
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    show: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }
+    })
+  };
+
   return (
-    <section className="relative min-h-[calc(78svh-73px)] overflow-hidden bg-ink text-white">
-      <img
-        src="/images/skenis-hero.png"
-        alt="Skenis akriliniai Google Review QR stendai"
-        className="absolute inset-0 h-full w-full object-cover"
+    <section className="relative overflow-hidden bg-white py-24 md:py-32">
+      {/* Blurred gradient blobs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-3xl"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,24,32,0.78),rgba(16,24,32,0.48)_45%,rgba(16,24,32,0.18))]" />
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink/65 to-transparent" />
-      <div className="relative mx-auto flex min-h-[calc(78svh-73px)] max-w-7xl items-center px-5 py-9 sm:py-10">
-        <div className="max-w-3xl">
-          <p className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-sm font-semibold text-white backdrop-blur">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-100/70 blur-3xl"
+      />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:gap-10">
+        {/* Left */}
+        <div>
+          <motion.p
+            custom={0}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-slate-700"
+          >
             Programuojami QR kodai fiziniams produktams
-          </p>
-          <h1 className="mt-5 text-4xl font-bold tracking-normal sm:text-5xl lg:text-6xl">
+          </motion.p>
+
+          <motion.h1
+            custom={1}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-5 text-5xl font-bold tracking-tight text-ink md:text-6xl"
+          >
             Daugiau Google atsiliepimų su išmaniais QR stendais
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-100">
+          </motion.h1>
+
+          <motion.p
+            custom={2}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-5 max-w-xl text-lg leading-8 text-gray-600"
+          >
             Programuojamos akrilinės kortelės ir stendai, kurie nukreipia
             klientus tiesiai į jūsų Google atsiliepimų puslapį.
-          </p>
-          <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
-            <Link2 aria-hidden className="h-4 w-4 shrink-0 text-brand-100" />
-            <span className="truncate">https://skenis.lt/r/8fK29xQp</span>
-          </div>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a href="#uzsakymas" className="button-light">
+          </motion.p>
+
+          <motion.div
+            custom={3}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
+          >
+            <a
+              href="#uzsakymas"
+              className="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:scale-[1.02] hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+            >
               Užsakyti korteles
               <ArrowRight aria-hidden className="ml-2 h-4 w-4" />
             </a>
-            <a href="#kaip-veikia" className="button-ghost-light">
+            <a
+              href="#kaip-veikia"
+              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:border-ink hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+            >
               Kaip tai veikia?
             </a>
-          </div>
-          <div className="mt-7 hidden max-w-2xl gap-3 text-sm text-slate-100 sm:grid sm:grid-cols-3">
-            <HeroFact value="1 QR" label="viena nuolatinė Skenis nuoroda" />
-            <HeroFact value="100%" label="keičiama po gamybos" />
-            <HeroFact value="24/7" label="skenavimų statistika" />
-          </div>
+          </motion.div>
+
+          <motion.div
+            custom={4}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-8 flex items-center gap-4"
+          >
+            <div className="flex items-center gap-0.5">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Star key={i} className="h-4 w-4 fill-brand-500 text-brand-500" aria-hidden />
+              ))}
+            </div>
+            <p className="text-sm text-gray-500">
+              {/* placeholder */}Įmonės jau naudoja Skenis atsiliepimams rinkti
+            </p>
+          </motion.div>
         </div>
+
+        {/* Right */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
+        >
+          <motion.div
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 3, ease: "easeInOut", repeat: Infinity }}
+            className="relative overflow-hidden rounded-3xl shadow-2xl shadow-black/5"
+            style={{
+              background:
+                "radial-gradient(120% 100% at 0% 0%, rgba(28,155,141,0.18), rgba(28,155,141,0.04) 55%, rgba(255,255,255,0) 80%), linear-gradient(180deg, #f5f8fa, #ffffff)"
+            }}
+          >
+            <img
+              src="/images/skenis-hero.png"
+              alt="Skenis akriliniai Google Review QR stendai"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
 }
+
 
 function ProofStrip() {
   return (
