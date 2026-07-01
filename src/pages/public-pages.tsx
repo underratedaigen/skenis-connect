@@ -112,11 +112,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 md:py-28">
+    <section className="relative overflow-hidden bg-white py-14 md:py-28">
       {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-1/2 h-[720px] w-[720px] -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-30 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-40"
         style={{
           background:
             "radial-gradient(circle at center, rgba(45,212,191,0.9), rgba(20,184,166,0.35) 45%, rgba(255,255,255,0) 75%)"
@@ -125,10 +125,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
       {/* Soft supporting blob on left */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-100/60 blur-3xl"
+        className="pointer-events-none absolute -left-40 bottom-0 h-[280px] w-[280px] rounded-full bg-brand-100/60 blur-3xl md:h-[380px] md:w-[380px]"
       />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:gap-10">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 md:grid-cols-2 md:gap-10">
+
         {/* Left */}
         <div>
           <motion.p
