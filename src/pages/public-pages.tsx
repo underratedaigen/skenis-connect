@@ -191,18 +191,19 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-12 flex items-center gap-4"
+            className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4"
           >
             <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((i) => (
-                <Star key={i} className="h-6 w-6 fill-brand-500 text-brand-500" aria-hidden />
+                <Star key={i} className="h-5 w-5 fill-brand-500 text-brand-500 sm:h-6 sm:w-6" aria-hidden />
               ))}
             </div>
-            <p className="text-base text-gray-600">
+            <p className="text-sm text-gray-600 sm:text-base">
               {/* placeholder */}
               <span className="font-bold text-ink">Įmonės</span> jau naudoja Skenis atsiliepimams rinkti
             </p>
           </motion.div>
+
         </div>
 
         {/* Right */}
