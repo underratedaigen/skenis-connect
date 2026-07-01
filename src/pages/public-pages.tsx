@@ -475,8 +475,9 @@ function TestimonialsSection() {
               transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
               className="text-center"
             >
-              <p className="text-3xl font-bold text-ink md:text-4xl">{stat.value}</p>
-              <p className="mt-1 text-sm text-slate-600">{stat.label}</p>
+              <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
+
             </motion.div>
           ))}
         </div>
