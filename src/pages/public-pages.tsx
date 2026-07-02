@@ -238,12 +238,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
           <motion.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 3, ease: "easeInOut", repeat: Infinity }}
-            className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl shadow-black/10"
           >
-            <img
-              src={productImage.url}
-              alt="Akrilinė NFC + QR Google Reviews kortelė"
-              className="h-full w-full object-contain"
+            <ProductGallery
+              images={[
+                { src: productImage.url, alt: "Akrilinė NFC + QR Google Reviews kortelė" }
+              ]}
             />
           </motion.div>
         </motion.div>
