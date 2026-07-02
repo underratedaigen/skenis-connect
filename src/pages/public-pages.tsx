@@ -138,10 +138,10 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
       {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-30 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-40"
+        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-45 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-55"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(45,212,191,0.9), rgba(20,184,166,0.35) 45%, rgba(255,255,255,0) 75%)"
+            "radial-gradient(circle at center, rgba(45,212,191,0.95), rgba(20,184,166,0.45) 45%, rgba(255,255,255,0) 75%)"
         }}
       />
       {/* Soft supporting blob on left */}
@@ -254,11 +254,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
 
 function ProofStrip() {
   return (
-    <section className="border-b border-line bg-white">
+    <section className="border-b border-line bg-gradient-to-b from-brand-50/40 to-white">
       <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-3">
         {proofPoints.map((point) => (
           <div key={point.title} className="flex gap-3">
-            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/50 bg-white/60 text-brand-700 shadow-sm backdrop-blur">
               <BadgeCheck aria-hidden className="h-5 w-5" />
             </span>
             <div>
@@ -283,8 +283,21 @@ function HeroFact({ value, label }: { value: string; label: string }) {
 
 function ProcessSection() {
   return (
-    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <section id="kaip-veikia" className="relative overflow-hidden bg-white py-14 md:py-20">
+      {/* Atmospheric teal glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 top-10 h-[480px] w-[480px] rounded-full opacity-40 blur-3xl md:h-[620px] md:w-[620px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(28,155,141,0.35), rgba(28,155,141,0.10) 50%, rgba(255,255,255,0) 75%)"
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 bottom-0 h-[280px] w-[280px] rounded-full bg-brand-100/50 blur-3xl md:h-[360px] md:w-[360px]"
+      />
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div>
           <p className="section-kicker">Procesas</p>
           <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
@@ -303,7 +316,10 @@ function ProcessSection() {
         </div>
         <div className="grid gap-3">
           {steps.map((step, index) => (
-            <div key={step} className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-100 hover:shadow-panel">
+            <div
+              key={step}
+              className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_20px_60px_-15px_rgba(28,155,141,0.35)]"
+            >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white shadow-sm shadow-brand-600/20">
                 {index + 1}
               </span>
@@ -318,8 +334,15 @@ function ProcessSection() {
 
 function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
-    <section id="produktai" className="bg-brand-50/30 py-14 md:py-20">
-      <div className="mx-auto max-w-7xl px-5">
+    <section
+      id="produktai"
+      className="relative overflow-hidden bg-brand-50/60 py-14 md:py-20"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 15% 20%, rgba(28,155,141,0.18), transparent 45%), radial-gradient(circle at 85% 30%, rgba(47,111,219,0.14), transparent 50%), radial-gradient(circle at 50% 90%, rgba(28,155,141,0.10), transparent 55%)"
+      }}
+    >
+      <div className="relative mx-auto max-w-7xl px-5">
         <div className="max-w-2xl">
           <p className="section-kicker">Produktai</p>
           <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
@@ -334,7 +357,7 @@ function ProductsSection({ onOrder }: { onOrder: () => void }) {
             <button
               key={product.name}
               onClick={onOrder}
-              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_25px_70px_-15px_rgba(28,155,141,0.4)] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
                 <img
@@ -399,43 +422,64 @@ function ProductMockup({ compact, dark }: { compact: boolean; dark: boolean }) {
 
 function BenefitsSection() {
   return (
-    <section id="privalumai" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p className="section-kicker">Privalumai</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
-            Sukurta verslams, kuriems reikia aiškios kontrolės
-          </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            Kortelės ir stendai atrodo kaip fizinis produktas, bet veikia kaip
-            valdoma skaitmeninė sistema.
-          </p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {benefits.map((benefit) => (
-            <div key={benefit} className="flex gap-3 rounded-lg border border-line bg-white p-4 shadow-sm">
-              <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
-              <p className="text-sm leading-6 text-slate-700">{benefit}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="mt-12 rounded-lg border border-brand-100 bg-brand-50/40 p-5">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+    <section
+      id="privalumai"
+      className="relative overflow-hidden bg-gradient-to-br from-brand-50/40 via-white to-brand-50/30 py-14 md:py-20"
+    >
+      {/* Atmospheric depth blobs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-20 h-[420px] w-[420px] rounded-full opacity-40 blur-3xl md:h-[520px] md:w-[520px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(28,155,141,0.30), rgba(28,155,141,0.08) 55%, rgba(255,255,255,0) 78%)"
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-10 h-[320px] w-[320px] rounded-full bg-brand-100/60 blur-3xl md:h-[420px] md:w-[420px]"
+      />
+      <div className="relative mx-auto max-w-7xl px-5">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
-            <p className="section-kicker">Kam tinka</p>
-            <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
+            <p className="section-kicker">Privalumai</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+              Sukurta verslams, kuriems reikia aiškios kontrolės
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Kortelės ir stendai atrodo kaip fizinis produktas, bet veikia kaip
+              valdoma skaitmeninė sistema.
+            </p>
           </div>
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {industries.map((industry) => {
-              const Icon = industry.icon;
-              return (
-                <div key={industry.label} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
-                  <Icon aria-hidden className="h-4 w-4 text-brand-700" />
-                  {industry.label}
-                </div>
-              );
-            })}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {benefits.map((benefit) => (
+              <div
+                key={benefit}
+                className="flex gap-3 rounded-lg border border-line bg-white/80 p-4 shadow-sm backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_20px_60px_-15px_rgba(28,155,141,0.35)]"
+              >
+                <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+                <p className="text-sm leading-6 text-slate-700">{benefit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-12 rounded-lg border border-brand-100 bg-brand-50/40 p-5">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+              <p className="section-kicker">Kam tinka</p>
+              <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
+              {industries.map((industry) => {
+                const Icon = industry.icon;
+                return (
+                  <div key={industry.label} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                    <Icon aria-hidden className="h-4 w-4 text-brand-700" />
+                    {industry.label}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -475,7 +519,7 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section id="atsiliepimai" className="bg-white py-14 md:py-20">
+    <section id="atsiliepimai" className="relative overflow-hidden bg-white py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5" ref={ref}>
         <div className="mx-auto max-w-2xl text-center">
           <p className="section-kicker">Ką galvoja mūsų klientai?</p>
@@ -487,27 +531,38 @@ function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-center"
-            >
-              <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">
-                {isInView ? (
-                  <CountUp end={stat.end} duration={2} />
-                ) : (
-                  0
-                )}
-                {stat.suffix}
-              </p>
-              <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
+        <div className="relative mt-10">
+          {/* Teal glow behind stats row */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[80%] max-w-3xl -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(28,155,141,0.28), rgba(28,155,141,0.08) 55%, rgba(255,255,255,0) 78%)"
+            }}
+          />
+          <div className="relative grid grid-cols-3 gap-4 sm:gap-8">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 16 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+                className="text-center"
+              >
+                <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">
+                  {isInView ? (
+                    <CountUp end={stat.end} duration={2} />
+                  ) : (
+                    0
+                  )}
+                  {stat.suffix}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
 
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
@@ -517,7 +572,7 @@ function TestimonialsSection() {
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-              className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:shadow-md"
+              className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_25px_70px_-15px_rgba(28,155,141,0.35)]"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, j) => (
