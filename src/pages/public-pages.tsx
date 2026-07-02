@@ -365,12 +365,10 @@ function ProcessSection() {
 }
 
 function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number) => void }) {
-  const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("CARD");
+  const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("NFC_CARD");
   const [quantity, setQuantity] = useState(25);
 
   const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof CreditCard }[] = [
-    { value: "CARD", icon: CreditCard },
-    { value: "STAND", icon: LayoutGrid },
     { value: "NFC_CARD", icon: Nfc }
   ];
 
