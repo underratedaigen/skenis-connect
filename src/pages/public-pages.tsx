@@ -818,7 +818,9 @@ function EthicsSection({ onOrder }: { onOrder: () => void }) {
 
 function OrderSection() {
   return (
-    <section id="uzsakymas" className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="uzsakymas" className="relative mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink to-transparent" />
       <div>
         <p className="section-kicker">Užklausa</p>
         <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
