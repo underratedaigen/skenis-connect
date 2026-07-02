@@ -11,7 +11,7 @@ function blankToNull(value: string | undefined) {
 
 export function LeadForm({
   initialProductType = "CARD",
-  initialQuantity = 25
+  initialQuantity = 1
 }: {
   initialProductType?: string;
   initialQuantity?: number;
