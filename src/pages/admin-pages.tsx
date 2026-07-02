@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Trash2
 } from "lucide-react";
+import logoAsset from "@/assets/skenis-logo.png.asset.json";
 import { useEffect, useMemo, useState } from "react";
 import type React from "react";
 import {
