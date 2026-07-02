@@ -794,7 +794,7 @@ function EthicsSection({ onOrder }: { onOrder: () => void }) {
           </p>
         </motion.div>
       </div>
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
+      
     </section>
   );
 }
