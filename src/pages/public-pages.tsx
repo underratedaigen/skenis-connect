@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import { Drawer } from "vaul";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
+import { shortProductTypeLabels } from "@/lib/labels";
 import { PublicLayout } from "@/components/public/site-layout";
 
 function useDocumentTitle(title: string) {
