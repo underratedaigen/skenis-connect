@@ -9,7 +9,13 @@ function blankToNull(value: string | undefined) {
   return value?.trim() ? value.trim() : null;
 }
 
-export function LeadForm() {
+export function LeadForm({
+  initialProductType = "CARD",
+  initialQuantity = 25
+}: {
+  initialProductType?: string;
+  initialQuantity?: number;
+} = {}) {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
