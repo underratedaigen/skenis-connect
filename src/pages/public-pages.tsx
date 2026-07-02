@@ -750,6 +750,7 @@ function EthicsSection({ onOrder }: { onOrder: () => void }) {
 
   return (
     <section className="relative overflow-hidden bg-ink py-20">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white to-transparent" />
       {/* Large soft teal radial glow */}
       <div
         aria-hidden
