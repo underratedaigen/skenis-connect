@@ -167,8 +167,9 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
 
 function Footer() {
   return (
-    <footer className="border-t border-slate-800 bg-ink text-white">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1fr_auto]">
+    <footer className="relative bg-ink text-white">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white to-transparent" />
+      <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1fr_auto]">
         <div>
           <p className="text-xl font-bold">Skenis.lt</p>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
