@@ -448,9 +448,9 @@ function TestimonialsSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   const stats = [
-    { value: "500+", label: "nuskaitymų per mėnesį" },
-    { value: "98%", label: "klientų rekomenduoja" },
-    { value: "3×", label: "daugiau atsiliepimų per mėnesį" }
+    { end: 500, suffix: "+", label: "nuskaitymų per mėnesį" },
+    { end: 98, suffix: "%", label: "klientų rekomenduoja" },
+    { end: 3, suffix: "×", label: "daugiau atsiliepimų per mėnesį" }
   ];
 
   const reviews = [
