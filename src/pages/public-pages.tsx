@@ -409,7 +409,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
             {/* Type selector */}
             <TabsPrimitive.List
               aria-label="Produkto tipas"
-              className="mt-8 grid grid-cols-3 gap-3"
+              className="mt-8 grid grid-cols-1 gap-3 sm:max-w-xs"
             >
               {typeOptions.map(({ value, icon: Icon }) => {
                 const active = selectedType === value;
