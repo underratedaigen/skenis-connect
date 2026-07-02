@@ -96,7 +96,7 @@ function Navbar() {
               className="fixed inset-y-0 right-0 z-50 flex w-[85%] max-w-sm flex-col bg-white p-6 shadow-2xl md:hidden"
             >
               <div className="flex items-center justify-between">
-                <img src="/skenis-logo.png" alt="Skenis" className="h-10 w-auto" />
+               <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
                 <button
                   type="button"
                   aria-label="Uždaryti meniu"
@@ -171,7 +171,7 @@ function Footer() {
       
       <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1fr_auto]">
         <div>
-          <p className="text-xl font-bold">Skenis.lt</p>
+          <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto brightness-0 invert" />
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
             Programuojamos akrilinės QR kortelės ir stendai realiems klientų
             atsiliepimams rinkti.
