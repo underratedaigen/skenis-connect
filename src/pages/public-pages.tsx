@@ -254,11 +254,11 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
 
 function ProofStrip() {
   return (
-    <section className="border-b border-line bg-white">
+    <section className="border-b border-line bg-gradient-to-b from-brand-50/40 to-white">
       <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-3">
         {proofPoints.map((point) => (
           <div key={point.title} className="flex gap-3">
-            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/50 bg-white/60 text-brand-700 shadow-sm backdrop-blur">
               <BadgeCheck aria-hidden className="h-5 w-5" />
             </span>
             <div>
