@@ -572,7 +572,7 @@ function TestimonialsSection() {
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-              className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:shadow-md"
+              className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_25px_70px_-15px_rgba(28,155,141,0.35)]"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, j) => (
