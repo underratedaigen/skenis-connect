@@ -936,7 +936,7 @@ function OrderDrawer({
               Parašykite kiekį, produkto tipą ir, jei turite, Google review nuorodą.
             </Drawer.Description>
             <div className="mt-5">
-              <LeadForm />
+              <LeadForm initialProductType={initialProductType} initialQuantity={initialQuantity} />
             </div>
           </div>
         </Drawer.Content>
