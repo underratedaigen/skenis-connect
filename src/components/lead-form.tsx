@@ -9,7 +9,13 @@ function blankToNull(value: string | undefined) {
   return value?.trim() ? value.trim() : null;
 }
 
-export function LeadForm() {
+export function LeadForm({
+  initialProductType = "CARD",
+  initialQuantity = 25
+}: {
+  initialProductType?: string;
+  initialQuantity?: number;
+} = {}) {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -88,13 +94,13 @@ export function LeadForm() {
             name="quantity"
             type="number"
             min={1}
-            defaultValue={25}
+            defaultValue={initialQuantity}
             required
           />
         </label>
         <label className="grid gap-2">
           <span className="label">Produkto tipas</span>
-          <select className="input" name="productType" defaultValue="CARD">
+          <select className="input" name="productType" defaultValue={initialProductType}>
             <option value="CARD">{productTypeLabels.CARD}</option>
             <option value="STAND">{productTypeLabels.STAND}</option>
             <option value="NFC_CARD">{productTypeLabels.NFC_CARD}</option>
