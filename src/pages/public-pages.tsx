@@ -90,23 +90,48 @@ const industries = [
 export function HomePage() {
   useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
   const [orderOpen, setOrderOpen] = useState(false);
+  const [orderInitial, setOrderInitial] = useState<{ type: string; quantity: number }>({
+    type: "CARD",
+    quantity: 25
+  });
   const isMobile = useIsMobile();
+
+  const openOrder = (type?: string, quantity?: number) => {
+    if (type || quantity) {
+      setOrderInitial({
+        type: type ?? "CARD",
+        quantity: quantity ?? 25
+      });
+    }
+    setOrderOpen(true);
+  };
 
   return (
     <PublicLayout>
       <main>
-        <HeroSection onOrder={() => setOrderOpen(true)} />
+        <HeroSection onOrder={() => openOrder()} />
         <ProofStrip />
         <ProcessSection />
-        <ProductsSection onOrder={() => setOrderOpen(true)} />
+        <ProductsSection onOrder={(type, quantity) => openOrder(type, quantity)} />
         <BenefitsSection />
         <TestimonialsSection />
-        <EthicsSection onOrder={() => setOrderOpen(true)} />
+        <EthicsSection onOrder={() => openOrder()} />
         {isMobile ? (
-          <OrderDrawer open={orderOpen} onOpenChange={setOrderOpen} />
+          <OrderDrawer
+            open={orderOpen}
+            onOpenChange={setOrderOpen}
+            initialProductType={orderInitial.type}
+            initialQuantity={orderInitial.quantity}
+          />
         ) : (
           <AnimatePresence>
-            {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
+            {orderOpen && (
+              <OrderModal
+                onClose={() => setOrderOpen(false)}
+                initialProductType={orderInitial.type}
+                initialQuantity={orderInitial.quantity}
+              />
+            )}
           </AnimatePresence>
         )}
       </main>
