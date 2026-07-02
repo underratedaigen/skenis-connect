@@ -334,8 +334,15 @@ function ProcessSection() {
 
 function ProductsSection({ onOrder }: { onOrder: () => void }) {
   return (
-    <section id="produktai" className="bg-brand-50/30 py-14 md:py-20">
-      <div className="mx-auto max-w-7xl px-5">
+    <section
+      id="produktai"
+      className="relative overflow-hidden bg-brand-50/60 py-14 md:py-20"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 15% 20%, rgba(28,155,141,0.18), transparent 45%), radial-gradient(circle at 85% 30%, rgba(47,111,219,0.14), transparent 50%), radial-gradient(circle at 50% 90%, rgba(28,155,141,0.10), transparent 55%)"
+      }}
+    >
+      <div className="relative mx-auto max-w-7xl px-5">
         <div className="max-w-2xl">
           <p className="section-kicker">Produktai</p>
           <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
@@ -350,7 +357,7 @@ function ProductsSection({ onOrder }: { onOrder: () => void }) {
             <button
               key={product.name}
               onClick={onOrder}
-              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-brand-500 hover:shadow-panel focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_25px_70px_-15px_rgba(28,155,141,0.4)] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
             >
               <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
                 <img
