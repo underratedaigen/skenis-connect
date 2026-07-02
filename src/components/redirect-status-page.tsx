@@ -20,8 +20,8 @@ export function RedirectStatusPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-mist px-5 py-12">
       <section className="w-full max-w-lg rounded-lg border border-line bg-white p-7 text-center shadow-panel">
-        <Link to="/" className="text-sm font-bold text-brand-700">
-          Skenis.lt
+        <Link to="/" className="inline-block">
+          <img src={logoAsset.url} alt="Skenis" className="h-7 w-auto" />
         </Link>
         <div className={`mx-auto mt-8 rounded-lg border px-5 py-4 text-sm ${toneClass}`}>
           {message}
