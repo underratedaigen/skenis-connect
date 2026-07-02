@@ -521,16 +521,75 @@ function TestimonialsSection() {
   );
 }
 
-function EthicsSection() {
+function EthicsSection({ onOrder }: { onOrder: () => void }) {
+  const stats = [
+    { value: "500+", label: "nuskaitymų per mėnesį" },
+    { value: "98%", label: "klientų rekomenduoja" },
+    { value: "3×", label: "daugiau atsiliepimų per mėnesį" }
+  ];
+
   return (
-    <section className="bg-ink py-12 text-white">
-      <div className="mx-auto flex max-w-7xl gap-4 px-5">
-        <ShieldCheck aria-hidden className="mt-1 h-6 w-6 shrink-0 text-brand-100" />
-        <p className="max-w-4xl text-sm leading-7 text-slate-200">
-          Skenis padeda patogiai paprašyti realių klientų palikti atsiliepimą.
-          Nesiūlykite atlygio už atsiliepimus ir neskatinkite tik teigiamų
-          įvertinimų.
-        </p>
+    <section className="relative overflow-hidden bg-ink py-20">
+      {/* Large soft teal radial glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full blur-3xl md:-right-20 md:-top-20 md:h-[560px] md:w-[560px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(28,155,141,0.30), rgba(19,127,116,0.12) 50%, transparent 75%)"
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-5">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          {/* Left — headline + subtext + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+              Pasiruošę gauti daugiau atsiliepimų?
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-7 text-slate-300 sm:text-lg">
+              Programuojamos QR kortelės ir stendai, nukreipiantys klientus tiesiai į jūsų Google atsiliepimų puslapį.
+            </p>
+            <button onClick={onOrder} className="button-light mt-8">
+              Užsakyti korteles
+              <ArrowRight aria-hidden className="ml-2 h-4 w-4" />
+            </button>
+          </motion.div>
+
+          {/* Right — stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 gap-6 text-white sm:grid-cols-3"
+          >
+            {stats.map((stat) => (
+              <HeroFact key={stat.label} value={stat.value} label={stat.label} />
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Ethics disclaimer */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 flex items-start gap-3 border-t border-white/10 pt-8"
+        >
+          <ShieldCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-100" />
+          <p className="max-w-3xl text-xs leading-5 text-slate-400">
+            Skenis padeda patogiai paprašyti realių klientų palikti atsiliepimą.
+            Nesiūlykite atlygio už atsiliepimus ir neskatinkite tik teigiamų
+            įvertinimų.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
