@@ -425,7 +425,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
                     }
                   >
                     <Icon aria-hidden className="h-6 w-6" />
-                    <span>{shortProductTypeLabels[value]}</span>
+                    <span>NFC + QR Kortelė</span>
                   </TabsPrimitive.Trigger>
                 );
               })}
