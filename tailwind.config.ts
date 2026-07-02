@@ -25,7 +25,14 @@ export default {
           "0 1px 2px rgba(16, 24, 32, 0.06), 0 12px 32px rgba(16, 24, 32, 0.06)"
       },
       fontFamily: {
-        sans: ["Arial", "Helvetica", "ui-sans-serif", "system-ui", "sans-serif"]
+        sans: [
+          "Plus Jakarta Sans",
+          "Arial",
+          "Helvetica",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif"
+        ]
       }
     }
   },
