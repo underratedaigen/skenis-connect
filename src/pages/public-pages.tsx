@@ -138,10 +138,10 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
       {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-30 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-40"
+        className="pointer-events-none absolute right-[-30%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-45 blur-3xl md:right-[-10%] md:h-[720px] md:w-[720px] md:opacity-55"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(45,212,191,0.9), rgba(20,184,166,0.35) 45%, rgba(255,255,255,0) 75%)"
+            "radial-gradient(circle at center, rgba(45,212,191,0.95), rgba(20,184,166,0.45) 45%, rgba(255,255,255,0) 75%)"
         }}
       />
       {/* Soft supporting blob on left */}
