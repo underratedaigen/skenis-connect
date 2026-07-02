@@ -1,3 +1,4 @@
+import * as TabsPrimitive from "@radix-ui/react-tabs";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
