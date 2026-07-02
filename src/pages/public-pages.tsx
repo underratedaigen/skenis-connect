@@ -1,3 +1,4 @@
+import useEmblaCarousel from "embla-carousel-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   ArrowRight,
@@ -17,8 +18,10 @@ import {
   Wrench,
   X
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import CountUp from "react-countup";
 import { Link } from "react-router-dom";
+import { Drawer } from "vaul";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
 import { PublicLayout } from "@/components/public/site-layout";
