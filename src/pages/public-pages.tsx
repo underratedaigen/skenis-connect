@@ -718,6 +718,108 @@ function OrderModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+function OrderDrawer({
+  open,
+  onOpenChange
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  return (
+    <Drawer.Root open={open} onOpenChange={onOpenChange}>
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
+        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[92vh] flex-col rounded-t-2xl border border-gray-200 bg-white outline-none">
+          <div className="mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-slate-300" />
+          <div className="flex items-start justify-between px-5 pt-4">
+            <div>
+              <Drawer.Title className="section-kicker">Užklausa</Drawer.Title>
+              <p className="mt-2 text-lg font-bold tracking-normal">
+                Pasiruošę gamybai ar tik renkatės kiekį?
+              </p>
+            </div>
+            <button
+              onClick={() => onOpenChange(false)}
+              className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              aria-label="Uždaryti"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="mt-4 flex-1 overflow-y-auto px-5 pb-8">
+            <Drawer.Description className="text-sm leading-6 text-slate-600">
+              Parašykite kiekį, produkto tipą ir, jei turite, Google review nuorodą.
+            </Drawer.Description>
+            <div className="mt-5">
+              <LeadForm />
+            </div>
+          </div>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
+  );
+}
+
+function ProductGallery({
+  images
+}: {
+  images: { src: string; alt: string }[];
+}) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: images.length > 1, dragFree: false });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="relative">
+      <div
+        ref={emblaRef}
+        className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl shadow-black/10"
+      >
+        <div className="flex touch-pan-y">
+          {images.map((image) => (
+            <div key={image.src} className="min-w-0 flex-[0_0_100%]">
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="h-full w-full object-contain"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-2">
+        {images.map((image, i) => (
+          <button
+            key={image.src}
+            type="button"
+            aria-label={`Rodyti nuotrauką ${i + 1}`}
+            onClick={() => emblaApi?.scrollTo(i)}
+            className={
+              i === selectedIndex
+                ? "h-2 w-6 rounded-full bg-brand-600 transition-all"
+                : "h-2 w-2 rounded-full bg-slate-300 transition-all hover:bg-slate-400"
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+
 export function ContactPage() {
   useDocumentTitle("Kontaktai | Skenis.lt");
   return (
