@@ -519,7 +519,7 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section id="atsiliepimai" className="bg-white py-14 md:py-20">
+    <section id="atsiliepimai" className="relative overflow-hidden bg-white py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5" ref={ref}>
         <div className="mx-auto max-w-2xl text-center">
           <p className="section-kicker">Ką galvoja mūsų klientai?</p>
@@ -531,27 +531,38 @@ function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-center"
-            >
-              <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">
-                {isInView ? (
-                  <CountUp end={stat.end} duration={2} />
-                ) : (
-                  0
-                )}
-                {stat.suffix}
-              </p>
-              <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
+        <div className="relative mt-10">
+          {/* Teal glow behind stats row */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[80%] max-w-3xl -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(28,155,141,0.28), rgba(28,155,141,0.08) 55%, rgba(255,255,255,0) 78%)"
+            }}
+          />
+          <div className="relative grid grid-cols-3 gap-4 sm:gap-8">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 16 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+                className="text-center"
+              >
+                <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">
+                  {isInView ? (
+                    <CountUp end={stat.end} duration={2} />
+                  ) : (
+                    0
+                  )}
+                  {stat.suffix}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
 
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
