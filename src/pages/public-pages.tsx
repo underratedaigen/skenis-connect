@@ -839,7 +839,11 @@ function ProductGallery({
     <div className="relative">
       <div
         ref={emblaRef}
-        className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl shadow-black/10"
+        className="overflow-hidden rounded-2xl border border-gray-100/60 bg-white shadow-2xl shadow-black/10"
+        style={{
+          maskImage: "radial-gradient(ellipse at center, black 88%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black 88%, transparent 100%)"
+        }}
       >
         <div className="flex touch-pan-y">
           {images.map((image) => (
