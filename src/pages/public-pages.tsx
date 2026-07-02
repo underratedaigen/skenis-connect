@@ -31,6 +31,7 @@ import { Drawer } from "vaul";
 import productImage from "@/assets/skenis-product.png.asset.json";
 import { LeadForm } from "@/components/lead-form";
 import { shortProductTypeLabels } from "@/lib/labels";
+import { cn } from "@/lib/utils";
 import { PublicLayout } from "@/components/public/site-layout";
 
 function useDocumentTitle(title: string) {
@@ -286,7 +287,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
 
 function ProofStrip() {
   return (
-    <section className="border-b border-line bg-gradient-to-b from-brand-50/40 to-white">
+    <section className="bg-gradient-to-b from-brand-50/40 to-white">
       <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-3">
         {proofPoints.map((point) => (
           <div key={point.title} className="flex gap-3">
@@ -387,6 +388,8 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
           "radial-gradient(circle at 15% 20%, rgba(28,155,141,0.18), transparent 45%), radial-gradient(circle at 85% 30%, rgba(47,111,219,0.14), transparent 50%), radial-gradient(circle at 50% 90%, rgba(28,155,141,0.10), transparent 55%)"
       }}
     >
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
       <div className="relative mx-auto max-w-7xl px-5">
         <div className="grid gap-10 md:grid-cols-[45fr_55fr] md:items-center md:gap-12">
           {/* LEFT — image */}
@@ -729,6 +732,7 @@ function EthicsSection({ onOrder }: { onOrder: () => void }) {
 
   return (
     <section className="relative overflow-hidden bg-ink py-20">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white to-transparent" />
       {/* Large soft teal radial glow */}
       <div
         aria-hidden
@@ -790,13 +794,16 @@ function EthicsSection({ onOrder }: { onOrder: () => void }) {
           </p>
         </motion.div>
       </div>
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
     </section>
   );
 }
 
 function OrderSection() {
   return (
-    <section id="uzsakymas" className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="uzsakymas" className="relative mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink to-transparent" />
       <div>
         <p className="section-kicker">Užklausa</p>
         <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
