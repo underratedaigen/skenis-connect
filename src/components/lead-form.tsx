@@ -1,46 +1,36 @@
-import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import type React from "react";
+import { toast } from "sonner";
 import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { productTypeLabels } from "@/lib/labels";
 import { leadCreateSchema } from "@/lib/validation";
-
-type FormState =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "success" }
-  | { status: "error"; message: string };
 
 function blankToNull(value: string | undefined) {
   return value?.trim() ? value.trim() : null;
 }
 
 export function LeadForm() {
-  const [state, setState] = useState<FormState>({ status: "idle" });
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setState({ status: "loading" });
+    setLoading(true);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
     const parsed = leadCreateSchema.safeParse(Object.fromEntries(formData.entries()));
 
     if (!parsed.success) {
-      setState({
-        status: "error",
-        message: parsed.error.issues[0]?.message || "Patikrinkite formos laukus."
-      });
+      toast.error(parsed.error.issues[0]?.message || "Patikrinkite formos laukus.");
+      setLoading(false);
       return;
     }
 
     const data = parsed.data;
 
     if (!isSupabaseConfigured) {
-      setState({
-        status: "error",
-        message: "Supabase aplinkos kintamieji dar nesukonfigūruoti."
-      });
+      toast.error("Supabase aplinkos kintamieji dar nesukonfigūruoti.");
+      setLoading(false);
       return;
     }
 
@@ -56,15 +46,14 @@ export function LeadForm() {
     });
 
     if (error) {
-      setState({
-        status: "error",
-        message: error.message || "Nepavyko išsiųsti užklausos. Bandykite dar kartą."
-      });
+      toast.error(error.message || "Nepavyko išsiųsti užklausos. Bandykite dar kartą.");
+      setLoading(false);
       return;
     }
 
     form.reset();
-    setState({ status: "success" });
+    toast.success("Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.");
+    setLoading(false);
   }
 
   return (
@@ -133,21 +122,8 @@ export function LeadForm() {
         />
       </label>
 
-      {state.status === "error" ? (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {state.message}
-        </p>
-      ) : null}
-
-      {state.status === "success" ? (
-        <div className="flex gap-3 rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm leading-6 text-brand-700">
-          <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0" />
-          <p>Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.</p>
-        </div>
-      ) : null}
-
-      <button className="button-primary w-full sm:w-fit" disabled={state.status === "loading"}>
-        {state.status === "loading" ? "Siunčiama..." : "Pateikti užklausą"}
+      <button className="button-primary w-full sm:w-fit" disabled={loading}>
+        {loading ? "Siunčiama..." : "Pateikti užklausą"}
       </button>
     </form>
   );

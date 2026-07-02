@@ -3,6 +3,7 @@ import { Lock, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Link } from "react-router-dom";
+import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
@@ -149,6 +150,17 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       <Navbar />
       {children}
       <Footer />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#0b0f14",
+            color: "#ffffff",
+            border: "1px solid rgba(45,212,191,0.35)"
+          },
+          className: "font-sans"
+        }}
+      />
     </div>
   );
 }
