@@ -3,6 +3,7 @@ import { Lock, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Link } from "react-router-dom";
+import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
