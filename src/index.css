@@ -18,7 +18,7 @@ body {
   margin: 0;
   background: #ffffff;
   color: #101820;
-  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  font-family: "Plus Jakarta Sans", Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
