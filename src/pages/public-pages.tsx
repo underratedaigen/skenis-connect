@@ -362,7 +362,22 @@ function ProcessSection() {
   );
 }
 
-function ProductsSection({ onOrder }: { onOrder: () => void }) {
+function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number) => void }) {
+  const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("CARD");
+  const [quantity, setQuantity] = useState(25);
+
+  const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof CreditCard }[] = [
+    { value: "CARD", icon: CreditCard },
+    { value: "STAND", icon: LayoutGrid },
+    { value: "NFC_CARD", icon: Nfc }
+  ];
+
+  const unitPrice = quantity >= 100 ? 13.99 : quantity >= 25 ? 16.99 : 19.99;
+  const totalPrice = quantity * unitPrice;
+
+  const dec = () => setQuantity((q) => Math.max(1, q - 1));
+  const inc = () => setQuantity((q) => Math.min(500, q + 1));
+
   return (
     <section
       id="produktai"
@@ -373,45 +388,116 @@ function ProductsSection({ onOrder }: { onOrder: () => void }) {
       }}
     >
       <div className="relative mx-auto max-w-7xl px-5">
-        <div className="max-w-2xl">
-          <p className="section-kicker">Produktai</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
-            Akriliniai sprendimai kasdieniam klientų srautui
-          </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            Kainodara konfigūruojama pagal kiekį, maketą ir gamybos terminą.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {products.map((product) => (
-            <button
-              key={product.name}
-              onClick={onOrder}
-              className="group flex flex-col overflow-hidden rounded-lg border border-line bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_25px_70px_-15px_rgba(28,155,141,0.4)] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+        <div className="grid gap-10 md:grid-cols-[45fr_55fr] md:items-center md:gap-12">
+          {/* LEFT — image */}
+          <div>
+            <ProductGallery
+              images={[{ src: productImage.url, alt: "Skenis produktas" }]}
+            />
+          </div>
+
+          {/* RIGHT — configurator */}
+          <TabsPrimitive.Root
+            value={selectedType}
+            onValueChange={(v) => setSelectedType(v as typeof selectedType)}
+          >
+            <p className="section-kicker">Produktai</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+              Sukurkite savo užsakymą
+            </h2>
+
+            {/* Type selector */}
+            <TabsPrimitive.List
+              aria-label="Produkto tipas"
+              className="mt-8 grid grid-cols-3 gap-3"
             >
-              <div className="flex h-52 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_25%_10%,#ffffff,transparent_28%),linear-gradient(135deg,#eef7f6,#f8fbfc)] p-4">
-                <img
-                  src={productImage.url}
-                  alt={product.name}
-                  className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="text-xl font-bold tracking-normal">{product.name}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{product.text}</p>
-                <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  {product.fit}
-                </p>
-                <div className="mt-6 flex items-center justify-between">
-                  <p className="text-2xl font-bold text-brand-700">{product.price}</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-700 transition group-hover:gap-2">
-                    Užsakyti
-                    <ArrowRight aria-hidden className="h-4 w-4" />
-                  </span>
+              {typeOptions.map(({ value, icon: Icon }) => {
+                const active = selectedType === value;
+                return (
+                  <TabsPrimitive.Trigger
+                    key={value}
+                    value={value}
+                    className={
+                      "group flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-4 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 " +
+                      (active
+                        ? "border-brand-500 bg-brand-50 text-brand-700 scale-105 shadow-[0_15px_40px_-15px_rgba(28,155,141,0.35)]"
+                        : "border-gray-200 bg-white text-slate-600 hover:border-brand-300")
+                    }
+                  >
+                    <Icon aria-hidden className="h-6 w-6" />
+                    <span>{shortProductTypeLabels[value]}</span>
+                  </TabsPrimitive.Trigger>
+                );
+              })}
+            </TabsPrimitive.List>
+
+            {/* Quantity stepper */}
+            <div className="mt-8">
+              <p className="label mb-3">Kiekis</p>
+              <div className="flex items-center justify-center gap-6 rounded-xl border border-gray-200 bg-white/70 py-5 backdrop-blur">
+                <button
+                  type="button"
+                  onClick={dec}
+                  aria-label="Sumažinti"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-slate-700 shadow-sm transition hover:border-brand-500 hover:text-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                >
+                  <Minus className="h-5 w-5" />
+                </button>
+                <div className="min-w-[5rem] text-center">
+                  <motion.div
+                    key={quantity}
+                    initial={{ scale: 0.85, opacity: 0.6 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-5xl font-bold tracking-tight text-ink"
+                  >
+                    {quantity}
+                  </motion.div>
+                  <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">vnt.</p>
                 </div>
+                <button
+                  type="button"
+                  onClick={inc}
+                  aria-label="Padidinti"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-slate-700 shadow-sm transition hover:border-brand-500 hover:text-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                >
+                  <Plus className="h-5 w-5" />
+                </button>
               </div>
+            </div>
+
+            {/* Price */}
+            <div className="mt-6 flex items-end justify-between rounded-xl border border-brand-100 bg-white/80 p-5 backdrop-blur">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-slate-500">Iš viso</p>
+                <AnimatePresence mode="popLayout">
+                  <motion.p
+                    key={`${selectedType}-${quantity}`}
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-1 text-4xl font-bold text-brand-700"
+                  >
+                    {totalPrice.toFixed(2)} €
+                  </motion.p>
+                </AnimatePresence>
+                <p className="mt-1 text-sm text-slate-500">
+                  {unitPrice.toFixed(2)} € / vnt.
+                </p>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <button
+              type="button"
+              onClick={() => onOrder(selectedType, quantity)}
+              className="button-primary mt-6 inline-flex w-full items-center justify-center gap-2 sm:w-auto"
+            >
+              Gauti pasiūlymą
+              <ArrowRight aria-hidden className="h-4 w-4" />
             </button>
-          ))}
+          </TabsPrimitive.Root>
         </div>
       </div>
     </section>
