@@ -4,7 +4,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { AdminSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import logoAsset from "@/assets/skenis-logo.png.asset.json";
 
 const navItems = [
   { href: "/admin", label: "Apžvalga", icon: BarChart3, end: true },
@@ -32,7 +31,7 @@ export function AdminShell({
     <div className="min-h-screen bg-slate-50">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-slate-200 bg-white p-5 lg:block">
         <Link to="/admin" className="block">
-          <img src={logoAsset.url} alt="Skenis" className="h-7 w-auto" />
+          <img src="/skenis-logo.png" alt="Skenis" className="h-7 w-auto" />
         </Link>
         <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">Admin sistema</p>
 
