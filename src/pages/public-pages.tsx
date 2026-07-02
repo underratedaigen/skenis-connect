@@ -406,6 +406,8 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
           "radial-gradient(circle at 15% 20%, rgba(28,155,141,0.18), transparent 45%), radial-gradient(circle at 85% 30%, rgba(47,111,219,0.14), transparent 50%), radial-gradient(circle at 50% 90%, rgba(28,155,141,0.10), transparent 55%)"
       }}
     >
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
       <div className="relative mx-auto max-w-7xl px-5">
         <div className="grid gap-10 md:grid-cols-[45fr_55fr] md:items-center md:gap-12">
           {/* LEFT — image */}
