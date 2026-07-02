@@ -40,7 +40,7 @@ function Navbar() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4">
         <Link to="/" className="flex items-center">
-          <img src="/skenis-logo.png" alt="Skenis" className="h-10 w-auto" />
+          <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
         </Link>
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-sm font-medium text-slate-700 md:flex">
