@@ -891,7 +891,7 @@ function OrderModal({
           </div>
           <div className="rounded-lg border border-line bg-white p-4 shadow-panel sm:p-6">
 
-            <LeadForm />
+            <LeadForm initialProductType={initialProductType} initialQuantity={initialQuantity} />
           </div>
         </div>
       </motion.div>
