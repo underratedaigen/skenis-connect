@@ -5,6 +5,7 @@ import type React from "react";
 import { Link } from "react-router-dom";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/skenis-logo.png.asset.json";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
   { href: "/#kaip-veikia", label: "Kaip veikia?" },

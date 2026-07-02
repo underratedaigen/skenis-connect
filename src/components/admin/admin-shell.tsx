@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { AdminSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/skenis-logo.png.asset.json";
 
 const navItems = [
   { href: "/admin", label: "Apžvalga", icon: BarChart3, end: true },

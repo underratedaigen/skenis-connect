@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logoAsset from "@/assets/skenis-logo.png.asset.json";
 
 export function RedirectStatusPage({
   title,
