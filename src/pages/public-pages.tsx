@@ -94,7 +94,7 @@ export function HomePage() {
   const [orderOpen, setOrderOpen] = useState(false);
   const [orderInitial, setOrderInitial] = useState<{ type: string; quantity: number }>({
     type: "CARD",
-    quantity: 25
+    quantity: 1
   });
   const isMobile = useIsMobile();
 
@@ -102,7 +102,7 @@ export function HomePage() {
     if (type || quantity) {
       setOrderInitial({
         type: type ?? "CARD",
-        quantity: quantity ?? 25
+        quantity: quantity ?? 1
       });
     }
     setOrderOpen(true);
@@ -366,7 +366,7 @@ function ProcessSection() {
 
 function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number) => void }) {
   const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("NFC_CARD");
-  const [quantity, setQuantity] = useState(25);
+  const [quantity, setQuantity] = useState(1);
 
   const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof CreditCard }[] = [
     { value: "NFC_CARD", icon: Nfc }
