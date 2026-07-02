@@ -422,43 +422,64 @@ function ProductMockup({ compact, dark }: { compact: boolean; dark: boolean }) {
 
 function BenefitsSection() {
   return (
-    <section id="privalumai" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p className="section-kicker">Privalumai</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
-            Sukurta verslams, kuriems reikia aiškios kontrolės
-          </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            Kortelės ir stendai atrodo kaip fizinis produktas, bet veikia kaip
-            valdoma skaitmeninė sistema.
-          </p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {benefits.map((benefit) => (
-            <div key={benefit} className="flex gap-3 rounded-lg border border-line bg-white p-4 shadow-sm">
-              <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
-              <p className="text-sm leading-6 text-slate-700">{benefit}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="mt-12 rounded-lg border border-brand-100 bg-brand-50/40 p-5">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+    <section
+      id="privalumai"
+      className="relative overflow-hidden bg-gradient-to-br from-brand-50/40 via-white to-brand-50/30 py-14 md:py-20"
+    >
+      {/* Atmospheric depth blobs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-20 h-[420px] w-[420px] rounded-full opacity-40 blur-3xl md:h-[520px] md:w-[520px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(28,155,141,0.30), rgba(28,155,141,0.08) 55%, rgba(255,255,255,0) 78%)"
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-10 h-[320px] w-[320px] rounded-full bg-brand-100/60 blur-3xl md:h-[420px] md:w-[420px]"
+      />
+      <div className="relative mx-auto max-w-7xl px-5">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
-            <p className="section-kicker">Kam tinka</p>
-            <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
+            <p className="section-kicker">Privalumai</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
+              Sukurta verslams, kuriems reikia aiškios kontrolės
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Kortelės ir stendai atrodo kaip fizinis produktas, bet veikia kaip
+              valdoma skaitmeninė sistema.
+            </p>
           </div>
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {industries.map((industry) => {
-              const Icon = industry.icon;
-              return (
-                <div key={industry.label} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
-                  <Icon aria-hidden className="h-4 w-4 text-brand-700" />
-                  {industry.label}
-                </div>
-              );
-            })}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {benefits.map((benefit) => (
+              <div
+                key={benefit}
+                className="flex gap-3 rounded-lg border border-line bg-white/80 p-4 shadow-sm backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_20px_60px_-15px_rgba(28,155,141,0.35)]"
+              >
+                <CheckCircle2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+                <p className="text-sm leading-6 text-slate-700">{benefit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-12 rounded-lg border border-brand-100 bg-brand-50/40 p-5">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+              <p className="section-kicker">Kam tinka</p>
+              <h3 className="mt-2 text-xl font-bold tracking-normal">Kasdieniam klientų srautui</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
+              {industries.map((industry) => {
+                const Icon = industry.icon;
+                return (
+                  <div key={industry.label} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                    <Icon aria-hidden className="h-4 w-4 text-brand-700" />
+                    {industry.label}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
