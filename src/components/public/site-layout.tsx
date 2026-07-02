@@ -39,8 +39,8 @@ function Navbar() {
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4">
-        <Link to="/" className="text-xl font-bold tracking-normal text-ink">
-          Skenis.lt
+        <Link to="/" className="flex items-center">
+          <img src="/skenis-logo.png" alt="Skenis" className="h-7 w-auto" />
         </Link>
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-sm font-medium text-slate-700 md:flex">
@@ -96,7 +96,7 @@ function Navbar() {
               className="fixed inset-y-0 right-0 z-50 flex w-[85%] max-w-sm flex-col bg-white p-6 shadow-2xl md:hidden"
             >
               <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-ink">Skenis.lt</span>
+                <img src="/skenis-logo.png" alt="Skenis" className="h-7 w-auto" />
                 <button
                   type="button"
                   aria-label="Uždaryti meniu"
