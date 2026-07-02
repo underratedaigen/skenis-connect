@@ -305,8 +305,7 @@ function SectionFadeBottom({ color = "white" }: { color?: "white" | "brand-50" |
 
 function ProofStrip() {
   return (
-    <section className="relative bg-white">
-      <SectionFadeTop color="brand-50" />
+    <section className="bg-gradient-to-b from-brand-50/40 to-white">
       <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-3">
         {proofPoints.map((point) => (
           <div key={point.title} className="flex gap-3">
