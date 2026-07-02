@@ -150,6 +150,17 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       <Navbar />
       {children}
       <Footer />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#0b0f14",
+            color: "#ffffff",
+            border: "1px solid rgba(45,212,191,0.35)"
+          },
+          className: "font-sans"
+        }}
+      />
     </div>
   );
 }
