@@ -365,12 +365,10 @@ function ProcessSection() {
 }
 
 function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number) => void }) {
-  const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("CARD");
+  const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("NFC_CARD");
   const [quantity, setQuantity] = useState(25);
 
   const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof CreditCard }[] = [
-    { value: "CARD", icon: CreditCard },
-    { value: "STAND", icon: LayoutGrid },
     { value: "NFC_CARD", icon: Nfc }
   ];
 
@@ -411,7 +409,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
             {/* Type selector */}
             <TabsPrimitive.List
               aria-label="Produkto tipas"
-              className="mt-8 grid grid-cols-3 gap-3"
+              className="mt-8 grid grid-cols-1 gap-3 sm:max-w-xs"
             >
               {typeOptions.map(({ value, icon: Icon }) => {
                 const active = selectedType === value;
