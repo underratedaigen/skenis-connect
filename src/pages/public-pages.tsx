@@ -285,24 +285,6 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
 }
 
 
-function SectionFadeTop({ color = "white" }: { color?: "white" | "brand-50" | "ink" }) {
-  const stops: Record<string, string> = {
-    white: "from-white",
-    "brand-50": "from-brand-50",
-    ink: "from-ink"
-  };
-  return <div className={cn("pointer-events-none h-16 w-full bg-gradient-to-b to-transparent", stops[color])} />;
-}
-
-function SectionFadeBottom({ color = "white" }: { color?: "white" | "brand-50" | "ink" }) {
-  const stops: Record<string, string> = {
-    white: "to-white",
-    "brand-50": "to-brand-50",
-    ink: "to-ink"
-  };
-  return <div className={cn("pointer-events-none h-16 w-full bg-gradient-to-b from-transparent", stops[color])} />;
-}
-
 function ProofStrip() {
   return (
     <section className="bg-gradient-to-b from-brand-50/40 to-white">
