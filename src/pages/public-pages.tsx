@@ -830,7 +830,15 @@ function OrderSection() {
   );
 }
 
-function OrderModal({ onClose }: { onClose: () => void }) {
+function OrderModal({
+  onClose,
+  initialProductType,
+  initialQuantity
+}: {
+  onClose: () => void;
+  initialProductType?: string;
+  initialQuantity?: number;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
