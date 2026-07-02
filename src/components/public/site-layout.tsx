@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
-  { href: "/#kaip-veikia", label: "Kaip veikia" },
+  { href: "/#kaip-veikia", label: "Kaip veikia?" },
   { href: "/#produktai", label: "Produktai" },
   { href: "/#privalumai", label: "Privalumai" },
   { href: "/kontaktai", label: "Kontaktai", route: true }
