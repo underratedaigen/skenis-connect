@@ -125,7 +125,7 @@ export function LoginPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(207,240,234,0.24),transparent_32%),linear-gradient(135deg,#101820,#173039)]" />
           <div className="relative flex h-full flex-col justify-between">
             <Link to="/" className="inline-block">
-              <img src="/skenis-logo.png" alt="Skenis" className="h-10 w-auto brightness-0 invert" />
+              <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto brightness-0 invert" />
             </Link>
             <div>
               <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-100">
@@ -157,7 +157,7 @@ export function LoginPage() {
 
         <form onSubmit={onSubmit} className="flex flex-col justify-center p-6 sm:p-10">
           <Link to="/" className="inline-block lg:hidden">
-            <img src="/skenis-logo.png" alt="Skenis" className="h-10 w-auto" />
+            <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
           </Link>
           <h1 className="mt-8 text-2xl font-bold tracking-normal lg:mt-0">Admin prisijungimas</h1>
           <p className="mt-2 text-sm leading-6 text-slate-600">
