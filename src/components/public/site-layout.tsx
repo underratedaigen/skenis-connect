@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type React from "react";
 import { Link } from "react-router-dom";
 import { Toaster } from "sonner";
+import { CustomCursor } from "@/components/custom-cursor";
 import { cn } from "@/lib/utils";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
@@ -147,6 +148,7 @@ function Navbar() {
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-white text-ink">
+      <CustomCursor />
       <Navbar />
       {children}
       <Footer />

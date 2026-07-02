@@ -7,10 +7,12 @@ import {
   PrivacyPage,
   TermsPage
 } from "@/pages/public-pages";
-import { RedirectPage } from "@/pages/redirect-page";
 
 const AdminGuard = lazy(() =>
   import("@/pages/admin-pages").then((module) => ({ default: module.AdminGuard }))
+);
+const RedirectPage = lazy(() =>
+  import("@/pages/redirect-page").then((module) => ({ default: module.RedirectPage }))
 );
 const AdminDashboardPage = lazy(() =>
   import("@/pages/admin-pages").then((module) => ({ default: module.AdminDashboardPage }))

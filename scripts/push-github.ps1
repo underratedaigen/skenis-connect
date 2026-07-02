@@ -110,6 +110,7 @@ function Get-RelativeGitPath {
 
 $ExcludedPathParts = @(
   ".git",
+  ".codex-remote-attachments",
   ".next",
   ".tools",
   "node_modules",

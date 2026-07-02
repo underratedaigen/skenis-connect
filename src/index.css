@@ -23,6 +23,21 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+@media (pointer: fine) {
+  body.skenis-cursor-enabled,
+  body.skenis-cursor-enabled a,
+  body.skenis-cursor-enabled button,
+  body.skenis-cursor-enabled [role="button"] {
+    cursor: none;
+  }
+
+  body.skenis-cursor-enabled input,
+  body.skenis-cursor-enabled textarea,
+  body.skenis-cursor-enabled select {
+    cursor: auto;
+  }
+}
+
 ::selection {
   background: #cff0ea;
   color: #101820;

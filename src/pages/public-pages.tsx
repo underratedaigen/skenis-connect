@@ -1,16 +1,17 @@
-import * as TabsPrimitive from "@radix-ui/react-tabs";
-import useEmblaCarousel from "embla-carousel-react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useReducedMotion
+} from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
   Building2,
   CheckCircle2,
   ClipboardCheck,
-  CreditCard,
   Factory,
   Hotel,
-  LayoutGrid,
   Link2,
   Minus,
   Nfc,
@@ -24,15 +25,14 @@ import {
   Wrench,
   X
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import CountUp from "react-countup";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Drawer } from "vaul";
-import productImage from "@/assets/skenis-product.png.asset.json";
-import { LeadForm } from "@/components/lead-form";
-import { shortProductTypeLabels } from "@/lib/labels";
 import { cn } from "@/lib/utils";
 import { PublicLayout } from "@/components/public/site-layout";
+
+const LeadForm = lazy(() =>
+  import("@/components/lead-form").then((module) => ({ default: module.LeadForm }))
+);
 
 function useDocumentTitle(title: string) {
   useEffect(() => {
@@ -49,6 +49,16 @@ const products = [
   }
 ];
 
+const productPhotos = [
+  {
+    src: "/images/skenis-product-perspective.jpg",
+    alt: "Skenis NFC ir QR atsiliepimų kortelė kampu"
+  },
+  {
+    src: "/images/skenis-product-front.jpg",
+    alt: "Skenis NFC ir QR atsiliepimų kortelė iš priekio"
+  }
+];
 
 const steps = [
   "Įmonė užsisako korteles arba stendus.",
@@ -89,6 +99,26 @@ const industries = [
   { label: "Viešbučiai", icon: Hotel },
   { label: "Parduotuvės", icon: Building2 }
 ];
+
+function LeadFormShell({
+  initialProductType,
+  initialQuantity
+}: {
+  initialProductType?: string;
+  initialQuantity?: number;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <div className="rounded-lg border border-line bg-slate-50 p-5 text-sm text-slate-600">
+          Forma įkeliama...
+        </div>
+      }
+    >
+      <LeadForm initialProductType={initialProductType} initialQuantity={initialQuantity} />
+    </Suspense>
+  );
+}
 
 export function HomePage() {
   useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
@@ -167,7 +197,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-14 md:py-28">
+    <section className="relative overflow-hidden bg-white py-8 md:py-10">
       {/* Large teal blob behind hero image (right side) */}
       <div
         aria-hidden
@@ -183,7 +213,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
         className="pointer-events-none absolute -left-40 bottom-0 h-[280px] w-[280px] rounded-full bg-brand-100/60 blur-3xl md:h-[380px] md:w-[380px]"
       />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 md:grid-cols-2 md:gap-10">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-5 md:grid-cols-2 md:gap-10">
 
         {/* Left */}
         <div>
@@ -202,7 +232,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 text-4xl font-bold tracking-tight text-ink sm:text-5xl md:text-6xl"
+            className="mt-4 text-3xl font-bold tracking-tight text-ink sm:mt-5 sm:text-5xl md:text-6xl"
           >
             Daugiau Google atsiliepimų su išmaniais QR stendais
           </motion.h1>
@@ -212,7 +242,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-5 max-w-xl text-base leading-7 text-gray-600 sm:text-lg sm:leading-8"
+            className="mt-4 max-w-xl text-sm leading-6 text-gray-600 sm:mt-5 sm:text-lg sm:leading-8"
 
           >
             Programuojamos akrilinės kortelės ir stendai, kurie nukreipia
@@ -224,7 +254,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-8 flex flex-col gap-3 sm:flex-row"
+            className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row"
           >
             <button
               onClick={onOrder}
@@ -246,7 +276,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4"
+            className="mt-8 hidden flex-col items-start gap-3 sm:flex sm:flex-row sm:items-center sm:gap-4"
           >
             <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((i) => (
@@ -254,8 +284,7 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
               ))}
             </div>
             <p className="text-sm text-gray-600 sm:text-base">
-              {/* placeholder */}
-              <span className="font-bold text-ink">Įmonės</span> jau naudoja Skenis atsiliepimams rinkti
+              <span className="font-bold text-ink">NFC + QR</span> vienoje akrilinėje kortelėje
             </p>
           </motion.div>
 
@@ -266,16 +295,14 @@ function HeroSection({ onOrder }: { onOrder: () => void }) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
+          className="relative mx-auto w-full max-w-[230px] sm:max-w-[320px] md:max-w-none"
         >
           <motion.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 3, ease: "easeInOut", repeat: Infinity }}
           >
             <ProductGallery
-              images={[
-                { src: productImage.url, alt: "Akrilinė NFC + QR Google Reviews kortelė" }
-              ]}
+              images={productPhotos}
             />
           </motion.div>
         </motion.div>
@@ -369,7 +396,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
   const [selectedType, setSelectedType] = useState<"CARD" | "STAND" | "NFC_CARD">("NFC_CARD");
   const [quantity, setQuantity] = useState(1);
 
-  const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof CreditCard }[] = [
+  const typeOptions: { value: "CARD" | "STAND" | "NFC_CARD"; icon: typeof Nfc }[] = [
     { value: "NFC_CARD", icon: Nfc }
   ];
 
@@ -388,6 +415,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
           "radial-gradient(circle at 15% 20%, rgba(28,155,141,0.18), transparent 45%), radial-gradient(circle at 85% 30%, rgba(47,111,219,0.14), transparent 50%), radial-gradient(circle at 50% 90%, rgba(28,155,141,0.10), transparent 55%)"
       }}
     >
+      <span id="uzsakymas" className="absolute -top-24" aria-hidden />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
       <div className="relative mx-auto max-w-7xl px-5">
@@ -395,31 +423,29 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
           {/* LEFT — image */}
           <div>
             <ProductGallery
-              images={[{ src: productImage.url, alt: "Skenis produktas" }]}
+              images={productPhotos}
             />
           </div>
 
           {/* RIGHT — configurator */}
-          <TabsPrimitive.Root
-            value={selectedType}
-            onValueChange={(v) => setSelectedType(v as typeof selectedType)}
-          >
+          <div>
             <p className="section-kicker">Produktai</p>
             <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
               Sukurkite savo užsakymą
             </h2>
 
             {/* Type selector */}
-            <TabsPrimitive.List
+            <div
               aria-label="Produkto tipas"
               className="mt-8 mx-auto grid grid-cols-1 gap-3 sm:max-w-xs"
             >
               {typeOptions.map(({ value, icon: Icon }) => {
                 const active = selectedType === value;
                 return (
-                  <TabsPrimitive.Trigger
+                  <button
+                    type="button"
                     key={value}
-                    value={value}
+                    onClick={() => setSelectedType(value)}
                     className={
                       "group flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-4 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 " +
                       (active
@@ -429,10 +455,10 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
                   >
                     <Icon aria-hidden className="h-6 w-6" />
                     <span>NFC + QR Kortelė</span>
-                  </TabsPrimitive.Trigger>
+                  </button>
                 );
               })}
-            </TabsPrimitive.List>
+            </div>
 
             {/* Quantity stepper */}
             <div className="mt-8">
@@ -500,7 +526,7 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
               Gauti pasiūlymą
               <ArrowRight aria-hidden className="h-4 w-4" />
             </button>
-          </TabsPrimitive.Root>
+          </div>
         </div>
       </div>
     </section>
@@ -611,29 +637,26 @@ function TestimonialsSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   const stats = [
-    { end: 500, suffix: "+", label: "nuskaitymų per mėnesį" },
-    { end: 98, suffix: "%", label: "klientų rekomenduoja" },
-    { end: 3, suffix: "×", label: "daugiau atsiliepimų per mėnesį" }
+    { value: "1", label: "nuolatinė Skenis nuoroda kiekvienai kortelei" },
+    { value: "2", label: "būdai klientui: NFC palietimas arba QR skenavimas" },
+    { value: "30 d.", label: "analitikos langas aktyvumui sekti" }
   ];
 
-  const reviews = [
+  const scenarios = [
     {
-      quote: "Per savaitę po QR stendo pastatymo ant baro gavome daugiau atsiliepimų nei per visą praėjusį mėnesį. Klientams tereikia nuskenuoti ir viskas aišku.",
-      name: "Tomas R.",
-      role: "baro savininkas",
-      initials: "TR"
+      title: "Restoranai ir kavinės",
+      text: "Kortelė ant baro ar prie kasos leidžia paprašyti atsiliepimo tada, kai klientas ką tik gavo aptarnavimą.",
+      initials: "R"
     },
     {
-      quote: "Patiko, kad nuoroda visada ta pati — jei kada reikės pakeisti Google profilį, kortelės keisti nereikės. Labai patogu ilgalaikiam naudojimui.",
-      name: "Ieva K.",
-      role: "grožio salono administratorė",
-      initials: "IK"
+      title: "Grožio salonai ir klinikos",
+      text: "Registratūroje arba laukimo zonoje klientas gali palikti atsiliepimą be paieškos ir be papildomų instrukcijų.",
+      initials: "G"
     },
     {
-      quote: "Užsakymas ir gamyba buvo greita, o admin sistemoje matau, kiek kartų kortelė buvo nuskenuota. Naudinga sekant, ar stendas iš viso veikia.",
-      name: "Mantas P.",
-      role: "kavinės vadovas",
-      initials: "MP"
+      title: "Parduotuvės ir paslaugos",
+      text: "Kiekviena fizinė kortelė turi savo trumpą nuorodą, todėl skirtingas vietas ar filialus galima valdyti atskirai.",
+      initials: "P"
     }
   ];
 
@@ -641,12 +664,12 @@ function TestimonialsSection() {
     <section id="atsiliepimai" className="relative overflow-hidden bg-white py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5" ref={ref}>
         <div className="mx-auto max-w-2xl text-center">
-          <p className="section-kicker">Ką galvoja mūsų klientai?</p>
+          <p className="section-kicker">Naudojimo vietos</p>
           <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
-            Įmonės, kurios jau renka daugiau atsiliepimų
+            Aiškus kelias nuo aptarnavimo iki atsiliepimo
           </h2>
           <p className="mt-4 text-base leading-7 text-slate-600">
-            Realūs rezultatai iš verslų, kurie jau naudoja Skenis programuojamus QR stendus ir korteles.
+            Skenis kortelė pašalina trintį: klientas paliečia NFC arba nuskaito QR, o jūs valdote nuorodą administracijoje.
           </p>
         </div>
 
@@ -670,12 +693,7 @@ function TestimonialsSection() {
                 className="text-center"
               >
                 <p className="text-2xl font-bold text-ink sm:text-3xl md:text-4xl">
-                  {isInView ? (
-                    <CountUp end={stat.end} duration={2} />
-                  ) : (
-                    0
-                  )}
-                  {stat.suffix}
+                  {stat.value}
                 </p>
                 <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">{stat.label}</p>
 
@@ -685,9 +703,9 @@ function TestimonialsSection() {
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {reviews.map((review, i) => (
+          {scenarios.map((scenario, i) => (
             <motion.div
-              key={review.name}
+              key={scenario.title}
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
@@ -703,15 +721,15 @@ function TestimonialsSection() {
                 ))}
               </div>
               <p className="mt-4 flex-1 text-sm leading-6 text-slate-700">
-                &ldquo;{review.quote}&rdquo;
+                {scenario.text}
               </p>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-white">
-                  {review.initials}
+                  {scenario.initials}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-ink">{review.name}</p>
-                  <p className="text-xs text-slate-500">{review.role}</p>
+                  <p className="text-sm font-semibold text-ink">{scenario.title}</p>
+                  <p className="text-xs text-slate-500">Praktinis panaudojimas</p>
                 </div>
               </div>
             </motion.div>
@@ -725,9 +743,9 @@ function TestimonialsSection() {
 
 function EthicsSection({ onOrder }: { onOrder: () => void }) {
   const stats = [
-    { value: "500+", label: "nuskaitymų per mėnesį" },
-    { value: "98%", label: "klientų rekomenduoja" },
-    { value: "3×", label: "daugiau atsiliepimų per mėnesį" }
+    { value: "1 QR", label: "nuolatinė Skenis nuoroda" },
+    { value: "2 būdai", label: "NFC palietimas arba QR" },
+    { value: "30 d.", label: "aktyvumo analitika" }
   ];
 
   return (
@@ -829,7 +847,7 @@ function OrderSection() {
         </div>
       </div>
       <div className="rounded-lg border border-line bg-white p-6 shadow-panel">
-        <LeadForm />
+        <LeadFormShell />
       </div>
     </section>
   );
@@ -853,6 +871,9 @@ function OrderModal({
       onClick={onClose}
     >
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="desktop-order-title"
         initial={{ opacity: 0, y: 24, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -871,7 +892,7 @@ function OrderModal({
 
           <div>
             <p className="section-kicker">Užklausa</p>
-            <h2 className="mt-3 text-xl font-bold tracking-normal sm:text-2xl md:text-3xl">
+            <h2 id="desktop-order-title" className="mt-3 text-xl font-bold tracking-normal sm:text-2xl md:text-3xl">
               Pasiruošę gamybai ar tik renkatės kiekį?
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
@@ -896,7 +917,7 @@ function OrderModal({
           </div>
           <div className="rounded-lg border border-line bg-white p-4 shadow-panel sm:p-6">
 
-            <LeadForm initialProductType={initialProductType} initialQuantity={initialQuantity} />
+            <LeadFormShell initialProductType={initialProductType} initialQuantity={initialQuantity} />
           </div>
         </div>
       </motion.div>
@@ -916,15 +937,31 @@ function OrderDrawer({
   initialQuantity?: number;
 }) {
   return (
-    <Drawer.Root open={open} onOpenChange={onOpenChange}>
-      <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[92vh] flex-col rounded-t-2xl border border-gray-200 bg-white outline-none">
+    <AnimatePresence>
+      {open ? (
+        <motion.div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => onOpenChange(false)}
+        >
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-order-title"
+            className="fixed inset-x-0 bottom-0 mt-24 flex max-h-[92vh] flex-col rounded-t-2xl border border-gray-200 bg-white outline-none"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 420, damping: 38 }}
+            onClick={(event) => event.stopPropagation()}
+          >
           <div className="mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-slate-300" />
           <div className="flex items-start justify-between px-5 pt-4">
             <div>
-              <Drawer.Title className="section-kicker">Užklausa</Drawer.Title>
-              <p className="mt-2 text-lg font-bold tracking-normal">
+              <p className="section-kicker">Užklausa</p>
+              <p id="mobile-order-title" className="mt-2 text-lg font-bold tracking-normal">
                 Pasiruošę gamybai ar tik renkatės kiekį?
               </p>
             </div>
@@ -937,16 +974,17 @@ function OrderDrawer({
             </button>
           </div>
           <div className="mt-4 flex-1 overflow-y-auto px-5 pb-8">
-            <Drawer.Description className="text-sm leading-6 text-slate-600">
+            <p className="text-sm leading-6 text-slate-600">
               Parašykite kiekį, produkto tipą ir, jei turite, Google review nuorodą.
-            </Drawer.Description>
+            </p>
             <div className="mt-5">
-              <LeadForm initialProductType={initialProductType} initialQuantity={initialQuantity} />
+              <LeadFormShell initialProductType={initialProductType} initialQuantity={initialQuantity} />
             </div>
           </div>
-        </Drawer.Content>
-      </Drawer.Portal>
-    </Drawer.Root>
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
@@ -955,59 +993,71 @@ function ProductGallery({
 }: {
   images: { src: string; alt: string }[];
 }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: images.length > 1, dragFree: false });
+  const prefersReducedMotion = useReducedMotion();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  const selectedImage = images[selectedIndex] || images[0];
+  const showDots = images.length > 1;
 
   useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
+    if (prefersReducedMotion || images.length <= 1) return;
+
+    const interval = window.setInterval(() => {
+      setSelectedIndex((index) => (index + 1) % images.length);
+    }, 4200);
+
+    return () => window.clearInterval(interval);
+  }, [images.length, prefersReducedMotion]);
 
   return (
-    <div className="relative">
+    <div className="group relative" data-cursor="magnetic">
+      <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,rgba(28,155,141,0.26),transparent_65%)] opacity-80 blur-2xl transition duration-700 group-hover:opacity-100" />
+      <div className="absolute right-4 top-4 z-10 rounded-full border border-white/70 bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-brand-700 shadow-sm backdrop-blur">
+        Tikras produktas
+      </div>
       <div
-        ref={emblaRef}
-        className="overflow-hidden rounded-2xl border border-gray-100/60 bg-white shadow-2xl shadow-black/10"
+        className="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 p-2 shadow-2xl shadow-black/10 backdrop-blur"
         style={{
           maskImage: "radial-gradient(ellipse at center, black 88%, transparent 100%)",
           WebkitMaskImage: "radial-gradient(ellipse at center, black 88%, transparent 100%)"
         }}
       >
-        <div className="flex touch-pan-y">
-          {images.map((image) => (
-            <div key={image.src} className="min-w-0 flex-[0_0_100%]">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="h-full w-full object-contain"
-                draggable={false}
-              />
-            </div>
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={selectedImage.src}
+            src={selectedImage.src}
+            alt={selectedImage.alt}
+            width={1280}
+            height={1024}
+            loading={selectedIndex === 0 ? "eager" : "lazy"}
+            decoding="async"
+            className="aspect-[1.25/1] h-full w-full rounded-[1.35rem] object-cover"
+            draggable={false}
+            initial={{ opacity: 0, scale: 1.025 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.985 }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </AnimatePresence>
+        <div className="pointer-events-none absolute inset-2 rounded-[1.35rem] bg-[linear-gradient(115deg,transparent_25%,rgba(255,255,255,0.55)_46%,transparent_67%)] opacity-0 transition duration-700 group-hover:opacity-100" />
+      </div>
+      {showDots ? (
+        <div className="mt-4 flex items-center justify-center gap-2">
+          {images.map((image, index) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Rodyti nuotrauką ${index + 1}`}
+              onClick={() => setSelectedIndex(index)}
+              className={
+                index === selectedIndex
+                  ? "h-2 w-6 rounded-full bg-brand-600 transition-all"
+                  : "h-2 w-2 rounded-full bg-slate-300 transition-all hover:bg-slate-400"
+              }
+            />
           ))}
         </div>
-      </div>
-      <div className="mt-4 flex items-center justify-center gap-2">
-        {images.map((image, i) => (
-          <button
-            key={image.src}
-            type="button"
-            aria-label={`Rodyti nuotrauką ${i + 1}`}
-            onClick={() => emblaApi?.scrollTo(i)}
-            className={
-              i === selectedIndex
-                ? "h-2 w-6 rounded-full bg-brand-600 transition-all"
-                : "h-2 w-2 rounded-full bg-slate-300 transition-all hover:bg-slate-400"
-            }
-          />
-        ))}
-      </div>
+      ) : null}
     </div>
   );
 }
@@ -1026,7 +1076,7 @@ export function ContactPage() {
           individualaus užsakymo.
         </p>
         <div className="mt-8 rounded-lg border border-line bg-white p-6 shadow-sm">
-          <LeadForm />
+          <LeadFormShell />
         </div>
       </main>
     </PublicLayout>
