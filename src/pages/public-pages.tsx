@@ -85,6 +85,7 @@ const industries = [
 export function HomePage() {
   useDocumentTitle("Skenis.lt | Programuojami Google atsiliepimų QR stendai");
   const [orderOpen, setOrderOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <PublicLayout>
@@ -96,12 +97,30 @@ export function HomePage() {
         <BenefitsSection />
         <TestimonialsSection />
         <EthicsSection onOrder={() => setOrderOpen(true)} />
-        <AnimatePresence>
-          {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
-        </AnimatePresence>
+        {isMobile ? (
+          <OrderDrawer open={orderOpen} onOpenChange={setOrderOpen} />
+        ) : (
+          <AnimatePresence>
+            {orderOpen && <OrderModal onClose={() => setOrderOpen(false)} />}
+          </AnimatePresence>
+        )}
       </main>
     </PublicLayout>
   );
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 767px)").matches : false
+  );
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setIsMobile(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return isMobile;
 }
 
 function HeroSection({ onOrder }: { onOrder: () => void }) {
