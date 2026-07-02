@@ -901,10 +901,14 @@ function OrderModal({
 
 function OrderDrawer({
   open,
-  onOpenChange
+  onOpenChange,
+  initialProductType,
+  initialQuantity
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialProductType?: string;
+  initialQuantity?: number;
 }) {
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
