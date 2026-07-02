@@ -283,8 +283,21 @@ function HeroFact({ value, label }: { value: string; label: string }) {
 
 function ProcessSection() {
   return (
-    <section id="kaip-veikia" className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <section id="kaip-veikia" className="relative overflow-hidden bg-white py-14 md:py-20">
+      {/* Atmospheric teal glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 top-10 h-[480px] w-[480px] rounded-full opacity-40 blur-3xl md:h-[620px] md:w-[620px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(28,155,141,0.35), rgba(28,155,141,0.10) 50%, rgba(255,255,255,0) 75%)"
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 bottom-0 h-[280px] w-[280px] rounded-full bg-brand-100/50 blur-3xl md:h-[360px] md:w-[360px]"
+      />
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div>
           <p className="section-kicker">Procesas</p>
           <h2 className="mt-3 text-3xl font-bold tracking-normal sm:text-4xl">
@@ -303,7 +316,10 @@ function ProcessSection() {
         </div>
         <div className="grid gap-3">
           {steps.map((step, index) => (
-            <div key={step} className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-100 hover:shadow-panel">
+            <div
+              key={step}
+              className="flex gap-4 rounded-lg border border-line bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-brand-500 hover:shadow-[0_20px_60px_-15px_rgba(28,155,141,0.35)]"
+            >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white shadow-sm shadow-brand-600/20">
                 {index + 1}
               </span>
