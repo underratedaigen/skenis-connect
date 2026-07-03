@@ -8,10 +8,12 @@ import { CustomCursor } from "@/components/custom-cursor";
 import { cn } from "@/lib/utils";
 
 const navLinks: { href: string; label: string; route?: boolean }[] = [
-  { href: "/#kaip-veikia", label: "Kaip veikia?" },
-  { href: "/#produktai", label: "Produktai" },
+  { href: "/#kaip-veikia", label: "Kaip veikia" },
+  { href: "/#produktas", label: "Produktas" },
   { href: "/#privalumai", label: "Privalumai" },
-  { href: "/kontaktai", label: "Kontaktai", route: true }
+  { href: "/#kam-tinka", label: "Kam tinka" },
+  { href: "/#kaina", label: "Kaina" },
+  { href: "/#duk", label: "DUK" }
 ];
 
 function Navbar() {
@@ -35,16 +37,16 @@ function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b border-gray-100 bg-white/80 backdrop-blur-md transition-shadow duration-300",
-        scrolled && "shadow-sm"
+        "sticky top-0 z-40 border-b border-white/70 bg-white/80 backdrop-blur-xl transition-shadow duration-300",
+        scrolled && "shadow-[0_10px_40px_rgba(16,24,32,0.08)]"
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-3">
         <Link to="/" className="flex items-center">
-          <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
+          <img src="/skenis-logo.png" alt="Skenis" className="h-12 w-auto" />
         </Link>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-sm font-medium text-slate-700 md:flex">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 rounded-full border border-line bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur lg:flex">
           {navLinks.map((item) =>
             item.route ? (
               <Link key={item.href} to={item.href} className="transition hover:text-brand-700">
@@ -61,15 +63,15 @@ function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="/#uzsakymas"
-            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
+            className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-black text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
           >
-            Užsakyti
+            Gauti pasiūlymą
           </a>
           <button
             type="button"
             aria-label="Atidaryti meniu"
             onClick={() => setOpen(true)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition hover:bg-gray-100 md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/70 text-ink shadow-sm transition hover:bg-white lg:hidden"
           >
             <Menu className="h-5 w-5" aria-hidden />
           </button>
@@ -85,36 +87,36 @@ function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-50 bg-ink/45 backdrop-blur-sm lg:hidden"
               onClick={() => setOpen(false)}
             />
             <motion.aside
               key="sheet"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-y-0 right-0 z-50 flex w-[85%] max-w-sm flex-col bg-white p-6 shadow-2xl md:hidden"
+              initial={{ opacity: 0, y: -18, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -18, scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              className="fixed inset-x-3 top-3 z-50 flex max-h-[calc(100vh-1.5rem)] flex-col overflow-y-auto rounded-[2rem] border border-white/80 bg-white/95 p-5 shadow-2xl backdrop-blur-xl lg:hidden"
             >
               <div className="flex items-center justify-between">
-               <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
+               <img src="/skenis-logo.png" alt="Skenis" className="h-12 w-auto" />
                 <button
                   type="button"
                   aria-label="Uždaryti meniu"
                   onClick={() => setOpen(false)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition hover:bg-gray-100"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition hover:bg-gray-100"
                 >
                   <X className="h-5 w-5" aria-hidden />
                 </button>
               </div>
-              <nav className="mt-8 flex flex-col gap-1">
+              <nav className="mt-7 grid gap-2">
                 {navLinks.map((item) =>
                   item.route ? (
                     <Link
                       key={item.href}
                       to={item.href}
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition hover:bg-gray-50 hover:text-brand-700"
+                      className="rounded-2xl border border-line bg-white px-4 py-3 text-base font-black text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
                     >
                       {item.label}
                     </Link>
@@ -123,7 +125,7 @@ function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition hover:bg-gray-50 hover:text-brand-700"
+                      className="rounded-2xl border border-line bg-white px-4 py-3 text-base font-black text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
                     >
                       {item.label}
                     </a>
@@ -133,10 +135,13 @@ function Navbar() {
               <a
                 href="/#uzsakymas"
                 onClick={() => setOpen(false)}
-                className="mt-6 inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                className="mt-5 inline-flex items-center justify-center rounded-full bg-ink px-5 py-4 text-sm font-black text-white shadow-lg shadow-black/10 transition hover:bg-black"
               >
-                Užsakyti
+                Gauti pasiūlymą
               </a>
+              <p className="mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-6 text-brand-800">
+                NFC + QR kortelės su keičiama nuoroda, individualiais kodais ir skenavimų statistika.
+              </p>
             </motion.aside>
           </>
         )}
@@ -171,16 +176,16 @@ function Footer() {
   return (
     <footer className="relative bg-ink text-white">
       
-      <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1fr_auto]">
+      <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[1fr_auto]">
         <div>
           <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto brightness-0 invert" />
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
-            Programuojamos akrilinės QR kortelės ir stendai realiems klientų
-            atsiliepimams rinkti.
+            NFC + QR kortelės realiems klientų Google atsiliepimams rinkti su
+            keičiama nuoroda, individualiais kodais ir skenavimų statistika.
           </p>
           <p className="mt-4 text-xs leading-5 text-slate-400">
-            Google yra atitinkamo savininko prekės ženklas. Skenis nėra susijęs
-            su Google.
+            Skenis nėra oficialus Google produktas. Google yra Google LLC prekės ženklas.
+            Kortelė nukreipia į įmonės Google atsiliepimų puslapį.
           </p>
         </div>
         <nav className="grid gap-2 text-sm text-slate-300">
