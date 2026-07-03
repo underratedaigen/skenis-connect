@@ -175,6 +175,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
 function Footer() {
   return (
     <footer data-sticky-hide className="relative bg-ink pb-[env(safe-area-inset-bottom)] text-white">
+      <div className="h-1 w-full bg-[linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335)] opacity-80" aria-hidden />
       
       <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-12 pb-16 md:grid-cols-[1fr_auto] md:pb-12">
         <div>
