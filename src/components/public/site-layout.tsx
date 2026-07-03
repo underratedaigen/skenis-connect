@@ -185,7 +185,7 @@ function Footer() {
             keičiama nuoroda, individualiais kodais ir skenavimų statistika.
           </p>
           <p className="mt-4 text-xs leading-5 text-slate-400">
-            Skenis nėra oficialus Google produktas. Google yra Google LLC prekės ženklas.
+            Skenis nėra oficialus Google produktas. Google yra Google LLC prekių ženklas.
             Kortelė nukreipia į įmonės Google atsiliepimų puslapį.
           </p>
         </div>

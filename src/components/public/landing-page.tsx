@@ -290,32 +290,32 @@ const faqItems = [
   {
     question: "Ar kortelė veikia su iPhone ir Android?",
     answer:
-      "Taip. NFC veikia daugelyje šiuolaikinių telefonų, o QR kodas veikia kaip universalus alternatyvus būdas."
+      "Taip. NFC veikia daugumoje naujesnių telefonų, o QR kodas veikia kaip atsarginis būdas visiems telefonams su kamera."
   },
   {
     question: "Kas jei klientas nenori naudoti NFC?",
     answer:
-      "Klientas gali tiesiog nuskaityti QR kodą."
+      "Jis gali nuskaityti QR kodą. Kortelėje yra abu būdai."
   },
   {
     question: "Ar galima turėti skirtingus kodus filialams?",
     answer:
-      "Taip. Skirtingoms vietoms, filialams ar zonoms galima naudoti individualius kodus."
+      "Taip. Korteles galima priskirti skirtingoms vietoms, filialams ar zonoms."
   },
   {
     question: "Ar matysiu skenavimų statistiką?",
     answer:
-      "Taip. Galima sekti kortelių skenavimo aktyvumą."
+      "Taip. Galima matyti kortelių aktyvumą ir suprasti, kurios vietos naudojamos geriausiai."
   },
   {
     question: "Kiek laiko trunka gamyba?",
     answer:
-      "Terminą patikslinsime pateikę pasiūlymą, nes jis priklauso nuo kiekio, maketo ir gamybos eigos."
+      "Gamybos terminas priklauso nuo kiekio. Pateikus užklausą atsiųsime tikslų terminą."
   },
   {
     question: "Ar tai oficialus Google produktas?",
     answer:
-      "Ne. Skenis nėra susijęs su Google. Kortelė nukreipia į jūsų įmonės Google atsiliepimų puslapį, o Google yra atitinkamo savininko prekės ženklas."
+      "Ne. Skenis nėra oficialus Google produktas. Kortelė nukreipia į jūsų įmonės Google atsiliepimų puslapį."
   }
 ];
 
@@ -345,11 +345,13 @@ function Reveal({
   delay?: number;
 }) {
   const reduced = useReducedMotion();
+  const isMobile = useIsMobile();
+  const shouldAnimate = !reduced && !isMobile;
 
   return (
     <motion.div
-      initial={reduced ? false : { opacity: 0, y: 26 }}
-      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+      initial={shouldAnimate ? { opacity: 0, y: 26 } : false}
+      whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.62, delay, ease }}
       className={className}
@@ -694,21 +696,25 @@ function ProblemSolution() {
             Jei klientui reikia ieškoti jūsų Google profilio, rasti tinkamą vietą ir prisiminti tai padaryti vėliau - dalis atsiliepimų dingsta.
           </p>
           <div className="mt-5 grid gap-2 sm:mt-7 sm:gap-3">
-            {oldFlow.map((step, index) => (
+            {oldFlow.map((step, index) => {
+              const accent = index < 2 ? googleAccents[3] : googleAccents[2];
+
+              return (
               <motion.div
                 key={step}
                 initial={{ opacity: 0, x: -12 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.38, delay: index * 0.06, ease }}
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 sm:px-4 sm:py-3"
+                className={cn("flex items-center gap-3 rounded-2xl border bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 sm:px-4 sm:py-3", accent.border)}
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full", accent.bg, accent.text)}>
                   {index + 1}
                 </span>
                 {step}
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </Reveal>
 
@@ -723,7 +729,10 @@ function ProblemSolution() {
             Kortelė stovi ten, kur klientas ką tik gavo paslaugą. Jis paliečia NFC arba nuskaito QR ir iškart patenka į atsiliepimo puslapį.
           </p>
           <div className="mt-5 grid gap-2 sm:mt-7 sm:gap-3">
-            {skenisFlow.map((step, index) => (
+            {skenisFlow.map((step, index) => {
+              const accent = index === 0 ? googleAccents[0] : googleAccents[1];
+
+              return (
               <motion.div
                 key={step}
                 initial={{ opacity: 0, x: 12 }}
@@ -732,12 +741,13 @@ function ProblemSolution() {
                 transition={{ duration: 0.38, delay: index * 0.07, ease }}
                 className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-3 py-2.5 text-sm font-semibold text-slate-100 sm:px-4 sm:py-3"
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white">
+                <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white", accent.bar)}>
                   <Check className="h-4 w-4" aria-hidden />
                 </span>
                 {step}
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </Reveal>
       </div>
@@ -969,17 +979,40 @@ function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Pasirinkite kiekį. Google atsiliepimų nuorodą galėsite priskirti dabar arba po gamybos.
           </p>
-          <div className="mt-5 rounded-[1.5rem] border border-white/80 bg-white/70 p-2.5 shadow-[0_24px_90px_rgba(16,24,32,0.1)] backdrop-blur sm:mt-7 sm:rounded-[2rem] sm:p-3">
-            <img
-              src={productPhotos[1].src}
-              alt={productPhotos[1].alt}
-              width={1280}
-              height={1024}
-              loading="lazy"
-              decoding="async"
-              className="aspect-[1.25/1] rounded-[1.5rem] object-cover"
-              draggable={false}
-            />
+          <div className="mt-5 rounded-[1.5rem] border border-white/80 bg-white/75 p-4 shadow-[0_24px_90px_rgba(16,24,32,0.1)] backdrop-blur sm:mt-7 sm:rounded-[2rem] sm:p-5">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Po užklausos</p>
+            <div className="mt-4 grid gap-3">
+              {[
+                {
+                  title: "Patiksliname kainą",
+                  text: "Įvertiname kiekį, maketą ir gamybos terminą.",
+                  icon: ClipboardCheck,
+                  accent: googleAccents[0]
+                },
+                {
+                  title: "Paruošiame gamybai",
+                  text: "Kortelės gauna nuolatines Skenis nuorodas.",
+                  icon: Factory,
+                  accent: googleAccents[2]
+                },
+                {
+                  title: "Priskiriate Google nuorodą",
+                  text: "Galutinį adresą galima keisti ir po gamybos.",
+                  icon: Link2,
+                  accent: googleAccents[1]
+                }
+              ].map((item) => (
+                <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-line bg-white p-3">
+                  <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border", item.accent.bg, item.accent.border, item.accent.icon)}>
+                    <item.icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-black text-ink">{item.title}</h3>
+                    <p className="mt-1 text-xs leading-5 text-slate-600">{item.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
 
@@ -1110,6 +1143,9 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
         Gauti pasiūlymą
         <ArrowRight className="ml-2 h-5 w-5" aria-hidden />
       </button>
+      <p className="mt-2 text-center text-xs font-medium leading-5 text-slate-500">
+        Atsakysime su galutine kaina ir gamybos terminu.
+      </p>
     </div>
   );
 }
@@ -1218,7 +1254,7 @@ function IndustryGrid() {
             </div>
           </Reveal>
 
-          <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
+          <div className="-mx-5 grid auto-cols-[82vw] grid-flow-col gap-3 overflow-x-auto px-5 pb-3 snap-x snap-mandatory sm:mx-0 sm:grid-flow-row sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0">
             {industries.map((industry, index) => (
               <Reveal key={industry.label} delay={index * 0.04}>
                 <button
@@ -1227,7 +1263,7 @@ function IndustryGrid() {
                   onMouseEnter={() => setActive(index)}
                   onFocus={() => setActive(index)}
                   className={cn(
-                    "group flex w-full items-start gap-3 rounded-2xl border p-3 text-left transition duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:min-h-28 sm:gap-4 sm:rounded-3xl sm:p-5",
+                    "group flex min-h-[148px] w-full snap-start items-start gap-3 rounded-2xl border p-3 text-left transition duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:min-h-28 sm:gap-4 sm:rounded-3xl sm:p-5",
                     active === index
                       ? "border-[#4285F4]/50 bg-white shadow-[0_24px_80px_rgba(66,133,244,0.14)]"
                       : "border-line bg-white/70 hover:border-brand-200 hover:bg-white"
@@ -1250,6 +1286,7 @@ function IndustryGrid() {
               </Reveal>
             ))}
           </div>
+          <p className="mt-1 text-center text-xs font-semibold text-slate-400 sm:hidden">Braukite per verslo tipus</p>
         </div>
       </div>
     </section>

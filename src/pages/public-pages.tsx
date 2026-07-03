@@ -4,14 +4,34 @@ import { PublicLayout } from "@/components/public/site-layout";
 import { LeadFormShell } from "@/components/public/lead-form-shell";
 import { SkenisLanding } from "@/components/public/landing-page";
 
-function useDocumentTitle(title: string) {
+const homeTitle = "Skenis – NFC + QR Google atsiliepimų kortelės su keičiama nuoroda";
+const homeDescription =
+  "Fizinės NFC + QR kortelės, kurios nukreipia klientus į jūsų Google atsiliepimų puslapį. Keičiama nuoroda, individualūs kodai ir skenavimų statistika.";
+const homeOgImage = "/images/skenis-product-perspective.jpg";
+
+function setMetaTag(selector: string, attribute: "content", value: string) {
+  const element = document.head.querySelector<HTMLMetaElement>(selector);
+
+  if (element) {
+    element.setAttribute(attribute, value);
+  }
+}
+
+function useDocumentTitle(title: string, description?: string) {
   useEffect(() => {
     document.title = title;
-  }, [title]);
+
+    if (description) {
+      setMetaTag('meta[name="description"]', "content", description);
+      setMetaTag('meta[property="og:title"]', "content", title);
+      setMetaTag('meta[property="og:description"]', "content", description);
+      setMetaTag('meta[property="og:image"]', "content", homeOgImage);
+    }
+  }, [description, title]);
 }
 
 export function HomePage() {
-  useDocumentTitle("NFC + QR kortelės Google atsiliepimams | Skenis");
+  useDocumentTitle(homeTitle, homeDescription);
 
   return (
     <PublicLayout>
