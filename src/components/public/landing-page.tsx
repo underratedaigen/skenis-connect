@@ -73,7 +73,7 @@ const workSteps: {
   },
   {
     title: "Paruošiame gamybai",
-    text: "QR partija eksportuojama su tokenais, pastabomis ir gamintojo failais.",
+    text: "Kortelių grupė paruošiama su unikaliomis nuorodomis ir gamybos pastabomis.",
     icon: Factory
   },
   {
@@ -92,7 +92,7 @@ const comparisonRows = [
   {
     label: "Nuorodos kontrolė",
     basic: "Nuoroda dažniausiai fiksuota po spausdinimo.",
-    skenis: "Galutinę Google review nuorodą galima keisti vėliau."
+    skenis: "Galutinę Google atsiliepimų nuorodą galima keisti vėliau."
   },
   {
     label: "Statistika",
@@ -112,7 +112,7 @@ const comparisonRows = [
   {
     label: "Verslo kontrolė",
     basic: "Mažiau lankstumo po pagaminimo.",
-    skenis: "Valdoma sistema verslui: statusai, redirectai ir aktyvumas."
+    skenis: "Valdoma sistema verslui: statusai, nukreipimai ir aktyvumas."
   }
 ];
 
@@ -132,19 +132,19 @@ const benefitCards: {
     icon: Smartphone
   },
   {
-    title: "Valdoma nuoroda",
+    title: "Keičiama nuoroda",
     text: "Fizinė kortelė lieka ta pati, o galutinį adresą galite koreguoti vėliau.",
     icon: Link2
-  },
-  {
-    title: "Individualūs kodai",
-    text: "Kiekviena kortelė gali turėti savo unikalią nuorodą.",
-    icon: QrCode
   },
   {
     title: "Skenavimų statistika",
     text: "Matykite kortelių aktyvumą ir supraskite, kur jos veikia geriausiai.",
     icon: BarChart3
+  },
+  {
+    title: "Individualūs kodai",
+    text: "Kiekviena kortelė gali turėti savo unikalią nuorodą.",
+    icon: QrCode
   },
   {
     title: "Tinka kelioms vietoms",
@@ -159,34 +159,24 @@ const trustCards: {
   icon: LucideIcon;
 }[] = [
   {
-    title: "Paruošta gamybai",
-    text: "Partijos gali būti paruoštos su trumpomis nuorodomis ir gamintojo pastabomis.",
-    icon: Factory
+    title: "Be netikrų pažadų",
+    text: "Skenis padeda paprašyti realaus atsiliepimo, ne imituoti reputaciją.",
+    icon: ShieldCheck
   },
   {
-    title: "Individualūs kodai",
-    text: "Kiekvienas fizinis gaminys gali turėti savo tokeną ir statusą.",
-    icon: QrCode
+    title: "Be klaidinančios partnerystės",
+    text: "Aiškiai nurodoma, kad Skenis nėra oficialus Google produktas.",
+    icon: BadgeCheck
   },
   {
     title: "Valdoma nuoroda",
-    text: "Galutinis Google review adresas gali būti keičiamas administracijoje.",
+    text: "Galutinis Google atsiliepimų adresas gali būti keičiamas administracijoje.",
     icon: Link2
   },
   {
-    title: "Skenavimų statistika",
-    text: "Matomas aktyvumas padeda suprasti, kurios vietos veikia geriausiai.",
+    title: "Aiški statistika",
+    text: "Matomas aktyvumas padeda suprasti, kur kortelės naudojamos.",
     icon: BarChart3
-  },
-  {
-    title: "NFC + QR",
-    text: "Klientui paliekami du patogūs būdai pasiekti atsiliepimo puslapį.",
-    icon: Nfc
-  },
-  {
-    title: "Kelioms lokacijoms",
-    text: "Atskiri kodai filialams, kabinetams ar paslaugų zonoms.",
-    icon: Building2
   }
 ];
 
@@ -265,7 +255,7 @@ const faqItems = [
   {
     question: "Ar galima pakeisti Google nuorodą po gamybos?",
     answer:
-      "Taip. Ant fizinės kortelės lieka nuolatinė Skenis nuoroda, o galutinį Google review adresą galima pakeisti administracijoje."
+      "Taip. Ant fizinės kortelės lieka nuolatinė Skenis nuoroda, o galutinį Google atsiliepimų adresą galima pakeisti administracijoje."
   },
   {
     question: "Ar kortelė veikia su iPhone ir Android?",
@@ -280,7 +270,7 @@ const faqItems = [
   {
     question: "Ar galima turėti skirtingus kodus filialams?",
     answer:
-      "Taip. Kiekviena kortelė ar stendas gali turėti individualų tokeną, įmonės informaciją, statusą ir galutinę nuorodą."
+      "Taip. Kiekvienai kortelei galima sugeneruoti individualų kodą ir priskirti jį konkrečiai vietai ar filialui."
   },
   {
     question: "Ar matysiu skenavimų statistiką?",
@@ -405,7 +395,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
   };
 
   return (
-    <section className="relative isolate overflow-hidden px-5 py-5 sm:py-9 lg:py-6">
+    <section data-hero className="relative isolate overflow-hidden px-5 py-4 sm:py-9 lg:py-6">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_18%,rgba(28,155,141,0.24),transparent_34%),radial-gradient(circle_at_18%_8%,rgba(47,111,219,0.14),transparent_30%),linear-gradient(180deg,#ffffff_0%,#f2fbfa_62%,#ffffff_100%)]" />
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.22] [background-image:linear-gradient(rgba(16,24,32,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(16,24,32,0.08)_1px,transparent_1px)] [background-size:44px_44px]" />
 
@@ -426,9 +416,9 @@ function Hero({ onOrder }: { onOrder: () => void }) {
             variants={fade}
             initial="hidden"
             animate="show"
-            className="mt-5 max-w-4xl text-[2rem] font-black leading-[1.08] tracking-tight text-ink sm:text-6xl sm:leading-none lg:text-[3.45rem] lg:leading-[1.02]"
+            className="mt-4 max-w-4xl text-[2rem] font-black leading-[1.08] tracking-tight text-ink sm:mt-5 sm:text-6xl sm:leading-none lg:text-[3.45rem] lg:leading-[1.02]"
           >
-            Daugiau Google atsiliepimų iš klientų, kurie jau stovi prieš jus
+            Daugiau Google atsiliepimų iš klientų, kurie jau yra pas jus
           </motion.h1>
 
           <motion.p
@@ -436,10 +426,10 @@ function Hero({ onOrder }: { onOrder: () => void }) {
             variants={fade}
             initial="hidden"
             animate="show"
-            className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-lg sm:leading-8"
+            className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8"
           >
-            Padėkite kortelę prie kasos, ant stalo ar registratūroje. Klientas paliečia
-            NFC arba nuskaito QR ir iškart patenka į jūsų Google atsiliepimo puslapį.
+            Padėkite NFC + QR kortelę ten, kur klientas ką tik gavo paslaugą.
+            Vienas palietimas arba QR skenavimas - ir jis atsiduria jūsų Google atsiliepimų puslapyje.
           </motion.p>
 
           <motion.div
@@ -447,7 +437,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
             variants={fade}
             initial="hidden"
             animate="show"
-            className="mt-6 flex flex-row gap-2 sm:gap-3"
+            className="mt-5 flex flex-row gap-2 sm:mt-6 sm:gap-3"
           >
             <button
               type="button"
@@ -459,7 +449,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
             </button>
             <a href="#kaip-veikia" className="button-secondary flex-1 rounded-full px-3 py-3 text-center text-[13px] sm:flex-none sm:px-7 sm:py-4 sm:text-base">
-              Pažiūrėti kaip veikia
+              Kaip veikia?
             </a>
           </motion.div>
 
@@ -468,7 +458,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
             variants={fade}
             initial="hidden"
             animate="show"
-            className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3"
+            className="mt-5 hidden grid-cols-2 gap-2 sm:grid sm:grid-cols-4 sm:gap-3"
           >
             {proofItems.map((item) => (
               <div
@@ -480,6 +470,16 @@ function Hero({ onOrder }: { onOrder: () => void }) {
               </div>
             ))}
           </motion.div>
+
+          <motion.p
+            custom={4.5}
+            variants={fade}
+            initial="hidden"
+            animate="show"
+            className="mt-3 text-xs font-bold text-brand-800 sm:hidden"
+          >
+            NFC + QR • keičiama nuoroda • skenavimų statistika
+          </motion.p>
 
           <motion.p
             custom={5}
@@ -572,7 +572,7 @@ function ProductMockup() {
             <Star className="h-5 w-5 fill-brand-100" aria-hidden />
           </span>
           <div>
-            <p className="text-xs font-bold sm:text-sm">Google review</p>
+            <p className="text-xs font-bold sm:text-sm">Google atsiliepimas</p>
             <p className="mt-1 hidden text-xs leading-5 text-slate-300 sm:block">Klientas patenka tiesiai į atsiliepimo langą.</p>
           </div>
         </div>
@@ -637,18 +637,18 @@ function ProblemSolution() {
   const skenisFlow = ["Paliečia NFC arba QR", "Atsidaro atsiliepimo puslapis", "Palieka realų įvertinimą"];
 
   return (
-    <section className="bg-white px-5 py-16 sm:py-20">
+    <section className="bg-white px-5 py-10 sm:py-20">
       <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
-        <Reveal className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 sm:p-8">
+        <Reveal className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 sm:rounded-[2rem] sm:p-8">
           <p className="section-kicker">Problema</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+          <h2 className="mt-3 text-2xl font-black tracking-tight text-ink sm:mt-4 sm:text-4xl">
             Patenkinti klientai dažnai nepalieka atsiliepimo
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Reikia ieškoti įmonės Google, rasti tinkamą profilį ir prisiminti tai padaryti vėliau.
             Kuo daugiau žingsnių, tuo mažiau atsiliepimų.
           </p>
-          <div className="mt-7 grid gap-3">
+          <div className="mt-5 grid gap-2 sm:mt-7 sm:gap-3">
             {oldFlow.map((step, index) => (
               <motion.div
                 key={step}
@@ -656,7 +656,7 @@ function ProblemSolution() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.38, delay: index * 0.06, ease }}
-                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 sm:px-4 sm:py-3"
               >
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
                   {index + 1}
@@ -667,18 +667,19 @@ function ProblemSolution() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.08} className="rounded-[2rem] border border-brand-200 bg-ink p-6 text-white shadow-[0_28px_90px_rgba(16,24,32,0.24)] sm:p-8">
+        <Reveal delay={0.08} className="rounded-[1.5rem] border border-brand-200 bg-ink p-4 text-white shadow-[0_28px_90px_rgba(16,24,32,0.24)] sm:rounded-[2rem] sm:p-8">
           <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-100">
             Sprendimas
           </p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="mt-3 text-2xl font-black tracking-tight sm:mt-4 sm:text-4xl">
             Kortelė ten, kur klientui natūralu reaguoti
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-300">
+          <p className="mt-3 text-sm leading-6 text-slate-300 sm:mt-4 sm:text-base sm:leading-7">
             Padėkite Skenis kortelę ant stalo, prie kasos ar registratūroje.
             Klientas paliečia NFC arba nuskaito QR ir iškart atsiduria atsiliepimo puslapyje.
+            Tai ne triukas ir ne atlygis už įvertinimą - tik trumpesnis kelias iki realaus Google atsiliepimo.
           </p>
-          <div className="mt-7 grid gap-3">
+          <div className="mt-5 grid gap-2 sm:mt-7 sm:gap-3">
             {skenisFlow.map((step, index) => (
               <motion.div
                 key={step}
@@ -686,7 +687,7 @@ function ProblemSolution() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.38, delay: index * 0.07, ease }}
-                className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-4 py-3 text-sm font-semibold text-slate-100"
+                className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-3 py-2.5 text-sm font-semibold text-slate-100 sm:px-4 sm:py-3"
               >
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white">
                   <Check className="h-4 w-4" aria-hidden />
@@ -703,42 +704,42 @@ function ProblemSolution() {
 
 function HowItWorks() {
   return (
-    <section id="kaip-veikia" className="relative overflow-hidden bg-[#f7fbfb] px-5 py-16 sm:py-24">
+    <section id="kaip-veikia" className="relative overflow-hidden bg-[#f7fbfb] px-5 py-10 sm:py-24">
       <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_20%_30%,rgba(28,155,141,0.16),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(47,111,219,0.12),transparent_28%)]" />
       <div className="relative mx-auto max-w-7xl">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="section-kicker">Kaip veikia</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Vienas fizinis kodas. Lanksti nuoroda visam produkto gyvenimui.
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
-            Gamybai siunčiamas tik nuolatinis Skenis adresas. Galutinę Google review
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-lg sm:leading-7">
+            Gamybai siunčiamas tik nuolatinis Skenis adresas. Galutinę Google atsiliepimų
             nuorodą galite priskirti arba pakeisti vėliau.
           </p>
         </Reveal>
 
-        <div className="mt-10 rounded-[2rem] border border-brand-100 bg-white/80 p-4 shadow-[0_30px_100px_rgba(16,24,32,0.08)] backdrop-blur sm:p-6">
-          <div className="grid gap-4 lg:grid-cols-4">
+        <div className="mt-7 rounded-[1.5rem] border border-brand-100 bg-white/80 p-3 shadow-[0_30px_100px_rgba(16,24,32,0.08)] backdrop-blur sm:mt-10 sm:rounded-[2rem] sm:p-6">
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-4">
             {workSteps.map((step, index) => (
               <Reveal key={step.title} delay={index * 0.06}>
-                <div className="relative h-full rounded-3xl border border-line bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_22px_80px_rgba(28,155,141,0.18)]">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20">
-                    <step.icon className="h-6 w-6" aria-hidden />
+                <div className="relative h-full rounded-2xl border border-line bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_22px_80px_rgba(28,155,141,0.18)] sm:rounded-3xl sm:p-5">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20 sm:h-12 sm:w-12">
+                    <step.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden />
                   </span>
-                  <p className="mt-5 text-xs font-black uppercase tracking-[0.2em] text-brand-700">
+                  <p className="mt-4 text-[11px] font-black uppercase tracking-[0.18em] text-brand-700 sm:mt-5 sm:text-xs sm:tracking-[0.2em]">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-2 text-lg font-black text-ink">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
+                  <h3 className="mt-1 text-base font-black text-ink sm:mt-2 sm:text-lg">{step.title}</h3>
+                  <p className="mt-1 text-sm leading-5 text-slate-600 sm:mt-2 sm:leading-6">{step.text}</p>
                 </div>
               </Reveal>
             ))}
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-3xl border border-brand-100 bg-brand-50 p-4 text-sm font-semibold text-brand-800 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+          <div className="mt-4 grid gap-2 rounded-2xl border border-brand-100 bg-brand-50 p-3 text-sm font-semibold text-brand-800 sm:mt-5 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:rounded-3xl sm:p-4">
             <span className="break-all">https://skenis.lt/r/A7K92LQD</span>
             <ArrowRight className="hidden h-5 w-5 text-brand-700 sm:block" aria-hidden />
-            <span>jūsų Google review URL</span>
+            <span>jūsų Google atsiliepimų nuoroda</span>
           </div>
         </div>
       </div>
@@ -764,14 +765,14 @@ function ProductDetails() {
     },
     {
       title: "Valdoma nuoroda",
-      text: "Fizinėje kortelėje lieka Skenis trumpa nuoroda, o galutinį Google review adresą galima pakeisti vėliau.",
+      text: "Fizinėje kortelėje lieka Skenis trumpa nuoroda, o galutinį Google atsiliepimų adresą galima pakeisti vėliau.",
       icon: Link2
     }
   ];
 
   return (
-    <section id="produktas" className="bg-white px-5 py-16 sm:py-24">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+    <section id="produktas" className="bg-white px-5 py-10 sm:py-24">
+      <div className="mx-auto grid max-w-7xl gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <Reveal>
           <div className="relative rounded-[2.25rem] border border-line bg-slate-50 p-3 shadow-[0_28px_100px_rgba(16,24,32,0.10)]">
             <img
@@ -795,24 +796,24 @@ function ProductDetails() {
 
         <Reveal delay={0.08}>
           <p className="section-kicker">Produkto detalės</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Ne tik QR kodas. Fizinė kortelė su valdoma nuoroda.
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Kortelė atrodo kaip aiškus klientui skirtas produktas, bet už jos veikia
             trumpų nuorodų ir statistikos sistema.
           </p>
 
-          <div className="mt-8 grid gap-4">
+          <div className="mt-5 grid gap-3 sm:mt-8 sm:gap-4">
             {details.map((detail, index) => (
               <Reveal key={detail.title} delay={index * 0.05}>
-                <div className="flex gap-4 rounded-3xl border border-line bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_22px_80px_rgba(28,155,141,0.14)]">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
-                    <detail.icon className="h-6 w-6" aria-hidden />
+                <div className="flex gap-3 rounded-2xl border border-line bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_22px_80px_rgba(28,155,141,0.14)] sm:gap-4 sm:rounded-3xl sm:p-5">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 sm:h-12 sm:w-12">
+                    <detail.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden />
                   </span>
                   <div>
-                    <h3 className="text-lg font-black text-ink">{detail.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">{detail.text}</p>
+                    <h3 className="text-base font-black text-ink sm:text-lg">{detail.title}</h3>
+                    <p className="mt-1 text-sm leading-5 text-slate-600 sm:leading-6">{detail.text}</p>
                   </div>
                 </div>
               </Reveal>
@@ -826,20 +827,20 @@ function ProductDetails() {
 
 function ComparisonTable() {
   return (
-    <section id="privalumai" className="bg-white px-5 py-16 sm:py-24">
+    <section id="privalumai" className="bg-white px-5 py-10 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <Reveal className="max-w-3xl">
           <p className="section-kicker">Kodėl geriau nei paprastas QR</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Ne QR paveikslėlis. Valdoma atsiliepimų infrastruktūra.
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Paprastas QR yra statinis. Skenis kortelė veikia kaip fizinis produktas,
             bet valdoma kaip skaitmeninė sistema.
           </p>
         </Reveal>
 
-        <Reveal className="mt-10 overflow-hidden rounded-[2rem] border border-line bg-white shadow-[0_26px_90px_rgba(16,24,32,0.08)]">
+        <Reveal className="mt-7 overflow-hidden rounded-[1.5rem] border border-line bg-white shadow-[0_26px_90px_rgba(16,24,32,0.08)] sm:mt-10 sm:rounded-[2rem]">
           <div className="grid grid-cols-[1fr_1fr_1fr] bg-ink text-sm font-black text-white">
             <div className="p-4 sm:p-5">Funkcija</div>
             <div className="border-l border-white/10 p-4 sm:p-5">Paprastas QR</div>
@@ -864,22 +865,21 @@ function ComparisonTable() {
 
 function ProductsSection({ onOrder }: { onOrder: (type: string, quantity: number) => void }) {
   return (
-    <section id="produktai" className="relative overflow-hidden bg-[#f2fbfa] px-5 py-16 sm:py-24">
+    <section id="produktai" data-sticky-hide className="relative overflow-hidden bg-[#f2fbfa] px-5 py-10 sm:py-24">
       <span id="uzsakymas" className="absolute -top-28" aria-hidden />
       <span id="kaina" className="absolute top-10" aria-hidden />
       <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_72%_18%,rgba(28,155,141,0.22),transparent_32%),radial-gradient(circle_at_22%_74%,rgba(47,111,219,0.12),transparent_28%)]" />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div className="relative mx-auto grid max-w-7xl gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <Reveal>
           <p className="section-kicker">Produktai ir kaina</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Premium kortelė, kuri atrodo paprastai, bet valdoma iš sistemos
           </h2>
-          <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-            Pasirinkite kiekį, gaukite pasiūlymą ir priskirkite Google nuorodas tada,
-            kai kortelės jau paruoštos konkrečiam klientui ar vietai.
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
+            Pasirinkite kiekį. Google atsiliepimų nuorodą galėsite priskirti dabar arba po gamybos.
           </p>
-          <div className="mt-7 rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_24px_90px_rgba(16,24,32,0.1)] backdrop-blur">
+          <div className="mt-5 rounded-[1.5rem] border border-white/80 bg-white/70 p-2.5 shadow-[0_24px_90px_rgba(16,24,32,0.1)] backdrop-blur sm:mt-7 sm:rounded-[2rem] sm:p-3">
             <img
               src={productPhotos[1].src}
               alt={productPhotos[1].alt}
@@ -914,7 +914,7 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
   } = {
     value: "NFC_CARD",
     label: "NFC + QR Google atsiliepimų kortelė",
-    text: "Glossy akrilinė kortelė su NFC palietimu, QR atsarginiu keliu ir valdoma Skenis nuoroda.",
+    text: "Blizgi akrilinė kortelė su NFC palietimu, QR atsarginiu keliu ir valdoma Skenis nuoroda.",
     basePrice: 19.99,
     icon: Nfc
   };
@@ -925,46 +925,46 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
   const CurrentIcon = currentProduct.icon;
 
   return (
-    <div className="rounded-[2rem] border border-white/80 bg-white/[0.85] p-5 shadow-[0_35px_120px_rgba(16,24,32,0.16)] backdrop-blur-xl sm:p-6">
+    <div className="rounded-[1.5rem] border border-white/80 bg-white/[0.85] p-4 shadow-[0_28px_90px_rgba(16,24,32,0.14)] backdrop-blur-xl sm:rounded-[2rem] sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.22em] text-brand-700">Užsakymo modulis</p>
-          <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">Gaukite pasiūlymą</h3>
+          <h3 className="mt-1 text-xl font-black tracking-tight text-ink sm:text-2xl">Gaukite pasiūlymą</h3>
         </div>
-        <div className="rounded-2xl bg-ink px-3 py-2 text-right text-white">
+        <div className="shrink-0 rounded-2xl bg-ink px-3 py-2 text-right text-white">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-300">nuo</p>
           <p className="text-lg font-black">{unitPrice.toFixed(2)} €</p>
         </div>
       </div>
 
-      <div className="mt-6 rounded-3xl border border-brand-200 bg-brand-50 p-4">
-        <div className="flex items-center gap-4">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20">
-            <CurrentIcon className="h-7 w-7" aria-hidden />
+      <div className="mt-4 rounded-2xl border border-brand-200 bg-brand-50 p-3 sm:mt-6 sm:rounded-3xl sm:p-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20 sm:h-14 sm:w-14">
+            <CurrentIcon className="h-5 w-5 sm:h-7 sm:w-7" aria-hidden />
           </span>
           <div>
-            <h4 className="text-base font-black text-ink">{currentProduct.label}</h4>
-            <p className="mt-1 text-sm leading-6 text-slate-600">{currentProduct.text}</p>
+            <h4 className="text-sm font-black text-ink sm:text-base">{currentProduct.label}</h4>
+            <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">{currentProduct.text}</p>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold text-brand-800">
+        <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-brand-800 sm:mt-4">
           <span className="rounded-full border border-brand-200 bg-white px-3 py-1">NFC + QR</span>
           <span className="rounded-full border border-brand-200 bg-white px-3 py-1">Keičiama nuoroda</span>
           <span className="rounded-full border border-brand-200 bg-white px-3 py-1">Statistika</span>
         </div>
       </div>
 
-      <div className="mt-6 rounded-3xl border border-line bg-slate-50 p-4">
+      <div className="mt-4 rounded-2xl border border-line bg-slate-50 p-3 sm:mt-6 sm:rounded-3xl sm:p-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-black text-ink">Kiekis</p>
-          <p className="text-xs font-semibold text-slate-500">Didesniems kiekiams kaina mažėja</p>
+          <p className="text-xs font-semibold text-slate-500">Kiekio kaina mažėja</p>
         </div>
-        <div className="mt-4 flex items-center justify-between rounded-2xl border border-white bg-white p-3 shadow-sm">
+        <div className="mt-3 flex items-center justify-between rounded-2xl border border-white bg-white p-2 shadow-sm sm:mt-4 sm:p-3">
           <button
             type="button"
             onClick={() => setQuantity((value) => Math.max(1, value - 1))}
             aria-label="Sumažinti kiekį"
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white text-slate-700 transition hover:border-brand-400 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-slate-700 transition hover:border-brand-400 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 sm:h-12 sm:w-12"
           >
             <Minus className="h-5 w-5" aria-hidden />
           </button>
@@ -976,7 +976,7 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.86, opacity: 0 }}
                 transition={{ duration: 0.18 }}
-                className="text-5xl font-black tracking-tight text-ink"
+                  className="text-4xl font-black tracking-tight text-ink sm:text-5xl"
               >
                 {quantity}
               </motion.p>
@@ -987,35 +987,34 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
             type="button"
             onClick={() => setQuantity((value) => Math.min(500, value + 1))}
             aria-label="Padidinti kiekį"
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white text-slate-700 transition hover:border-brand-400 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-slate-700 transition hover:border-brand-400 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 sm:h-12 sm:w-12"
           >
             <Plus className="h-5 w-5" aria-hidden />
           </button>
         </div>
       </div>
 
-      <div className="mt-5 rounded-3xl bg-ink p-5 text-white">
+      <div className="mt-4 rounded-2xl bg-ink p-4 text-white sm:mt-5 sm:rounded-3xl sm:p-5">
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Iš viso</p>
-            <p className="mt-1 text-4xl font-black">{totalPrice.toFixed(2)} €</p>
+            <p className="mt-1 text-3xl font-black sm:text-4xl">{totalPrice.toFixed(2)} €</p>
             <p className="mt-1 text-sm text-slate-300">{unitPrice.toFixed(2)} € / vnt.</p>
           </div>
           <BadgeCheck className="h-10 w-10 text-brand-100" aria-hidden />
         </div>
-        <div className="mt-5 grid gap-2 text-sm text-slate-300">
-          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />NFC + QR vienoje kortelėje</p>
-          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Keičiama Google review nuoroda</p>
-          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Individualus trumpas Skenis linkas</p>
+        <div className="mt-4 grid gap-2 text-xs text-slate-300 sm:mt-5 sm:text-sm">
+          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />NFC + QR</p>
+          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Keičiama nuoroda</p>
+          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Unikali Skenis nuoroda</p>
           <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Skenavimų statistika</p>
-          <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Paruošta naudoti jūsų versle</p>
         </div>
       </div>
 
       <button
         type="button"
         onClick={() => onOrder(selectedType, quantity)}
-        className="button-primary mt-5 w-full rounded-2xl py-4 text-base"
+        className="button-primary mt-4 w-full rounded-2xl py-3 text-sm sm:mt-5 sm:py-4 sm:text-base"
         data-cursor="magnetic"
       >
         Gauti pasiūlymą
@@ -1027,27 +1026,27 @@ function OrderCard({ onOrder }: { onOrder: (type: string, quantity: number) => v
 
 function BenefitsSection() {
   return (
-    <section className="bg-white px-5 py-16 sm:py-24">
+    <section className="bg-white px-5 py-10 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="section-kicker">Privalumai</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Sukurta verslams, kuriems svarbi reputacija
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Skenis padeda paprašyti atsiliepimo tiksliai tada, kai klientas ką tik gavo paslaugą.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {benefitCards.map((card, index) => (
             <Reveal key={card.title} delay={index * 0.04}>
-              <div className="group h-full rounded-3xl border border-line bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_26px_90px_rgba(16,24,32,0.10)]">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white">
-                  <card.icon className="h-6 w-6" aria-hidden />
+              <div className="group h-full rounded-2xl border border-line bg-white p-3 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_26px_90px_rgba(16,24,32,0.10)] sm:rounded-3xl sm:p-6">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white sm:h-12 sm:w-12 sm:rounded-2xl">
+                  <card.icon className="h-4 w-4 sm:h-6 sm:w-6" aria-hidden />
                 </span>
-                <h3 className="mt-5 text-xl font-black text-ink">{card.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{card.text}</p>
+                <h3 className="mt-3 text-sm font-black leading-tight text-ink sm:mt-5 sm:text-xl">{card.title}</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">{card.text}</p>
               </div>
             </Reveal>
           ))}
@@ -1059,27 +1058,31 @@ function BenefitsSection() {
 
 function TrustSection() {
   return (
-    <section className="bg-white px-5 py-16 sm:py-24">
+    <section className="bg-white px-5 py-8 sm:py-16">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="section-kicker">Kodėl verslai renkasi Skenis</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
-            Aiškus produktas, lanksti sistema, mažiau rankinio darbo
+          <h2 className="mt-3 text-[1.75rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
+            Aiškus produktas be klaidinančių pažadų
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            Be netikrų pažadų ir be klaidinančių logotipų. Tik elementai, kurie padeda realiai valdyti atsiliepimų kelią.
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
+            Padeda paprašyti realaus atsiliepimo tinkamu momentu, ne kurti dirbtinį įspūdį.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-2 sm:mt-10 sm:gap-4 lg:grid-cols-4">
           {trustCards.map((card, index) => (
             <Reveal key={card.title} delay={index * 0.05}>
-              <div className="h-full rounded-3xl border border-line bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_26px_80px_rgba(16,24,32,0.1)]">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
-                  <card.icon className="h-6 w-6" aria-hidden />
-                </span>
-                <h3 className="mt-5 text-lg font-black text-ink">{card.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{card.text}</p>
+              <div className="h-full rounded-2xl border border-line bg-white p-3 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_20px_60px_rgba(16,24,32,0.08)] sm:rounded-3xl sm:p-4">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 sm:h-10 sm:w-10">
+                    <card.icon className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-black leading-tight text-ink sm:text-base">{card.title}</h3>
+                    <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">{card.text}</p>
+                  </div>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -1094,18 +1097,18 @@ function IndustryGrid() {
   const ActiveIcon = industries[active].icon;
 
   return (
-    <section id="kam-tinka" className="bg-[#f7fbfb] px-5 py-16 sm:py-24">
+    <section id="kam-tinka" className="bg-[#f7fbfb] px-5 py-10 sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div className="grid gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <Reveal>
             <p className="section-kicker">Kam tinka</p>
-            <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+            <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
               Kam tinka?
             </h2>
-            <p className="mt-4 text-base leading-7 text-slate-600">
+            <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
               Geriausiai veikia ten, kur klientas ką tik gavo paslaugą, pirko produktą arba laukia vietoje.
             </p>
-            <div className="mt-7 rounded-3xl border border-brand-100 bg-white p-5 shadow-sm">
+            <div className="mt-7 hidden rounded-3xl border border-brand-100 bg-white p-5 shadow-sm lg:block">
               <ActiveIcon className="h-8 w-8 text-brand-700" aria-hidden />
               <h3 className="mt-4 text-xl font-black text-ink">{industries[active].label}</h3>
               <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-brand-700">
@@ -1115,7 +1118,7 @@ function IndustryGrid() {
             </div>
           </Reveal>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
             {industries.map((industry, index) => (
               <Reveal key={industry.label} delay={index * 0.04}>
                 <button
@@ -1124,21 +1127,24 @@ function IndustryGrid() {
                   onMouseEnter={() => setActive(index)}
                   onFocus={() => setActive(index)}
                   className={cn(
-                    "group flex min-h-28 w-full items-center gap-4 rounded-3xl border p-5 text-left transition duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2",
+                    "group flex w-full items-start gap-3 rounded-2xl border p-3 text-left transition duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:min-h-28 sm:gap-4 sm:rounded-3xl sm:p-5",
                     active === index
                       ? "border-brand-400 bg-white shadow-[0_24px_80px_rgba(28,155,141,0.16)]"
                       : "border-line bg-white/70 hover:border-brand-200 hover:bg-white"
                   )}
                 >
                   <span className={cn(
-                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition",
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl transition sm:h-12 sm:w-12",
                     active === index ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700"
                   )}>
-                    <industry.icon className="h-6 w-6" aria-hidden />
+                    <industry.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden />
                   </span>
                   <span>
-                    <span className="block text-base font-black text-ink">{industry.label}</span>
+                    <span className="block text-sm font-black text-ink sm:text-base">{industry.label}</span>
                     <span className="mt-1 block text-xs leading-5 text-slate-500">{industry.placement}</span>
+                    {active === index ? (
+                      <span className="mt-2 block text-xs leading-5 text-brand-800 lg:hidden">{industry.example}</span>
+                    ) : null}
                   </span>
                 </button>
               </Reveal>
@@ -1152,29 +1158,27 @@ function IndustryGrid() {
 
 function UseCases() {
   return (
-    <section className="bg-white px-5 py-16 sm:py-24">
+    <section className="bg-white px-5 py-10 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="section-kicker">Naudojimo scenarijai</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Aiškus kelias nuo aptarnavimo iki atsiliepimo
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Kortelė turi būti ten, kur klientui natūraliausia sureaguoti - ne vėliau, ne po priminimo, o vietoje.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-4">
+        <div className="mt-7 grid auto-cols-[minmax(210px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-2 sm:mt-10 sm:grid-flow-row sm:grid-cols-2 sm:overflow-visible md:grid-cols-4">
           {useCases.map((useCase, index) => (
             <Reveal key={useCase.title} delay={index * 0.05}>
-              <div className="group h-full overflow-hidden rounded-3xl border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_26px_90px_rgba(16,24,32,0.1)]">
-                <div className="h-28 bg-[radial-gradient(circle_at_30%_30%,rgba(28,155,141,0.30),transparent_42%),linear-gradient(135deg,#101820,#143e43)] p-5 text-white">
-                  <useCase.icon className="h-8 w-8 text-brand-100" aria-hidden />
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-black text-ink">{useCase.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{useCase.text}</p>
-                </div>
+              <div className="group h-full min-w-[210px] rounded-2xl border border-line bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_26px_90px_rgba(16,24,32,0.1)] sm:min-w-0 sm:rounded-3xl sm:p-5">
+                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#101820,#143e43)] text-brand-100">
+                  <useCase.icon className="h-5 w-5" aria-hidden />
+                </span>
+                <h3 className="mt-4 text-base font-black text-ink sm:text-lg">{useCase.title}</h3>
+                <p className="mt-2 text-sm leading-5 text-slate-600 sm:leading-6">{useCase.text}</p>
               </div>
             </Reveal>
           ))}
@@ -1188,46 +1192,44 @@ function AdminSystemPreview() {
   const rows = [
     { token: "A7K92LQD", status: "Aktyvi", place: "Vilniaus filialas" },
     { token: "8fK29xQp", status: "Priskiriama", place: "Registratūra" },
-    { token: "Q4L8N2RS", status: "Paruošta", place: "Gamybos partija" }
+    { token: "Q4L8N2RS", status: "Paruošta", place: "Kortelių grupė" }
   ];
 
   return (
-    <section className="relative overflow-hidden bg-ink px-5 py-16 text-white sm:py-24">
+    <section className="relative overflow-hidden bg-ink px-5 py-12 text-white sm:py-24">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(28,155,141,0.26),transparent_32%),radial-gradient(circle_at_18%_80%,rgba(47,111,219,0.18),transparent_30%)]" />
-      <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div className="relative mx-auto grid max-w-7xl gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <Reveal>
           <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-100">
             Valdoma sistema
           </p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight sm:mt-4 sm:text-5xl">
             Fizinis produktas, kurį galite valdyti
           </h2>
-          <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">
-            Kiekviena kortelė turi nuolatinį Skenis adresą. Galutinę Google review
-            nuorodą galite keisti, korteles priskirti vietoms ir sekti aktyvumą.
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 sm:mt-4 sm:text-base sm:leading-7">
+            Kiekviena kortelė turi nuolatinį Skenis adresą. Galutinę Google atsiliepimų nuorodą galite keisti vėliau.
           </p>
-          <div className="mt-7 grid gap-3 text-sm text-slate-300">
-            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Nuolatinė trumpa Skenis nuoroda kiekvienai kortelei</p>
-            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Keičiama galutinė Google review nuoroda</p>
-            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Priskyrimas įmonėms, vietoms ar filialams</p>
-            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Skenavimų aktyvumo stebėjimas</p>
+          <div className="mt-5 grid gap-2 text-sm text-slate-300 sm:mt-7 sm:gap-3">
+            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Keičiama galutinė nuoroda</p>
+            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Kortelių priskyrimas vietoms</p>
+            <p className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Skenavimų aktyvumas</p>
           </div>
         </Reveal>
 
         <Reveal delay={0.08}>
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-4 shadow-[0_34px_120px_rgba(0,0,0,0.28)] backdrop-blur">
-            <div className="rounded-[1.5rem] border border-white/10 bg-[#0b141a] p-4">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-3 shadow-[0_34px_120px_rgba(0,0,0,0.28)] backdrop-blur sm:rounded-[2rem] sm:p-4">
+            <div className="max-h-[380px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0b141a] p-3 sm:max-h-none sm:rounded-[1.5rem] sm:p-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3 sm:pb-4">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-brand-100">Skenis admin</p>
-                  <p className="mt-1 text-sm text-slate-400">Redirectų ir kortelių valdymas</p>
+                  <p className="mt-1 text-sm text-slate-400">Nuorodų ir kortelių valdymas</p>
                 </div>
                 <span className="rounded-full border border-brand-300/40 bg-brand-500/15 px-3 py-1 text-xs font-bold text-brand-100">
                   Sistema
                 </span>
               </div>
 
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="mt-3 grid gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-3">
                 {["Kortelės", "Nuorodos", "Aktyvumas"].map((label, index) => (
                   <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.06] p-3">
                     <p className="text-xs text-slate-400">{label}</p>
@@ -1244,9 +1246,9 @@ function AdminSystemPreview() {
                 ))}
               </div>
 
-              <div className="mt-4 overflow-hidden rounded-2xl border border-white/10">
+              <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 sm:mt-4">
                 {rows.map((row) => (
-                  <div key={row.token} className="grid grid-cols-[1fr_auto] gap-3 border-b border-white/10 bg-white/[0.04] p-4 text-sm last:border-b-0 sm:grid-cols-[1fr_1fr_auto]">
+                  <div key={row.token} className="grid grid-cols-[1fr_auto] gap-3 border-b border-white/10 bg-white/[0.04] p-3 text-sm last:border-b-0 sm:grid-cols-[1fr_1fr_auto] sm:p-4">
                     <span className="font-mono text-brand-100">/r/{row.token}</span>
                     <span className="hidden text-slate-300 sm:inline">{row.place}</span>
                     <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white">{row.status}</span>
@@ -1254,9 +1256,9 @@ function AdminSystemPreview() {
                 ))}
               </div>
 
-              <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 sm:mt-4 sm:p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Skenavimų aktyvumas</p>
-                <div className="mt-4 flex h-28 items-end gap-2">
+                <div className="mt-3 flex h-20 items-end gap-2 sm:mt-4 sm:h-28">
                   {[38, 58, 42, 76, 64, 88, 70, 92].map((height, index) => (
                     <motion.span
                       key={index}
@@ -1281,19 +1283,19 @@ function FAQSection() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section id="duk" className="bg-[#f7fbfb] px-5 py-16 sm:py-24">
+    <section id="duk" data-sticky-hide className="bg-[#f7fbfb] px-5 py-10 pb-14 sm:py-24">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.75fr_1.25fr]">
         <Reveal>
           <p className="section-kicker">DUK</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 text-[2rem] font-black leading-tight tracking-tight text-ink sm:mt-4 sm:text-5xl">
             Klausimai prieš užsakant
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
             Trumpi atsakymai apie nuorodas, NFC, QR, statistiką ir Google ryšį.
           </p>
         </Reveal>
 
-        <Reveal className="rounded-[2rem] border border-line bg-white p-2 shadow-[0_24px_90px_rgba(16,24,32,0.08)]">
+        <Reveal className="rounded-[1.5rem] border border-line bg-white p-1.5 shadow-[0_24px_90px_rgba(16,24,32,0.08)] sm:rounded-[2rem] sm:p-2">
           {faqItems.map((item, index) => {
             const active = open === index;
             return (
@@ -1302,7 +1304,7 @@ function FAQSection() {
                   type="button"
                   onClick={() => setOpen(active ? -1 : index)}
                   aria-expanded={active}
-                  className="flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-5 text-left text-base font-black text-ink transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="flex w-full items-center justify-between gap-3 rounded-2xl px-3 py-3.5 text-left text-sm font-black text-ink transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 sm:gap-4 sm:px-4 sm:py-5 sm:text-base"
                 >
                   <span>{item.question}</span>
                   <ChevronDown
@@ -1319,7 +1321,7 @@ function FAQSection() {
                       transition={{ duration: 0.24, ease }}
                       className="overflow-hidden"
                     >
-                      <p className="px-4 pb-5 text-sm leading-6 text-slate-600">{item.answer}</p>
+                      <p className="px-3 pb-4 text-sm leading-6 text-slate-600 sm:px-4 sm:pb-5">{item.answer}</p>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
@@ -1334,24 +1336,24 @@ function FAQSection() {
 
 function FinalCTA({ onOrder }: { onOrder: () => void }) {
   return (
-    <section className="relative overflow-hidden bg-ink px-5 py-16 text-white sm:py-24">
+    <section data-sticky-hide className="relative overflow-hidden bg-ink px-5 py-12 text-white sm:py-24">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_10%,rgba(28,155,141,0.30),transparent_34%),linear-gradient(180deg,#101820,#081015)]" />
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-10 lg:grid-cols-[1fr_0.78fr] lg:items-end">
+        <div className="grid gap-7 lg:grid-cols-[1fr_0.78fr] lg:items-end">
           <Reveal>
             <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-100">
               Finalinis žingsnis
             </p>
-            <h2 className="mt-5 max-w-4xl text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+            <h2 className="mt-4 max-w-4xl text-[2rem] font-black leading-tight tracking-tight sm:mt-5 sm:text-5xl lg:text-6xl">
               Paverskite kiekvieną patenkintą klientą potencialiu Google atsiliepimu
             </h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-              Kortelė pašalina paiešką, administracija leidžia keisti nuorodas, o jūs matote, kas realiai naudojama.
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-5 sm:text-lg sm:leading-7">
+              Padėkite kortelę ten, kur klientas ką tik gavo paslaugą. Vienas palietimas arba QR - ir kelias iki atsiliepimo aiškus.
             </p>
             <button
               type="button"
               onClick={onOrder}
-              className="button-light mt-8 rounded-full px-7 py-4 text-base"
+              className="button-light mt-6 rounded-full px-6 py-3 text-sm sm:mt-8 sm:px-7 sm:py-4 sm:text-base"
               data-cursor="magnetic"
             >
               Gauti pasiūlymą
@@ -1360,13 +1362,13 @@ function FinalCTA({ onOrder }: { onOrder: () => void }) {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur">
-              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                <FinalFact value="1 QR" label="nuolatinė Skenis nuoroda" />
-                <FinalFact value="2 būdai" label="NFC palietimas arba QR" />
-                <FinalFact value="30 d." label="aktyvumo langas sprendimams" />
+            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-4 backdrop-blur sm:rounded-[2rem] sm:p-5">
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                <FinalFact value="1 nuolatinė nuoroda" label="kortelė lieka ta pati" />
+                <FinalFact value="NFC arba QR" label="du aiškūs veiksmai klientui" />
+                <FinalFact value="Aiškus aktyvumas" label="matote skenavimų naudojimą" />
               </div>
-              <div className="mt-6 flex items-start gap-3 border-t border-white/10 pt-5">
+              <div className="mt-4 flex items-start gap-3 border-t border-white/10 pt-4 sm:mt-6 sm:pt-5">
                 <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand-100" aria-hidden />
                 <p className="text-xs leading-5 text-slate-400">
                   Skenis padeda patogiai paprašyti realių klientų palikti atsiliepimą.
@@ -1383,8 +1385,8 @@ function FinalCTA({ onOrder }: { onOrder: () => void }) {
 
 function FinalFact({ value, label }: { value: string; label: string }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.08] p-4">
-      <p className="text-3xl font-black text-white">{value}</p>
+    <div className="rounded-2xl border border-white/10 bg-white/[0.08] p-3 sm:rounded-3xl sm:p-4">
+      <p className="text-lg font-black leading-tight text-white sm:text-3xl">{value}</p>
       <p className="mt-1 text-sm leading-5 text-slate-300">{label}</p>
     </div>
   );
@@ -1400,24 +1402,43 @@ function StickyMobileCTA({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 260);
+    const isInHideZone = () => {
+      const zones = Array.from(document.querySelectorAll<HTMLElement>("[data-sticky-hide], footer"));
+
+      return zones.some((zone) => {
+        const rect = zone.getBoundingClientRect();
+        return rect.top < window.innerHeight - 64 && rect.bottom > 80;
+      });
+    };
+
+    const onScroll = () => {
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      const heroPassed = hero ? hero.getBoundingClientRect().bottom < 24 : window.scrollY > 420;
+      setVisible(heroPassed && !isInHideZone());
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
     <div
       className={cn(
-        "fixed inset-x-3 bottom-3 z-30 transition duration-300 md:hidden",
-        hidden || !visible ? "pointer-events-none translate-y-6 opacity-0" : "translate-y-0 opacity-100"
+        "fixed inset-x-4 bottom-2 z-30 mx-auto max-w-sm transition duration-300 md:hidden",
+        hidden || !visible ? "pointer-events-none translate-y-5 opacity-0" : "translate-y-0 opacity-100"
       )}
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.25rem)" }}
     >
       <button
         type="button"
         onClick={onOrder}
-        className="flex w-full items-center justify-center rounded-full bg-ink px-5 py-4 text-sm font-black text-white shadow-[0_20px_70px_rgba(16,24,32,0.28)]"
+        className="flex min-h-[44px] w-full items-center justify-center rounded-full bg-ink px-5 py-2.5 text-sm font-black text-white shadow-[0_16px_48px_rgba(16,24,32,0.26)]"
       >
         Gauti pasiūlymą
         <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
@@ -1470,12 +1491,12 @@ function OrderModal({
               Paruošime pasiūlymą pagal kiekį ir naudojimo vietas
             </h2>
             <p className="mt-4 text-sm leading-6 text-slate-300">
-              Parašykite kiekį, produkto tipą ir, jei turite, Google review nuorodą.
+              Parašykite kiekį, produkto tipą ir, jei turite, Google atsiliepimų nuorodą.
               Atsakysime su kaina, terminu ir gamybos eiga.
             </p>
             <div className="mt-6 grid gap-3 text-sm text-slate-300">
               <p className="flex gap-2"><ClipboardCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Individualios Skenis nuorodos kiekvienam gaminiui.</p>
-              <p className="flex gap-2"><Factory className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Partijos paruošimas gamintojui.</p>
+              <p className="flex gap-2"><Factory className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Kortelių grupės paruošimas gamintojui.</p>
               <p className="flex gap-2"><BarChart3 className="mt-0.5 h-4 w-4 shrink-0 text-brand-100" aria-hidden />Skenavimų statistika administracijoje.</p>
             </div>
           </div>
@@ -1540,7 +1561,7 @@ function OrderDrawer({
             </div>
             <div className="mt-4 flex-1 overflow-y-auto px-5 pb-8">
               <p className="text-sm leading-6 text-slate-600">
-                Parašykite kiekį, produkto tipą ir Google review nuorodą, jei ją jau turite.
+                Parašykite kiekį, produkto tipą ir Google atsiliepimų nuorodą, jei ją jau turite.
               </p>
               <div className="mt-5">
                 <LeadFormShell initialProductType={initialProductType} initialQuantity={initialQuantity} />

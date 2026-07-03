@@ -174,9 +174,9 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
 
 function Footer() {
   return (
-    <footer className="relative bg-ink text-white">
+    <footer data-sticky-hide className="relative bg-ink pb-[env(safe-area-inset-bottom)] text-white">
       
-      <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[1fr_auto]">
+      <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-12 pb-16 md:grid-cols-[1fr_auto] md:pb-12">
         <div>
           <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto brightness-0 invert" />
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">

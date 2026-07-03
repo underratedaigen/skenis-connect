@@ -110,7 +110,7 @@ export function LeadForm({
       </div>
 
       <label className="grid gap-2">
-        <span className="label">Google review nuoroda, jei jau turite</span>
+        <span className="label">Google atsiliepimų nuoroda, jei jau turite</span>
         <input
           className="input"
           name="googleReviewUrl"

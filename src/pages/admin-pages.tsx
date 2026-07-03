@@ -141,7 +141,7 @@ export function LoginPage() {
                 </p>
                 <p className="flex gap-3">
                   <Link2 aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-100" />
-                  Keiskite Google review nuorodą nekeisdami QR kodo.
+                  Keiskite Google atsiliepimų nuorodą nekeisdami QR kodo.
                 </p>
                 <p className="flex gap-3">
                   <ShieldCheck aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-brand-100" />
@@ -424,7 +424,7 @@ export function NewBatchPage() {
           </label>
 
           <div className="rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-brand-700">
-            Kiekvienas sugeneruotas tokenas taps nuolatine nuoroda formatu
+            Kiekvienas sugeneruotas unikalus kodas taps nuolatine nuoroda formatu
             https://skenis.lt/r/token. Vėliau keičiamas tik galutinis
             nukreipimo adresas.
           </div>
@@ -816,7 +816,7 @@ export function LinkDetailPage() {
         </div>
 
         <label className="grid gap-2">
-          <span className="admin-label">Google review URL</span>
+          <span className="admin-label">Google atsiliepimų URL</span>
           <input className="admin-input" name="destinationUrl" type="url" defaultValue={link.destinationUrl || ""} />
         </label>
 
@@ -1107,4 +1107,3 @@ export function BatchesPage() {
     </div>
   );
 }
-

@@ -33,7 +33,7 @@ export function ContactPage() {
               Pakalbėkime apie korteles jūsų verslui
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-              Parašykite kiekio poreikį, produkto tipą ir, jei turite, Google review
+              Parašykite kiekio poreikį, produkto tipą ir, jei turite, Google atsiliepimų
               nuorodą. Atsakysime su kaina, gamybos eiga ir terminu.
             </p>
           </div>
@@ -76,7 +76,7 @@ export function TermsPage() {
         <h1 className="text-4xl font-black tracking-tight text-ink">Taisyklės</h1>
         <p className="mt-6 leading-7">
           Skenis teikia programuojamų QR kortelių ir stendų gamybos bei
-          administravimo paslaugą. Klientas atsako už pateiktos Google review
+          administravimo paslaugą. Klientas atsako už pateiktos Google atsiliepimų
           nuorodos teisingumą ir teisėtą atsiliepimų rinkimo praktiką.
         </p>
         <p className="mt-4 leading-7">
