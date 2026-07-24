@@ -4,33 +4,7 @@ import { leadStatuses, productTypes, redirectStatuses } from "@/lib/types";
 export function isSafeGoogleReviewUrl(value: string) {
   try {
     const url = new URL(value.trim());
-    const host = url.hostname.toLowerCase();
-    const path = url.pathname.toLowerCase();
-
-    if (url.protocol !== "https:") return false;
-
-    if (host === "g.page") return path.length > 1;
-    if (host === "maps.app.goo.gl") return path.length > 1;
-
-    if (host === "search.google.com") {
-      return path.startsWith("/local/writereview");
-    }
-
-    const isGoogleHost =
-      host === "google.com" ||
-      host === "www.google.com" ||
-      host === "maps.google.com" ||
-      host.endsWith(".google.com");
-
-    if (!isGoogleHost) return false;
-
-    return (
-      host === "maps.google.com" ||
-      path.startsWith("/maps") ||
-      path.includes("/writereview") ||
-      url.searchParams.has("placeid") ||
-      url.searchParams.has("cid")
-    );
+    return url.protocol === "https:" || url.protocol === "http:";
   } catch {
     return false;
   }
@@ -46,7 +20,7 @@ export const optionalGoogleReviewUrlSchema = z
   .optional()
   .transform((value) => (value ? value : undefined))
   .refine((value) => !value || isSafeGoogleReviewUrl(value), {
-    message: "Įveskite saugią Google atsiliepimų arba Maps HTTPS nuorodą."
+    message: "Įveskite galiojantį HTTPS ar HTTP nuorodos adresą."
   });
 
 export const leadCreateSchema = z.object({
