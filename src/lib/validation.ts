@@ -20,7 +20,7 @@ export const optionalGoogleReviewUrlSchema = z
   .optional()
   .transform((value) => (value ? value : undefined))
   .refine((value) => !value || isSafeGoogleReviewUrl(value), {
-    message: "Įveskite saugią Google atsiliepimų arba Maps HTTPS nuorodą."
+    message: "Įveskite galiojantį HTTPS ar HTTP nuorodos adresą."
   });
 
 export const leadCreateSchema = z.object({
