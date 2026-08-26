@@ -139,9 +139,16 @@ function Navbar() {
                 )}
               </nav>
               <a
+                href="/kontaktai"
+                onClick={() => setOpen(false)}
+                className="mt-5 inline-flex items-center justify-center rounded-full border border-line bg-white px-5 py-4 text-sm font-black text-ink shadow-lg shadow-black/10 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
+              >
+                Kontaktai
+              </a>
+              <a
                 href="/#uzsakymas"
                 onClick={() => setOpen(false)}
-                className="mt-5 inline-flex items-center justify-center rounded-full bg-ink px-5 py-4 text-sm font-black text-white shadow-lg shadow-black/10 transition hover:bg-black"
+                className="mt-3 inline-flex items-center justify-center rounded-full bg-ink px-5 py-4 text-sm font-black text-white shadow-lg shadow-black/10 transition hover:bg-black"
               >
                 Gauti pasiūlymą
               </a>
