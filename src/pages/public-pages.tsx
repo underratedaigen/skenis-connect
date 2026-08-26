@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PublicLayout } from "@/components/public/site-layout";
-import { LeadFormShell } from "@/components/public/lead-form-shell";
 import { SkenisLanding } from "@/components/public/landing-page";
 
 const homeTitle = "Skenis – NFC + QR Google atsiliepimų kortelės su keičiama nuoroda";
