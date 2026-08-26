@@ -61,6 +61,12 @@ function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            to="/kontaktai"
+            className="hidden rounded-full border border-line bg-white/80 px-4 py-2.5 text-sm font-bold text-ink shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
+          >
+            Kontaktai
+          </Link>
           <a
             href="/#uzsakymas"
             className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-black text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:inline-flex"
