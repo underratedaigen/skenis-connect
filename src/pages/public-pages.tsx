@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PublicLayout } from "@/components/public/site-layout";
-import { LeadFormShell } from "@/components/public/lead-form-shell";
 import { SkenisLanding } from "@/components/public/landing-page";
 
 const homeTitle = "Skenis – NFC + QR Google atsiliepimų kortelės su keičiama nuoroda";
@@ -46,29 +45,26 @@ export function ContactPage() {
   return (
     <PublicLayout>
       <main className="bg-[#f7fbfb] px-5 py-16 sm:py-24">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
-          <div>
-            <p className="section-kicker">Kontaktai</p>
-            <h1 className="mt-4 text-4xl font-black tracking-tight text-ink sm:text-6xl">
-              Pakalbėkime apie korteles jūsų verslui
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-              Parašykite kiekio poreikį, produkto tipą ir, jei turite, Google atsiliepimų
-              nuorodą. Atsakysime su kaina, gamybos eiga ir terminu.
-            </p>
-            <a
-              href="mailto:skenis.info@gmail.com"
-              className="mt-6 inline-flex items-center gap-3 rounded-2xl border border-brand-200 bg-white px-5 py-4 text-lg font-bold text-ink shadow-soft transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-700 hover:shadow-[0_10px_30px_-10px_hsl(var(--brand-500)/0.25)] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
-            >
-              <svg className="h-6 w-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              skenis.info@gmail.com
-            </a>
-          </div>
-          <div className="rounded-[2rem] border border-line bg-white p-5 shadow-[0_28px_90px_rgba(16,24,32,0.08)] sm:p-7">
-            <LeadFormShell />
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="section-kicker">Kontaktai</p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-ink sm:text-6xl">
+            Susisiekite su mumis
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+            Turite klausimų apie NFC + QR korteles? Parašykite mums el. paštu ir atsakysime artimiausiu metu.
+          </p>
+          <a
+            href="mailto:skenis.info@gmail.com"
+            className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-brand-200 bg-white px-6 py-5 text-xl font-bold text-ink shadow-soft transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-700 hover:shadow-[0_10px_30px_-10px_hsl(var(--brand-500)/0.25)] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+          >
+            <svg className="h-7 w-7 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            skenis.info@gmail.com
+          </a>
+          <p className="mt-6 text-sm text-slate-500">
+            Atsakome darbo dienomis per 24 val.
+          </p>
         </div>
       </main>
     </PublicLayout>
