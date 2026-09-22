@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { productTypeLabels } from "@/lib/labels";
 import { leadCreateSchema } from "@/lib/validation";
+import { trackConversion } from "@/lib/conversion-events";
 
 function blankToNull(value: string | undefined) {
   return value?.trim() ? value.trim() : null;
@@ -11,7 +12,7 @@ function blankToNull(value: string | undefined) {
 
 export function LeadForm({
   initialProductType = "CARD",
-  initialQuantity = 1
+  initialQuantity = 1,
 }: {
   initialProductType?: string;
   initialQuantity?: number;
@@ -20,14 +21,19 @@ export function LeadForm({
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const parsed = leadCreateSchema.safeParse(Object.fromEntries(formData.entries()));
+    const parsed = leadCreateSchema.safeParse(
+      Object.fromEntries(formData.entries()),
+    );
 
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message || "Patikrinkite formos laukus.");
+      toast.error(
+        parsed.error.issues[0]?.message || "Patikrinkite formos laukus.",
+      );
       setLoading(false);
       return;
     }
@@ -40,26 +46,40 @@ export function LeadForm({
       return;
     }
 
-    const { error } = await supabase.from("leads").insert({
-      name: data.name,
-      company_name: data.companyName,
-      email: data.email,
-      phone: blankToNull(data.phone),
-      quantity: data.quantity,
-      product_type: data.productType,
-      google_review_url: blankToNull(data.googleReviewUrl),
-      message: blankToNull(data.message)
-    });
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20000);
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .insert({
+          name: data.name,
+          company_name: data.companyName,
+          email: data.email,
+          phone: blankToNull(data.phone),
+          quantity: data.quantity,
+          product_type: data.productType,
+          google_review_url: blankToNull(data.googleReviewUrl),
+          message: blankToNull(data.message),
+        })
+        .abortSignal(controller.signal);
 
-    if (error) {
-      toast.error(error.message || "Nepavyko išsiųsti užklausos. Bandykite dar kartą.");
+      if (error) {
+        throw error;
+      }
+
+      form.reset();
+      toast.success(
+        "Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.",
+      );
+      trackConversion("product_form_submit", { product: data.productType });
+    } catch {
+      toast.error(
+        "Nepavyko išsiųsti užklausos. Bandykite dar kartą arba rašykite skenis.info@gmail.com.",
+      );
+    } finally {
+      window.clearTimeout(timeout);
       setLoading(false);
-      return;
     }
-
-    form.reset();
-    toast.success("Užklausa išsiųsta. Susisieksime dėl maketo, kiekio ir gamybos termino.");
-    setLoading(false);
   }
 
   return (
@@ -71,14 +91,25 @@ export function LeadForm({
         </label>
         <label className="grid gap-2">
           <span className="label">Įmonės pavadinimas</span>
-          <input className="input" name="companyName" autoComplete="organization" required />
+          <input
+            className="input"
+            name="companyName"
+            autoComplete="organization"
+            required
+          />
         </label>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2">
           <span className="label">El. paštas</span>
-          <input className="input" name="email" type="email" autoComplete="email" required />
+          <input
+            className="input"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+          />
         </label>
         <label className="grid gap-2">
           <span className="label">Telefonas</span>
@@ -100,7 +131,11 @@ export function LeadForm({
         </label>
         <label className="grid gap-2">
           <span className="label">Produkto tipas</span>
-          <select className="input" name="productType" defaultValue={initialProductType}>
+          <select
+            className="input"
+            name="productType"
+            defaultValue={initialProductType}
+          >
             <option value="CARD">{productTypeLabels.CARD}</option>
             <option value="STAND">{productTypeLabels.STAND}</option>
             <option value="NFC_CARD">{productTypeLabels.NFC_CARD}</option>
@@ -110,7 +145,9 @@ export function LeadForm({
       </div>
 
       <label className="grid gap-2">
-        <span className="label">Google atsiliepimų nuoroda, jei jau turite</span>
+        <span className="label">
+          Google atsiliepimų nuoroda, jei jau turite
+        </span>
         <input
           className="input"
           name="googleReviewUrl"

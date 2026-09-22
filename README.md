@@ -1,6 +1,41 @@
 # Skenis.lt
 
-Production foundation for **Skenis.lt**, a Lithuanian B2B platform for programmable Google review QR acrylic cards and table stands.
+**Skenis.lt** is a Lithuanian digital solutions studio: websites, booking systems, sales tools, calculators, internal systems, automations, AI integrations and e-commerce. The existing NFC/QR review product remains available at `/google-atsiliepimai` with its original ordering and administration flows.
+
+## Studio website
+
+- `/paslaugos` and nine useful category pages; eight primary categories and a separate reputation offering.
+- `/sprendimai` contains clearly labelled internal concepts and interactive booking/calculator demonstrations.
+- `/apie`, `/kontaktai`, `/privatumo-politika` and `/taisykles` use the shared studio layout.
+- Service content is in `src/data/services.ts`; all 80 requested capabilities are represented. Project content and the future case-study contract are in `src/data/projects.ts`.
+- Shared visual tokens and layouts are in `src/studio.css`, `src/studio-pages.css`, and `src/studio-responsive.css`.
+- Old homepage product anchors redirect to the same section of `/google-atsiliepimai`. All `/r/:token` and `/admin/*` routes are unchanged.
+
+Studio enquiries use the existing Supabase `leads` table without a database migration. The intent, service, optional website and full message are stored in `message`; the admin inbox can expand the entire enquiry. Phone-only contact uses the existing `phone` field and an empty `email`; optional company uses an empty `company_name`. Both are valid under the existing schema.
+
+The form validates input and consent, includes a basic honeypot, prevents duplicate in-flight submissions, handles timeouts, preserves input on failure and reports success only after the database acknowledges the insert. The existing public insert policy has no server-side rate limiting; the honeypot does not replace backend abuse controls.
+
+Conversion hooks dispatch `skenis:conversion` DOM events for CTA, service selection, email, telephone and successful form actions. They send no personal data and add no analytics service or cookies. Existing QR scan analytics remain intact.
+
+## Production build and hosting
+
+```bash
+npm ci
+npm run dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run preview
+```
+
+`npm run build` builds Vite assets and prerenders all 17 sitemap pages with their own metadata, canonical URL, structured data and complete HTML. It also writes `dist/404.html` and `dist/spa.html`. `build:dev` remains the original client-only preview build.
+
+Publish `dist/` using the existing hosting provider. Serve generated files first (for example `/paslaugos/svetaines/index.html` at `/paslaugos/svetaines`). Route `/admin/*` and `/r/*` to `spa.html`; serve unknown public URLs using `404.html` with HTTP 404 status. If the provider retains a universal `index.html` SPA fallback, routing still works in JavaScript, but route-specific crawler metadata and correct HTTP status require the host rules above. Canonicals use the existing `https://skenis.lt` domain.
+
+No deployment or database changes are performed by the build. Keep the existing production environment values and Supabase configuration. The studio form was browser-tested against a local simulated endpoint; no synthetic lead was sent to the production database.
+
+## Existing NFC/QR product
 
 Every physical QR code points to a permanent Skenis short URL:
 

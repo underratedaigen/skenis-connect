@@ -320,9 +320,8 @@ const faqItems = [
 ];
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" ? window.matchMedia("(max-width: 767px)").matches : false
-  );
+  // Match static HTML on the first client render; update the layout after hydration.
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -350,7 +349,7 @@ function Reveal({
 
   return (
     <motion.div
-      initial={shouldAnimate ? { opacity: 0, y: 26 } : false}
+      initial={false}
       whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.62, delay, ease }}
@@ -369,6 +368,26 @@ export function SkenisLanding() {
   });
   const isMobile = useIsMobile();
 
+  useEffect(() => {
+    if (!orderOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const frame = requestAnimationFrame(() => document.querySelector<HTMLElement>('[role="dialog"] button')?.focus());
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOrderOpen(false); return; }
+      if (event.key !== "Tab") return;
+      const controls = document.querySelector('[role="dialog"]')?.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([type="hidden"]), select, textarea');
+      if (!controls?.length) return;
+      const visible = [...controls].filter(element => element.getClientRects().length > 0);
+      const first = visible[0]; const last = visible[visible.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => { cancelAnimationFrame(frame); document.removeEventListener("keydown", onKey); document.body.style.overflow = previousOverflow; previousFocus?.focus(); };
+  }, [orderOpen]);
+
   const openOrder = (type?: string, quantity?: number) => {
     setOrderInitial({
       type: type ?? "NFC_CARD",
@@ -378,7 +397,7 @@ export function SkenisLanding() {
   };
 
   return (
-    <main className="relative overflow-hidden bg-[#f7fbfb]">
+    <main id="main-content" className="relative overflow-hidden bg-[#f7fbfb]">
       <Hero onOrder={() => openOrder("NFC_CARD", 1)} />
       <ProblemSolution />
       <HowItWorks />
@@ -436,7 +455,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.p
             custom={0}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="section-kicker"
           >
@@ -446,7 +465,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.h1
             custom={1}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-4 max-w-4xl text-[2rem] font-black leading-[1.08] tracking-tight text-ink sm:mt-5 sm:text-6xl sm:leading-none lg:text-[3.45rem] lg:leading-[1.02]"
           >
@@ -456,7 +475,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.p
             custom={2}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8"
           >
@@ -467,7 +486,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.div
             custom={3}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-5 flex flex-row gap-2 sm:mt-6 sm:gap-3"
           >
@@ -488,7 +507,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.div
             custom={4}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-5 hidden grid-cols-3 gap-2 sm:grid sm:gap-3"
           >
@@ -513,7 +532,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.p
             custom={4.5}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold text-slate-700 sm:hidden"
           >
@@ -528,7 +547,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           <motion.p
             custom={5}
             variants={fade}
-            initial="hidden"
+            initial={false}
             animate="show"
             className="mt-5 hidden text-sm font-medium text-slate-500 sm:block"
           >
@@ -537,7 +556,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 34, scale: 0.96 }}
+          initial={false}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.18, ease }}
           className="mx-auto w-full max-w-[560px]"
@@ -1576,10 +1595,12 @@ function StickyMobileCTA({
         hidden || !visible ? "pointer-events-none translate-y-5 opacity-0" : "translate-y-0 opacity-100"
       )}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      aria-hidden={hidden || !visible}
     >
       <button
         type="button"
         onClick={onOrder}
+        tabIndex={hidden || !visible ? -1 : 0}
         className="relative flex min-h-[56px] w-full items-center justify-center overflow-hidden rounded-full bg-[#0B1218] px-5 py-3 text-sm font-black text-white shadow-[0_18px_54px_rgba(11,18,24,0.28)]"
       >
         <span className="absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335)]" aria-hidden />

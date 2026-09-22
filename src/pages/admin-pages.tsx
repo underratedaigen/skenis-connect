@@ -299,7 +299,7 @@ export function AdminDashboardPage() {
             data.recentLeads.map((lead) => (
               <div key={lead.id} className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4 last:border-b-0">
                 <div>
-                  <p className="font-semibold text-ink">{lead.companyName}</p>
+                  <p className="font-semibold text-ink">{lead.companyName || lead.name}</p>
                   <p className="mt-1 text-xs text-slate-500">
                     {lead.name} · {formatNumber(lead.quantity)} vnt.
                   </p>
@@ -956,7 +956,7 @@ export function LeadsPage() {
               <th>Įmonė</th>
               <th>Kontaktas</th>
               <th>Kiekis</th>
-              <th>Produktas</th>
+              <th>Sprendimas / produktas</th>
               <th>Google URL</th>
               <th>Statusas</th>
               <th>Sukurta</th>
@@ -966,21 +966,22 @@ export function LeadsPage() {
             {state.data.map((lead) => (
               <tr key={lead.id}>
                 <td>
-                  <strong>{lead.companyName}</strong>
-                  <p className="mt-1 text-xs text-slate-500">{truncate(lead.message, 52)}</p>
+                  <strong>{lead.companyName || "Įmonė nenurodyta"}</strong>
+                  {lead.message && <details className="mt-2 min-w-48 max-w-sm text-xs leading-6 text-slate-600"><summary className="cursor-pointer font-medium text-brand-700">Peržiūrėti užklausą</summary><p className="mt-2 whitespace-pre-wrap break-words">{lead.message}</p></details>}
                 </td>
                 <td>
                   {lead.name}
                   <p className="mt-1 text-xs text-slate-500">{lead.email}</p>
                   <p className="text-xs text-slate-500">{lead.phone || "—"}</p>
                 </td>
-                <td>{formatNumber(lead.quantity)}</td>
-                <td>{productTypeLabels[lead.productType]}</td>
+                <td>{lead.message?.startsWith("SKENIS · Skaitmeninių") ? "—" : formatNumber(lead.quantity)}</td>
+                <td>{lead.message?.startsWith("SKENIS · Skaitmeninių") ? "Skaitmeninis sprendimas" : productTypeLabels[lead.productType]}</td>
                 <td>{truncate(lead.googleReviewUrl, 40)}</td>
                 <td>
                   <select
                     className="admin-input min-w-40"
                     value={lead.status}
+                    aria-label={`Užklausos būsena: ${lead.companyName || lead.name}`}
                     onChange={(event) => changeStatus(lead.id, event.target.value as LeadStatus)}
                   >
                     {Object.entries(leadStatusLabels).map(([status, label]) => (
