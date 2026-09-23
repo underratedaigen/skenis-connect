@@ -29,6 +29,11 @@ export function BrandLogo({ inverse = false }: { inverse?: boolean }) {
 function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const productPage =
+    location.pathname.replace(/\/+$/, "") === "/google-atsiliepimai";
+  const ctaPath = productPage
+    ? "/google-atsiliepimai#kaina"
+    : "/kontaktai?intent=demo";
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +44,14 @@ function Navbar() {
     if (!open) return;
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    panelRef.current?.querySelector<HTMLElement>("a")?.focus();
+    panelRef.current?.querySelector<HTMLElement>("button")?.focus();
+    const background = [
+      ...document.querySelectorAll<HTMLElement>("main, .studio-footer"),
+    ];
+    const previousInert = background.map((element) => element.inert);
+    background.forEach((element) => {
+      element.inert = true;
+    });
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
@@ -60,7 +72,7 @@ function Navbar() {
           last.focus();
         } else if (!event.shiftKey && document.activeElement === last) {
           event.preventDefault();
-          toggleRef.current?.focus();
+          first.focus();
         }
       }
     };
@@ -72,6 +84,10 @@ function Navbar() {
     media.addEventListener("change", onResize);
     return () => {
       document.body.style.overflow = original;
+      background.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
+      toggleRef.current?.focus();
       document.removeEventListener("keydown", onKey);
       media.removeEventListener("change", onResize);
     };
@@ -97,11 +113,14 @@ function Navbar() {
           ))}
         </nav>
         <Link
-          to="/kontaktai?intent=demo"
+          to={ctaPath}
           className="studio-button studio-nav-cta"
-          data-conversion="navigation_demo"
+          data-conversion={
+            productPage ? "product_quantity_cta" : "navigation_demo"
+          }
         >
-          Gauti nemokamą pavyzdį <ArrowUpRight size={16} aria-hidden />
+          {productPage ? "Pasirinkti kortelių kiekį" : "Gauti nemokamą pavyzdį"}{" "}
+          <ArrowUpRight size={16} aria-hidden />
         </Link>
         <button
           ref={toggleRef}
@@ -120,7 +139,17 @@ function Navbar() {
           id="mobile-navigation"
           className="studio-mobile-nav"
           ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Svetainės meniu"
         >
+          <button
+            type="button"
+            className="studio-mobile-close"
+            onClick={() => setOpen(false)}
+          >
+            Uždaryti meniu <X size={20} aria-hidden />
+          </button>
           <nav aria-label="Mobilioji navigacija">
             {navigation.map((item, index) => (
               <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>
@@ -132,10 +161,15 @@ function Navbar() {
           </nav>
           <Link
             className="studio-button"
-            to="/kontaktai?intent=demo"
-            data-conversion="mobile_demo"
+            to={ctaPath}
+            data-conversion={
+              productPage ? "product_quantity_cta" : "mobile_demo"
+            }
           >
-            Gauti nemokamą pavyzdį <ArrowRight size={18} aria-hidden />
+            {productPage
+              ? "Pasirinkti kortelių kiekį"
+              : "Gauti nemokamą pavyzdį"}{" "}
+            <ArrowRight size={18} aria-hidden />
           </Link>
           <Link className="studio-mobile-product" to="/google-atsiliepimai">
             Ieškote NFC / QR kortelių? <ArrowUpRight size={16} aria-hidden />
@@ -175,55 +209,58 @@ function Footer() {
   return (
     <footer className="studio-footer">
       <div className="studio-container">
-        <div className="studio-footer-top">
-          <div className="studio-footer-brand">
+        <div className="footer-main">
+          <div className="footer-brand">
             <Link to="/" aria-label="Skenis – pradžia">
               <BrandLogo inverse />
             </Link>
             <p>
-              Mažiau rankinio darbo.
+              Mažiau rutinos.
               <br />
               Daugiau veikiančių sprendimų.
             </p>
-            <span className="studio-eyebrow">
-              Sukurta verslui. Apgalvota žmonėms.
-            </span>
           </div>
-          <div>
-            <h2>Navigacija</h2>
-            <Link to="/paslaugos">Paslaugos</Link>
-            <Link to="/sprendimai">Sprendimai</Link>
-            <Link to="/apie">Apie Skenis</Link>
-            <Link to="/kontaktai">Kontaktai</Link>
+          <div className="footer-link-groups">
+            <details>
+              <summary>
+                Svetainė <span aria-hidden>+</span>
+              </summary>
+              <nav aria-label="Footer navigacija">
+                <Link to="/paslaugos">Paslaugos</Link>
+                <Link to="/sprendimai">Sprendimai</Link>
+                <Link to="/apie">Apie Skenis</Link>
+                <Link to="/kontaktai">Kontaktai</Link>
+              </nav>
+            </details>
+            <details>
+              <summary>
+                Ką kuriame <span aria-hidden>+</span>
+              </summary>
+              <nav aria-label="Footer paslaugos">
+                <Link to="/paslaugos/svetaines">Svetainės</Link>
+                <Link to="/paslaugos/registracijos">Registracijos</Link>
+                <Link to="/paslaugos/verslo-sistemos">Verslo sistemos</Link>
+                <Link to="/paslaugos/automatizacijos">Automatizacijos</Link>
+                <Link to="/paslaugos/ai-sprendimai">AI sprendimai</Link>
+                <Link to="/paslaugos/e-komercija">E. komercija</Link>
+                <Link to="/google-atsiliepimai">NFC / QR kortelės</Link>
+              </nav>
+            </details>
           </div>
-          <div>
-            <h2>Ką kuriame</h2>
-            <Link to="/paslaugos/svetaines">Svetainės</Link>
-            <Link to="/paslaugos/automatizacijos">Automatizacijos</Link>
-            <Link to="/paslaugos/verslo-sistemos">Verslo sistemos</Link>
-            <Link to="/paslaugos/e-komercija">E. komercija</Link>
-            <Link to="/paslaugos/ai-sprendimai">AI sprendimai</Link>
-            <Link to="/google-atsiliepimai">
-              NFC / QR kortelės <ArrowUpRight size={13} aria-hidden />
-            </Link>
-          </div>
-          <div>
-            <h2>Pasikalbėkime</h2>
+          <div className="footer-contacts">
             <a
-              data-conversion="email_click"
               href="mailto:skenis.info@gmail.com"
+              data-conversion="email_click"
             >
               skenis.info@gmail.com
+              <ArrowUpRight size={17} aria-hidden />
             </a>
-            <a data-conversion="phone_click" href="tel:+37062357946">
+            <a href="tel:+37062357946" data-conversion="phone_click">
               +370 623 57 946
             </a>
-            <a data-conversion="phone_click" href="tel:+37062375231">
+            <a href="tel:+37062375231" data-conversion="phone_click">
               +370 623 75 231
             </a>
-            <Link className="studio-footer-cta" to="/kontaktai?intent=project">
-              Aptarti projektą <ArrowUpRight size={16} aria-hidden />
-            </Link>
           </div>
         </div>
         <div className="studio-footer-bottom">
@@ -233,12 +270,6 @@ function Footer() {
             <Link to="/taisykles">Taisyklės</Link>
             <Link to="/admin/login">Administravimas</Link>
           </div>
-          <span className="studio-footer-dots" aria-hidden>
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
         </div>
       </div>
     </footer>

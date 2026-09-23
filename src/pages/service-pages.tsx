@@ -8,92 +8,111 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { PublicLayout } from "@/components/public/site-layout";
 import { Seo } from "@/components/public/seo";
+import { DemoCTA, SectionHeading } from "@/components/public/studio-landing";
+import { ServiceVisual, ServiceTeaser } from "@/components/public/studio-demos";
+import { getServiceBySlug, type ServiceCategory } from "@/data/services";
 import {
-  getServiceBySlug,
-  primaryServices,
-  type ServiceCategory,
-} from "@/data/services";
+  catalogGroups,
+  servicePresentation,
+} from "@/data/service-presentation";
+import { NotFoundPage } from "./public-pages";
 
-function ServiceCard({
-  service,
-  index,
-}: {
-  service: ServiceCategory;
-  index: number;
-}) {
-  const Icon = service.icon;
-  return (
-    <Link
-      to={`/paslaugos/${service.slug}`}
-      className="group flex h-full flex-col rounded-3xl border border-line bg-white p-6 transition-colors hover:border-brand-300 hover:bg-brand-50/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 sm:p-8"
-    >
-      <div className="mb-8 flex items-center justify-between">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
-          <Icon size={21} strokeWidth={1.6} aria-hidden />
-        </span>
-        <span className="font-mono text-xs text-slate-400" aria-hidden>
-          {String(index + 1).padStart(2, "0")}
-        </span>
-      </div>
-      <h2 className="text-xl font-semibold tracking-[-0.035em] text-ink sm:text-2xl">
-        {service.title}
-      </h2>
-      <p className="mb-7 mt-3 max-w-lg text-sm leading-7 text-slate-600">
-        {service.description}
-      </p>
-      <div className="mt-auto flex items-center justify-between gap-4 border-t border-line/80 pt-5 text-sm font-semibold text-brand-700">
-        <span>Plačiau apie sprendimus</span>
-        <ArrowUpRight
-          size={19}
-          strokeWidth={1.6}
-          className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
-          aria-hidden
-        />
-      </div>
-    </Link>
-  );
-}
+const capabilitySections: Record<string, [string, number, number?][]> = {
+  svetaines: [
+    ["Svetainė pagal jūsų veiklą", 0, 7],
+    ["Matomumas paieškoje", 7, 10],
+    ["Kokybė ir priežiūra", 10],
+  ],
+  registracijos: [
+    ["Vizito kelias", 0, 5],
+    ["Registracijos skirtingoms situacijoms", 5],
+  ],
+  "pardavimu-irankiai": [
+    ["Kontaktai ir pardavimo eiga", 0, 4],
+    ["Pasiūlymai ir tolesnis bendravimas", 4],
+  ],
+  skaiciuokles: [
+    ["Skaičiuoklės pagal veiklą", 0, 4],
+    ["Sąmatų rengimas", 4],
+  ],
+  "verslo-sistemos": [
+    ["Klientai, projektai ir rodikliai", 0, 5],
+    ["Komanda ir operacijos", 5, 11],
+    ["Individualūs darbo įrankiai", 11],
+  ],
+  automatizacijos: [
+    ["Lentelės ir dokumentai", 0, 4],
+    ["Sistemų jungtys ir ataskaitos", 4],
+  ],
+  "ai-sprendimai": [
+    ["Pagalba jūsų klientams", 0, 3],
+    ["Komandos žinių paieška", 3],
+  ],
+  "e-komercija": [
+    ["Paslaugos ir klientų erdvės", 0, 6],
+    ["Specializuoti katalogai", 6, 9],
+    ["Pirkimas ir mokėjimai", 9],
+  ],
+  atsiliepimai: [
+    ["Bendravimas ir suvestinės", 0, 2],
+    ["NFC ir QR sprendimai", 2],
+  ],
+};
+const relatedSlugs: Record<string, string[]> = {
+  svetaines: ["pardavimu-irankiai", "registracijos", "e-komercija"],
+  registracijos: ["automatizacijos", "verslo-sistemos", "atsiliepimai"],
+  "pardavimu-irankiai": ["skaiciuokles", "automatizacijos", "svetaines"],
+  skaiciuokles: ["pardavimu-irankiai", "verslo-sistemos", "svetaines"],
+  "verslo-sistemos": ["automatizacijos", "pardavimu-irankiai", "ai-sprendimai"],
+  automatizacijos: ["verslo-sistemos", "ai-sprendimai", "registracijos"],
+  "ai-sprendimai": ["automatizacijos", "verslo-sistemos", "e-komercija"],
+  "e-komercija": ["automatizacijos", "pardavimu-irankiai", "ai-sprendimai"],
+  atsiliepimai: ["svetaines", "registracijos", "automatizacijos"],
+};
 
-function ServiceCta({ service }: { service?: ServiceCategory }) {
+function CatalogCard({ service }: { service: ServiceCategory }) {
   return (
-    <section
-      className="studio-section pt-0"
-      aria-labelledby="service-cta-heading"
-    >
-      <div className="studio-container">
-        <div className="grid gap-8 rounded-[2rem] bg-ink p-7 text-white sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12 lg:p-14">
-          <div className="max-w-2xl">
-            <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-200">
-              Pradėkime nuo pokalbio
-            </p>
-            <h2
-              id="service-cta-heading"
-              className="text-[1.9rem] font-semibold leading-tight tracking-[-0.045em] sm:text-4xl"
-            >
-              Papasakokite, kas šiandien užima per daug laiko.
-            </h2>
-            <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300">
-              Nereikia techninės užduoties. Padėsime išgryninti poreikį, o
-              tinkamiems projektams paruošime nemokamą pradinę koncepciją.
-            </p>
-          </div>
-          <Link
-            to={service ? `/kontaktai?service=${service.slug}` : "/kontaktai"}
-            data-conversion="service_enquiry"
-            className="studio-button !bg-white !text-ink hover:!bg-brand-100"
-          >
-            Gauti nemokamą pavyzdį <ArrowUpRight size={17} aria-hidden />
-          </Link>
+    <article className={`catalog-card catalog-${service.slug}`}>
+      <div className="catalog-card-visual">
+        <div className="catalog-preview-full">
+          <ServiceTeaser slug={service.slug} />
+        </div>
+        <div className="catalog-preview-small">
+          <service.icon size={27} strokeWidth={1.4} aria-hidden />
+          <span>
+            {
+              (
+                {
+                  svetaines: "forma.",
+                  registracijos: "11:00",
+                  skaiciuokles: "900 €",
+                  "pardavimu-irankiai": "Užklausa → pasiūlymas",
+                  "verslo-sistemos": "Darbai + komanda",
+                  automatizacijos: "Forma → CRM",
+                  "ai-sprendimai": "Atsakymas + šaltinis",
+                  "e-komercija": "molė.",
+                  atsiliepimai: "NFC + QR",
+                } as Record<string, string>
+              )[service.slug]
+            }
+          </span>
         </div>
       </div>
-    </section>
+      <div className="catalog-card-copy">
+        <h3>
+          {service.slug === "atsiliepimai"
+            ? "NFC ir atsiliepimai"
+            : service.shortTitle}
+        </h3>
+        <p>{service.outcome}</p>
+        <Link className="studio-text-link" to={`/paslaugos/${service.slug}`}>
+          Pamatyti sprendimą <ArrowUpRight size={18} aria-hidden />
+        </Link>
+      </div>
+    </article>
   );
 }
-
 export function ServicesPage() {
-  const reputation = getServiceBySlug("atsiliepimai")!;
-  const ReputationIcon = reputation.icon;
-
   return (
     <PublicLayout>
       <Seo
@@ -101,115 +120,61 @@ export function ServicesPage() {
         description="Svetainių kūrimas, rezervacijų sistemos, CRM, skaičiuoklės, verslo automatizavimas ir e. komercija. Parenkame sprendimą pagal jūsų verslo poreikį."
         path="/paslaugos"
       />
-      <main id="main-content">
-        <section
-          className="studio-page-intro"
-          aria-labelledby="services-heading"
-        >
-          <div className="studio-container">
-            <p className="studio-eyebrow">Paslaugos</p>
-            <div className="mt-6 grid gap-7 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-20">
-              <h1
-                id="services-heading"
-                className="max-w-3xl text-[2.6rem] font-semibold leading-[1.12] tracking-[-0.055em] sm:text-5xl lg:text-[3.6rem]"
-              >
-                Nuo geros svetainės
-                <br className="hidden sm:block" /> iki tvarkingesnio darbo.
-              </h1>
-              <div>
-                <p className="max-w-lg text-base leading-8 text-slate-600">
-                  Kiekvienas verslas turi savų iššūkių. Kuriame svetaines,
-                  įrankius ir sistemas, kurios padeda juos spręsti.
-                </p>
-                <a
-                  href="#paslaugu-kryptys"
-                  className="mt-5 inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-ink hover:text-brand-700"
-                >
-                  Raskite savo kryptį <ArrowDown size={16} aria-hidden />
-                </a>
-              </div>
-            </div>
+      <main id="main-content" tabIndex={-1} className="catalog-page">
+        <section className="studio-page-intro studio-container">
+          <p className="studio-eyebrow">Kuriame tam, kad veiktų</p>
+          <div className="page-intro-row">
+            <h1>
+              Kas jūsų versle
+              <br />
+              galėtų veikti geriau?
+            </h1>
+            <p>
+              Nuo pirmo įspūdžio internete iki tvarkos komandos kasdienybėje.
+              Pasirinkite kryptį ir pamatykite, ką galime sukurti.
+            </p>
           </div>
+          <nav className="catalog-jumps" aria-label="Paslaugų grupės">
+            {catalogGroups.map((group, i) => (
+              <a key={group.id} href={`#${group.id}`}>
+                <span>0{i + 1}</span>
+                {group.title}
+                <ArrowDown size={17} aria-hidden />
+              </a>
+            ))}
+          </nav>
         </section>
-
-        <section
-          id="paslaugu-kryptys"
-          className="studio-section !pt-0"
-          aria-label="Paslaugų kryptys"
-        >
-          <div className="studio-container">
-            <div className="grid gap-4 md:grid-cols-2 lg:gap-5">
-              {primaryServices.map((service, index) => (
-                <ServiceCard
-                  key={service.slug}
-                  service={service}
-                  index={index}
-                />
-              ))}
-            </div>
-
-            <div className="mt-5 grid gap-6 rounded-3xl border border-line bg-mist p-6 sm:p-8 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-7">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-line bg-white text-brand-700">
-                <ReputationIcon size={23} strokeWidth={1.6} aria-hidden />
+        <div className="studio-container catalog-groups" id="paslaugu-kryptys">
+          {catalogGroups.map((group, i) => (
+            <section className="catalog-group" key={group.id} id={group.id}>
+              <header>
+                <span>0{i + 1}</span>
+                <div>
+                  <h2>{group.title}</h2>
+                  <p>{group.description}</p>
+                </div>
+              </header>
+              <div className="service-catalog">
+                {group.slugs.map((slug) => (
+                  <CatalogCard key={slug} service={getServiceBySlug(slug)!} />
+                ))}
               </div>
-              <div>
-                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                  Pažįstamas Skenis sprendimas
-                </p>
-                <h2 className="text-xl font-semibold tracking-[-0.035em]">
-                  Google atsiliepimai, NFC ir QR
-                </h2>
-                <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-600">
-                  Mūsų kortelės niekur nedingo. Padėkite klientams lengviau
-                  pasidalyti patirtimi ir atraskite kitus reputacijos
-                  sprendimus.
-                </p>
-              </div>
-              <Link
-                to="/paslaugos/atsiliepimai"
-                className="inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-ink hover:text-brand-700"
-              >
-                Apie sprendimą <ArrowUpRight size={18} aria-hidden />
-              </Link>
-            </div>
+            </section>
+          ))}
+        </div>
+        <section className="studio-container catalog-help">
+          <div>
+            <h2>Nežinote, nuo ko pradėti?</h2>
+            <p>
+              Aprašykite vieną darbą, kuris užima per daug laiko. Tinkamą kryptį
+              pasiūlysime kartu.
+            </p>
           </div>
+          <Link to="/kontaktai?intent=project" className="studio-button">
+            Aptarti situaciją <ArrowUpRight size={18} aria-hidden />
+          </Link>
         </section>
-
-        <section
-          className="studio-section border-t border-line"
-          aria-labelledby="service-selection-heading"
-        >
-          <div className="studio-container grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-            <div>
-              <p className="studio-eyebrow">Sprendimas pagal poreikį</p>
-              <h2
-                id="service-selection-heading"
-                className="mt-5 max-w-md text-3xl font-semibold leading-tight tracking-[-0.045em] sm:text-4xl"
-              >
-                Nežinote, kokios sistemos reikia?
-              </h2>
-            </div>
-            <div>
-              <p className="max-w-xl text-base leading-8 text-slate-600">
-                Pradėkime nuo to, kas neveikia: pasimetančių užklausų,
-                pasikartojančio duomenų kopijavimo ar svetainės, kuri
-                nebeatspindi jūsų verslo. Techninį sprendimą pasiūlysime mes.
-              </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link to="/kontaktai?intent=project" className="studio-button secondary" data-conversion="service_enquiry">
-                  Aptarti projektą <ArrowRight size={16} aria-hidden />
-                </Link>
-                <Link
-                  to="/#kaip-dirbame"
-                  className="inline-flex min-h-12 items-center px-3 text-sm font-semibold text-slate-600 hover:text-brand-700"
-                >
-                  Kaip dirbame
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-        <ServiceCta />
+        <DemoCTA compact />
       </main>
     </PublicLayout>
   );
@@ -218,54 +183,10 @@ export function ServicesPage() {
 export function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const service = getServiceBySlug(slug);
-
-  if (!service) {
-    return (
-      <PublicLayout>
-        <Seo
-          title="Paslauga nerasta | Skenis"
-          description="Atraskite Skenis svetainių kūrimo, verslo sistemų ir automatizavimo paslaugas."
-          path={`/paslaugos/${slug ?? ""}`}
-          noIndex
-        />
-        <main id="main-content" className="studio-section">
-          <div className="studio-container">
-            <p className="studio-eyebrow">404</p>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight">
-              Šios paslaugos puslapio neradome.
-            </h1>
-            <p className="mt-5 text-slate-600">
-              Peržiūrėkite paslaugų kryptis arba papasakokite apie savo idėją.
-            </p>
-            <Link to="/paslaugos" className="studio-button mt-8">
-              Visos paslaugos <ArrowRight size={17} aria-hidden />
-            </Link>
-          </div>
-        </main>
-      </PublicLayout>
-    );
-  }
-
-  const Icon = service.icon;
-  const relatedSlugs: Record<string, string[]> = {
-    svetaines: ["pardavimu-irankiai", "registracijos", "e-komercija"],
-    registracijos: ["automatizacijos", "verslo-sistemos", "atsiliepimai"],
-    "pardavimu-irankiai": ["skaiciuokles", "automatizacijos", "svetaines"],
-    skaiciuokles: ["pardavimu-irankiai", "verslo-sistemos", "svetaines"],
-    "verslo-sistemos": [
-      "automatizacijos",
-      "pardavimu-irankiai",
-      "ai-sprendimai",
-    ],
-    automatizacijos: ["verslo-sistemos", "ai-sprendimai", "registracijos"],
-    "ai-sprendimai": ["automatizacijos", "verslo-sistemos", "e-komercija"],
-    "e-komercija": ["automatizacijos", "pardavimu-irankiai", "ai-sprendimai"],
-    atsiliepimai: ["svetaines", "registracijos", "automatizacijos"],
-  };
-  const relatedServices = (relatedSlugs[service.slug] ?? [])
-    .map(getServiceBySlug)
-    .filter((item): item is ServiceCategory => !!item);
-
+  if (!service) return <NotFoundPage />;
+  const sections = capabilitySections[service.slug];
+  const presentation = servicePresentation[service.slug];
+  const physical = presentation.family === "physical";
   return (
     <PublicLayout>
       <Seo
@@ -274,316 +195,213 @@ export function ServiceDetailPage() {
         path={`/paslaugos/${service.slug}`}
         service={{ name: service.title, description: service.description }}
       />
-      <main id="main-content">
-        <section
-          className="studio-page-intro"
-          aria-labelledby="service-heading"
-        >
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className={`service-family-${presentation.family}`}
+      >
+        <section className="studio-page-intro">
           <div className="studio-container">
-            <nav
-              aria-label="Puslapio kelias"
-              className="mb-9 flex flex-wrap items-center gap-2 text-xs text-slate-500"
-            >
-              <Link to="/" className="py-2 hover:text-ink">
-                Pradžia
-              </Link>
+            <nav className="studio-breadcrumbs" aria-label="Puslapio kelias">
+              <Link to="/">Pradžia</Link>
               <span aria-hidden>/</span>
-              <Link to="/paslaugos" className="py-2 hover:text-ink">
-                Paslaugos
-              </Link>
+              <Link to="/paslaugos">Paslaugos</Link>
               <span aria-hidden>/</span>
-              <span aria-current="page" className="text-ink">
-                {service.shortTitle}
-              </span>
+              <span aria-current="page">{service.shortTitle}</span>
             </nav>
-            <div className="grid gap-10 lg:grid-cols-[1.55fr_1fr] lg:items-end lg:gap-20">
-              <div>
+            <div className="service-detail-hero">
+              <div className="service-detail-copy">
                 <p className="studio-eyebrow">{service.title}</p>
-                <h1
-                  id="service-heading"
-                  className="mt-6 max-w-3xl text-[2.5rem] font-semibold leading-[1.13] tracking-[-0.055em] sm:text-5xl lg:text-[3.45rem]"
-                >
-                  {service.headline}
-                </h1>
-                <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600">
-                  {service.description}
-                </p>
-                <div className="mt-8 flex flex-wrap items-center gap-3">
+                <h1>{service.headline}</h1>
+                <p>{service.description}</p>
+                <div className="service-detail-actions">
                   <Link
-                    to={`/kontaktai?service=${service.slug}`}
-                    data-conversion="service_enquiry"
                     className="studio-button"
+                    to={
+                      physical
+                        ? "/google-atsiliepimai#kaina"
+                        : `/kontaktai?service=${service.slug}&intent=demo`
+                    }
+                    data-conversion={
+                      physical ? "product_quantity_cta" : "service_enquiry"
+                    }
                   >
-                    Gauti nemokamą pavyzdį{" "}
-                    <ArrowUpRight size={17} aria-hidden />
+                    {physical
+                      ? "Pasirinkti NFC korteles"
+                      : "Gauti nemokamą pavyzdį"}
+                    <ArrowUpRight size={18} aria-hidden />
                   </Link>
-                  <a
-                    href="#galimybes"
-                    className="inline-flex min-h-12 items-center gap-3 px-3 text-sm font-semibold text-slate-600 hover:text-brand-700"
-                  >
-                    Ką galime sukurti <ArrowDown size={15} aria-hidden />
+                  <a className="studio-text-link" href="#galimybes">
+                    {physical ? "Individualūs sprendimai" : "Ką galime sukurti"}
+                    <ArrowDown size={18} aria-hidden />
                   </a>
                 </div>
-              </div>
-              <aside
-                className="relative overflow-hidden rounded-3xl border border-line bg-mist p-7 sm:p-9"
-                aria-label="Sprendimo nauda"
-              >
-                <div className="mb-9 flex items-center justify-between">
-                  <Icon
-                    size={29}
-                    strokeWidth={1.4}
-                    className="text-brand-700"
-                    aria-hidden
-                  />
-                  <span
-                    className="h-2 w-2 rounded-full bg-brand-500"
-                    aria-hidden
-                  />
+                <div className="service-detail-note">
+                  {physical
+                    ? "Paruoštas produktas arba sprendimas pagal jūsų aptarnavimo eigą."
+                    : "Pradinė koncepcija tinkamiems projektams. Apimtį aptariame."}
                 </div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  Tikslas
-                </p>
-                <p className="mt-4 text-2xl font-semibold leading-snug tracking-[-0.035em] text-ink">
-                  {service.outcome}
-                </p>
-                <div className="mt-7 border-t border-line pt-5 text-xs leading-6 text-slate-500">
-                  Sprendimo apimtį, terminą ir kainą sutariame pagal jūsų
-                  situaciją.
-                </div>
-              </aside>
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="studio-section border-y border-line bg-mist/60"
-          aria-labelledby="service-problem-heading"
-        >
-          <div className="studio-container grid gap-10 md:grid-cols-2 md:gap-16 lg:gap-24">
-            <div>
-              <p className="studio-eyebrow">Pažįstama situacija?</p>
-              <h2
-                id="service-problem-heading"
-                className="mt-5 text-2xl font-semibold tracking-[-0.035em] sm:text-3xl"
-              >
-                Kur stringa kasdienis darbas.
-              </h2>
-              <p className="mt-5 text-sm leading-8 text-slate-600">
-                {service.problem}
-              </p>
-            </div>
-            <div>
-              <p className="studio-eyebrow">Mūsų požiūris</p>
-              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.035em] sm:text-3xl">
-                Pradėkime nuo to, kas svarbu.
-              </h2>
-              <p className="mt-5 text-sm leading-8 text-slate-600">
-                {service.approach}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="galimybes"
-          className="studio-section"
-          aria-labelledby="service-capabilities-heading"
-        >
-          <div className="studio-container grid gap-9 lg:grid-cols-[0.85fr_1.6fr] lg:gap-16">
-            <div>
-              <p className="studio-eyebrow">Galimybės</p>
-              <h2
-                id="service-capabilities-heading"
-                className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.045em] sm:text-4xl"
-              >
-                Ką galime sukurti.
-              </h2>
-              <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600">
-                Vieną konkretų įrankį arba kelis tarpusavyje veikiančius
-                sprendimus. Apimtį parenkame pagal jūsų poreikį.
-              </p>
-            </div>
-            <ul className="grid content-start gap-x-8 sm:grid-cols-2">
-              {service.capabilities.map((capability) => (
-                <li
-                  key={capability}
-                  className="flex items-start gap-3 border-b border-line py-4 text-sm leading-6 text-slate-700"
-                >
-                  <Check
-                    size={16}
-                    strokeWidth={1.8}
-                    className="mt-1 shrink-0 text-brand-600"
-                    aria-hidden
-                  />
-                  <span>{capability}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section
-          className="studio-section !pt-0"
-          aria-labelledby="service-examples-heading"
-        >
-          <div className="studio-container">
-            <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-              <div>
-                <p className="studio-eyebrow">Praktikoje</p>
-                <h2
-                  id="service-examples-heading"
-                  className="mt-5 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl"
-                >
-                  Kaip tai galėtų atrodyti.
-                </h2>
               </div>
-              <p className="max-w-xs text-xs leading-6 text-slate-500">
-                Galimų sprendimų pavyzdžiai. Kiekvieną pritaikome konkrečiam
-                verslui.
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {service.examples.map((example, index) => (
-                <article
-                  key={example.title}
-                  className="rounded-3xl border border-line bg-mist/50 p-6 sm:p-7"
-                >
-                  <div className="mb-7 flex items-center justify-between">
-                    <span
-                      className="font-mono text-xs text-brand-700"
-                      aria-hidden
-                    >
-                      0{index + 1}
-                    </span>
-                    <span className="rounded-full border border-line bg-white px-2.5 py-1 text-[10px] font-medium text-slate-500">
-                      Pavyzdys
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold leading-snug tracking-[-0.025em]">
-                    {example.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-slate-600">
-                    {example.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-            {service.slug === "atsiliepimai" && (
-              <div className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-brand-200 bg-brand-50 p-6 sm:flex-row sm:items-center">
-                <div>
-                  <h3 className="font-semibold text-ink">
-                    Ieškote NFC kortelės?
-                  </h3>
-                  <p className="mt-1 text-sm leading-7 text-slate-600">
-                    Peržiūrėkite esamą produktą, jo funkcijas ir užsakymo
-                    galimybes.
-                  </p>
-                </div>
-                <Link
-                  to="/google-atsiliepimai"
-                  className="studio-button secondary shrink-0"
-                >
-                  Peržiūrėti korteles <ArrowUpRight size={16} aria-hidden />
-                </Link>
+              <div className="service-detail-demo">
+                <ServiceVisual slug={service.slug} variant="context" />
               </div>
-            )}
+            </div>
           </div>
         </section>
-
-        <section
-          className="studio-section border-t border-line"
-          aria-labelledby="service-faq-heading"
-        >
-          <div className="studio-container grid gap-9 lg:grid-cols-[0.85fr_1.6fr] lg:gap-16">
-            <div>
-              <p className="studio-eyebrow">Prieš pradedant</p>
-              <h2
-                id="service-faq-heading"
-                className="mt-5 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl"
-              >
-                Dažni klausimai.
-              </h2>
-              <Link
-                to={`/kontaktai?service=${service.slug}`}
-                data-conversion="service_enquiry"
-                className="mt-5 inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-brand-700"
-              >
-                Aptarti savo situaciją <ArrowUpRight size={17} aria-hidden />
+        <section className="service-comparison studio-container">
+          <div>
+            <span className="studio-eyebrow">Šiandien</span>
+            <p>{presentation.before}</p>
+          </div>
+          <ArrowRight className="comparison-arrow" size={24} aria-hidden />
+          <div>
+            <span className="studio-eyebrow">Su sprendimu</span>
+            <p>{presentation.after}</p>
+          </div>
+        </section>
+        {physical && (
+          <section className="studio-container physical-options">
+            <article>
+              <p className="studio-eyebrow">Paruoštas produktas</p>
+              <h2>NFC + QR kortelė</h2>
+              <p>
+                Kortelė, valdoma nuoroda ir skenavimų statistika. Kiekį ir
+                kainodarą rasite produkto puslapyje.
+              </p>
+              <Link to="/google-atsiliepimai" className="studio-text-link">
+                Peržiūrėti produktą <ArrowUpRight size={18} aria-hidden />
               </Link>
-            </div>
-            <div className="border-t border-line">
-              {service.faq.map((item) => (
-                <details
-                  key={item.question}
-                  className="group border-b border-line"
-                >
-                  <summary className="flex min-h-20 cursor-pointer list-none items-center justify-between gap-5 py-5 text-sm font-semibold leading-6 text-ink hover:text-brand-700 [&::-webkit-details-marker]:hidden">
-                    {item.question}
-                    <ChevronDown
-                      size={17}
-                      className="shrink-0 text-slate-500 transition-transform group-open:rotate-180 motion-reduce:transition-none"
-                      aria-hidden
-                    />
-                  </summary>
-                  <p className="max-w-2xl pb-6 pr-6 text-sm leading-7 text-slate-600">
-                    {item.answer}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="studio-section !pt-0"
-          aria-labelledby="related-services-heading"
-        >
-          <div className="studio-container">
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-              <h2
-                id="related-services-heading"
-                className="text-xl font-semibold tracking-[-0.03em]"
-              >
-                Dažnai veikia kartu
-              </h2>
+            </article>
+            <article>
+              <p className="studio-eyebrow">Pagal jūsų procesą</p>
+              <h2>Individualus ryšys</h2>
+              <p>
+                Kvietimai po vizito, keli filialai ar jungtis su turima sistema.
+                Galimybes ir apimtį įvertiname atskirai.
+              </p>
               <Link
-                to="/paslaugos"
-                className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-600 hover:text-brand-700"
+                to="/kontaktai?service=atsiliepimai&intent=project"
+                className="studio-text-link"
               >
-                Visos paslaugos <ArrowRight size={15} aria-hidden />
+                Aptarti integraciją <ArrowUpRight size={18} aria-hidden />
               </Link>
+            </article>
+          </section>
+        )}
+        <section className="studio-section" id="galimybes">
+          <div className="studio-container service-section-grid">
+            <div>
+              <p className="studio-eyebrow">Sprendimo sudėtis</p>
+              <h2>{presentation.heading}</h2>
+              <p>{service.outcome}</p>
             </div>
-            <div className="grid gap-3 md:grid-cols-3">
-              {relatedServices.map((related) => {
-                const RelatedIcon = related.icon;
-                return (
-                  <Link
-                    key={related.slug}
-                    to={`/paslaugos/${related.slug}`}
-                    className="group flex items-center gap-4 rounded-2xl border border-line px-5 py-6 transition-colors hover:border-brand-300 hover:bg-brand-50/40"
-                  >
-                    <RelatedIcon
-                      size={20}
-                      strokeWidth={1.5}
-                      className="shrink-0 text-brand-700"
-                      aria-hidden
-                    />
-                    <span className="text-sm font-semibold">
-                      {related.shortTitle}
-                    </span>
-                    <ArrowUpRight
-                      size={17}
-                      className="ml-auto shrink-0 text-slate-400 group-hover:text-brand-700"
-                      aria-hidden
-                    />
-                  </Link>
+            <div className="capability-groups">
+              {sections.map(([title, start, end], i) => {
+                const items = service.capabilities.slice(start, end);
+                const list = (
+                  <ul>
+                    {items.map((item) => (
+                      <li key={item}>
+                        <Check size={17} aria-hidden />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                );
+                return items.length === 1 ? (
+                  <article className="capability-open" key={title}>
+                    <h3>{title}</h3>
+                    {list}
+                  </article>
+                ) : (
+                  <details key={title} open={i === 0}>
+                    <summary>
+                      <span>{title}</span>
+                      <small>
+                        {items.length}{" "}
+                        {new Intl.PluralRules("lt").select(items.length) ===
+                        "few"
+                          ? "galimybės"
+                          : "galimybių"}
+                      </small>
+                      <ChevronDown size={18} aria-hidden />
+                    </summary>
+                    {list}
+                  </details>
                 );
               })}
             </div>
           </div>
         </section>
-        <ServiceCta service={service} />
+        <section className="studio-section section-no-top">
+          <div className="studio-container">
+            <SectionHeading
+              label="Galimi pritaikymai"
+              title={presentation.exampleHeading}
+            >
+              Iliustraciniai scenarijai, kuriuos pritaikome konkrečiai veiklai.
+            </SectionHeading>
+            <div className="service-examples">
+              {service.examples.map((example, i) => (
+                <article key={example.title}>
+                  <span>0{i + 1}</span>
+                  <h3>{example.title}</h3>
+                  <ol className="example-flow">
+                    {presentation.flows[i].map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                  <p>{example.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="studio-section section-divider">
+          <div className="studio-container service-section-grid service-faq-related">
+            <div>
+              <p className="studio-eyebrow">Prieš pradedant</p>
+              <h2>
+                Apie{" "}
+                {service.shortTitle.toLocaleLowerCase("lt-LT") === "svetainės"
+                  ? "svetainės kūrimą"
+                  : "šį sprendimą"}
+              </h2>
+              <Link
+                className="studio-text-link"
+                to={`/kontaktai?service=${service.slug}&intent=project`}
+                data-conversion="service_enquiry"
+              >
+                Aptarti savo situaciją <ArrowUpRight size={18} aria-hidden />
+              </Link>
+              <p className="related-label">Dažnai veikia kartu</p>
+              <div className="studio-related">
+                {relatedSlugs[service.slug].map((s) => {
+                  const related = getServiceBySlug(s)!;
+                  return (
+                    <Link key={s} to={`/paslaugos/${s}`}>
+                      <related.icon size={19} aria-hidden />
+                      {related.shortTitle}
+                      <ArrowUpRight size={17} aria-hidden />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="studio-faq">
+              {service.faq.map((item) => (
+                <details key={item.question}>
+                  <summary>
+                    {item.question}
+                    <ChevronDown size={19} aria-hidden />
+                  </summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+        <DemoCTA service={service.slug} />
       </main>
     </PublicLayout>
   );

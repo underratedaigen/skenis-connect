@@ -1,13 +1,13 @@
+import { DemoGallery } from "@/components/public/demo-gallery";
 import { lazy, Suspense } from "react";
-import { ArrowRight, ArrowUpRight, Check, Mail, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Mail, Phone } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { PublicLayout } from "@/components/public/site-layout";
 import {
   StudioLanding,
   DemoCTA,
   ProcessSection,
-  ProjectGrid,
-  WorkflowPreview,
+  ProductSpotlight,
 } from "@/components/public/studio-landing";
 import { Seo } from "@/components/public/seo";
 const StudioContactForm = lazy(() =>
@@ -33,7 +33,6 @@ export function HomePage() {
     </PublicLayout>
   );
 }
-
 export function ContactPage() {
   const [params] = useSearchParams();
   const intent = params.get("intent") === "project" ? "project" : "demo";
@@ -44,14 +43,18 @@ export function ContactPage() {
         description="Papasakokite, ką norėtumėte pagerinti savo versle. Aptarsime svetainę, sistemą ar automatizaciją ir galimybę paruošti nemokamą pradinį pavyzdį."
         path="/kontaktai"
       />
-      <main id="main-content" className="studio-container studio-page-intro">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="studio-container studio-page-intro"
+      >
         <div className="studio-contact-grid">
           <div className="studio-contact-copy">
-            <p className="studio-eyebrow">Nuo čia prasideda sprendimas</p>
+            <p className="studio-eyebrow">Geras pokalbis — gera pradžia</p>
             <h1>
               {intent === "demo" ? (
                 <>
-                  Pirmiausia –<br />
+                  Pirmiausia —<br />
                   jūsų idėja.
                 </>
               ) : (
@@ -63,12 +66,33 @@ export function ContactPage() {
               )}
             </h1>
             <p>
-              Nežinote, kokios sistemos reikia? Ir nereikia. Papasakokite, kas
-              užima per daug laiko arba galėtų veikti geriau. Kryptį pasiūlysime
-              mes.
+              Nežinote, kokios sistemos reikia? Papasakokite, kas užima per daug
+              laiko arba galėtų veikti geriau. Kryptį pasiūlysime mes.
             </p>
+            <div className="studio-contact-details">
+              <span>Patogiau pasikalbėti tiesiogiai?</span>
+              <a
+                href="mailto:skenis.info@gmail.com"
+                data-conversion="email_click"
+              >
+                <Mail size={18} aria-hidden />
+                skenis.info@gmail.com
+              </a>
+              <a href="tel:+37062357946" data-conversion="phone_click">
+                <Phone size={18} aria-hidden />
+                +370 623 57 946
+              </a>
+              <a href="tel:+37062375231" data-conversion="phone_click">
+                <Phone size={18} aria-hidden />
+                +370 623 75 231
+              </a>
+            </div>
           </div>
           <div className="studio-contact-form-wrap">
+            <div className="contact-form-heading">
+              <strong>Trumpai susipažinkime.</strong>
+              <span>Be įsipareigojimo</span>
+            </div>
             <Suspense fallback={<p role="status">Forma įkeliama…</p>}>
               <StudioContactForm
                 initialService={params.get("service") || undefined}
@@ -77,28 +101,30 @@ export function ContactPage() {
             </Suspense>
           </div>
           <div className="studio-contact-aside">
-            <div className="studio-contact-details">
-              <span>Arba susisiekite tiesiogiai</span>
-              <a
-                href="mailto:skenis.info@gmail.com"
-                data-conversion="email_click"
-              >
-                <Mail size={17} aria-hidden /> skenis.info@gmail.com
-              </a>
-              <a href="tel:+37062357946" data-conversion="phone_click">
-                <Phone size={17} aria-hidden /> +370 623 57 946
-              </a>
-              <a href="tel:+37062375231" data-conversion="phone_click">
-                <Phone size={17} aria-hidden /> +370 623 75 231
-              </a>
-            </div>
             <div className="studio-contact-expectation">
               <strong>Kas bus toliau?</strong>
-              <p>
-                Peržiūrėsime užklausą ir susisieksime patikslinti poreikio. Jei
-                projektas tinkamas, sutarsime dėl nemokamos pradinės
-                koncepcijos. Darbų apimtį ir kainą suderinsime prieš pradėdami.
-              </p>
+              <ol className="contact-next-steps">
+                <li>
+                  <b>01</b>
+                  <span>
+                    Perskaitysime jūsų idėją ir susisieksime patikslinti
+                    poreikio.
+                  </span>
+                </li>
+                <li>
+                  <b>02</b>
+                  <span>
+                    Tinkamam projektui sutarsime nemokamos pradinės koncepcijos
+                    apimtį.
+                  </span>
+                </li>
+                <li>
+                  <b>03</b>
+                  <span>
+                    Darbų apimtį, kainą ir eigą suderinsime prieš pradėdami.
+                  </span>
+                </li>
+              </ol>
             </div>
           </div>
         </div>
@@ -114,79 +140,34 @@ export function SolutionsPage() {
         description="Išbandykite registracijos ir skaičiuoklės demonstracijas, apžiūrėkite svetainės koncepciją. Konkretūs skaitmeninių sprendimų pavyzdžiai jūsų verslui."
         path="/sprendimai"
       />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <section className="studio-container studio-page-intro">
           <p className="studio-eyebrow">Sprendimų laboratorija</p>
-          <h1>
-            Ne tik papasakoti.
-            <br />
-            Parodyti, kaip veikia.
-          </h1>
-          <p className="studio-page-lead">
-            Čia – mūsų vidinės koncepcijos ir demonstracijos. Išbandykite,
-            įsivaizduokite savo versle ir pasakykite, ką pritaikytume jums.
-          </p>
-        </section>
-        <section
-          className="studio-container studio-section"
-          style={{ paddingTop: 0 }}
-          aria-label="Sprendimų koncepcijos"
-        >
-          <ProjectGrid />
-          <div className="studio-case-explainer">
-            <article>
-              <p className="studio-eyebrow">01 / Svetainė</p>
-              <h2>Suprantama nuo pirmo apsilankymo.</h2>
-              <p>
-                Problema: lankytojui neaišku, kuo verslas gali padėti.
-                Sprendimas: paslaugų struktūra, aiškus turinys ir matoma
-                užklausos forma.
-              </p>
-            </article>
-            <article>
-              <p className="studio-eyebrow">02 / Registracija</p>
-              <h2>Mažiau skambučių dėl laiko.</h2>
-              <p>
-                Problema: laikus reikia derinti telefonu. Sprendimas: laisvų
-                laikų pasirinkimas, patvirtinimas ir priminimai. Šiame demo
-                galima išbandyti laiko pasirinkimą.
-              </p>
-            </article>
-            <article>
-              <p className="studio-eyebrow">03 / Skaičiuoklė</p>
-              <h2>Atsakymas dar prieš pokalbį.</h2>
-              <p>
-                Problema: kiekvieną preliminarią sąmatą skaičiuojate iš naujo.
-                Sprendimas: skaičiuoklė pagal jūsų kainodarą. Šio demo įkainis
-                yra iliustracinis.
-              </p>
-            </article>
-          </div>
-        </section>
-        <section className="studio-about-strip studio-section">
-          <div className="studio-container studio-about-strip-grid">
-            <div>
-              <p className="studio-eyebrow">Veikiantis Skenis produktas</p>
-              <h2>NFC + QR atsiliepimų sistema.</h2>
-            </div>
+          <div className="page-intro-row">
+            <h1>
+              Mažiau aiškinimo.
+              <br />
+              Daugiau išbandymo.
+            </h1>
             <div>
               <p>
-                Fizinės kortelės su keičiamomis nuorodomis, individualiais
-                kodais ir skenavimų statistika. Vienas konkretus verslo poreikis
-                – vientisas sprendimas.
+                Pasirinkite laiką. Pakeiskite skaičių. Perduokite demo užklausą.
+                Taip lengviau įsivaizduoti, kas tiktų jūsų verslui.
               </p>
-              <Link to="/google-atsiliepimai" className="studio-text-link">
-                Susipažinti su produktu <ArrowUpRight size={17} aria-hidden />
-              </Link>
+              <p className="studio-page-lead">
+                Vidinės koncepcijos ir demonstracijos. Tikri klientų duomenys
+                nenaudojami.
+              </p>
             </div>
           </div>
         </section>
+        <DemoGallery />
+        <ProductSpotlight entry />
         <DemoCTA compact />
       </main>
     </PublicLayout>
   );
 }
-
 export function AboutPage() {
   return (
     <PublicLayout>
@@ -195,64 +176,73 @@ export function AboutPage() {
         description="Padedame verslui supaprastinti darbą svetainėmis, sistemomis ir automatizacijomis. Pradedame nuo problemos, kartu sutariame sprendimą."
         path="/apie"
       />
-      <main id="main-content">
-        <section className="studio-container studio-page-intro">
-          <div className="studio-about-hero">
-            <div>
-              <p className="studio-eyebrow">Apie Skenis</p>
-              <h1>
-                Geras sprendimas
-                <br />
-                palengvina darbą.
-              </h1>
-              <p>
-                Tuo vadovaujamės kurdami. Skenis prasidėjo nuo paprastesnio būdo
-                paprašyti kliento atsiliepimo. Šiandien tą patį požiūrį taikome
-                svetainėms, verslo sistemoms ir kasdieniams procesams.
-              </p>
-              <p className="mt-5">
-                Mums svarbu suprasti, kaip dirbate ir kur prarandate laiką.
-                Tuomet kuriame tai, kas padeda jūsų komandai ir klientams.
-              </p>
-              <Link
-                className="studio-text-link mt-5"
-                to="/kontaktai?intent=project"
-              >
-                Susipažinkime <ArrowUpRight size={17} aria-hidden />
-              </Link>
-            </div>
-            <WorkflowPreview small />
+      <main id="main-content" tabIndex={-1}>
+        <section className="studio-container studio-page-intro about-story">
+          <p className="studio-eyebrow">Apie Skenis</p>
+          <div className="page-intro-row">
+            <h1>
+              Pradedame nuo to,
+              <br />
+              kas trukdo.
+            </h1>
+            <p>
+              Paprastesnis kelias klientui. Aiškesnė diena komandai. Šį principą
+              taikome ir mažam fiziniam produktui, ir visai verslo sistemai.
+            </p>
           </div>
-          <div className="studio-principles">
-            {[
-              {
-                title: "Pirmiausia – poreikis.",
-                text: "Išklausome, kas stringa. Technologiją parenkame pagal darbą, kurį ji turi atlikti.",
-              },
-              {
-                title: "Aiškūs susitarimai.",
-                text: "Prieš pradėdami sutariame apimtį, kainą ir eigą. Kuriame etapais, kad matytumėte, kaip juda projektas.",
-              },
-              {
-                title: "Patogu naudotis.",
-                text: "Apie sistemą galvojame iš žmogaus perspektyvos. Patikriname veikimą, perduodame ir padedame pradėti.",
-              },
-            ].map((item) => (
-              <article key={item.title}>
-                <Check size={20} className="text-brand-700" aria-hidden />
-                <h2>{item.title}</h2>
-                <p>{item.text}</p>
-              </article>
-            ))}
+          <div className="about-chapters">
+            <article>
+              <span>01 / Klausimas</span>
+              <h2>Kaip palikti atsiliepimą paprasčiau?</h2>
+              <p>
+                Nuo šio konkretaus klausimo ir NFC / QR kortelės prasidėjo
+                „Skenis“. Vietoje nuorodos paieškų – vienas telefono
+                prisilietimas.
+              </p>
+            </article>
+            <article className="about-product-chapter">
+              <span>02 / Veikiantis ryšys</span>
+              <div>
+                <img
+                  src="/images/skenis-product-front.jpg"
+                  alt="Pirmasis Skenis produktas – NFC ir QR kortelė"
+                  width="1280"
+                  height="1024"
+                  loading="lazy"
+                />
+                <h2>
+                  Fizinė kortelė.
+                  <br />
+                  Valdoma nuoroda.
+                </h2>
+              </div>
+              <p>
+                Produktą sujungėme su keičiama nuoroda ir skenavimų statistika.
+              </p>
+              <Link to="/google-atsiliepimai" className="studio-text-link">
+                Pamatyti produktą <ArrowUpRight size={18} aria-hidden />
+              </Link>
+            </article>
+            <article>
+              <span>03 / Tas pats požiūris</span>
+              <h2>Nuo vieno veiksmo iki viso proceso.</h2>
+              <p>
+                Šiandien kuriame svetaines, verslo sistemas ir automatizacijas.
+                Pradžia ta pati: suprasti problemą ir sujungti veiksmus į aiškų
+                kelią.
+              </p>
+              <Link to="/sprendimai" className="studio-text-link">
+                Išbandyti sprendimus <ArrowUpRight size={18} aria-hidden />
+              </Link>
+            </article>
           </div>
         </section>
-        <ProcessSection />
+        <ProcessSection about />
         <DemoCTA />
       </main>
     </PublicLayout>
   );
 }
-
 export function ReviewProductPage() {
   return (
     <PublicLayout>
@@ -270,6 +260,7 @@ export function ReviewProductPage() {
         fallback={
           <main
             id="main-content"
+            tabIndex={-1}
             className="studio-container studio-section"
             role="status"
           >
@@ -293,6 +284,7 @@ export function PrivacyPage() {
       />
       <main
         id="main-content"
+        tabIndex={-1}
         className="studio-container studio-page-intro studio-legal"
       >
         <p className="studio-eyebrow">Informacija</p>
@@ -341,6 +333,7 @@ export function TermsPage() {
       />
       <main
         id="main-content"
+        tabIndex={-1}
         className="studio-container studio-page-intro studio-legal"
       >
         <p className="studio-eyebrow">Informacija</p>
@@ -392,6 +385,7 @@ export function NotFoundPage() {
       />
       <main
         id="main-content"
+        tabIndex={-1}
         className="studio-container studio-page-intro"
         style={{ minHeight: "60vh" }}
       >

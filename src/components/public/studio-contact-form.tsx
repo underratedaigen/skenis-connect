@@ -161,21 +161,6 @@ export function StudioContactForm({
           {fieldError("name")}
         </div>
         <div className="studio-form-field">
-          <label htmlFor={`${id}-companyName`}>
-            Įmonė <span>(nebūtina)</span>
-          </label>
-          <input
-            {...fieldAttributes("companyName")}
-            name="companyName"
-            autoComplete="organization"
-            placeholder="Įmonės pavadinimas"
-            maxLength={180}
-          />
-          {fieldError("companyName")}
-        </div>
-      </div>
-      <div className="studio-form-row">
-        <div className="studio-form-field">
           <label htmlFor={`${id}-contact`}>El. paštas arba telefonas</label>
           <input
             {...fieldAttributes("contact")}
@@ -189,23 +174,6 @@ export function StudioContactForm({
             required
           />
           {fieldError("contact")}
-        </div>
-        <div className="studio-form-field">
-          <label htmlFor={`${id}-website`}>
-            Jūsų svetainė <span>(nebūtina)</span>
-          </label>
-          <input
-            {...fieldAttributes("website")}
-            name="website"
-            type="text"
-            inputMode="url"
-            autoComplete="url"
-            autoCapitalize="none"
-            spellCheck={false}
-            placeholder="imone.lt"
-            maxLength={500}
-          />
-          {fieldError("website")}
         </div>
       </div>
       <div className="studio-form-field">
@@ -236,6 +204,38 @@ export function StudioContactForm({
           required
         />
         {fieldError("message")}
+      </div>
+      <div className="studio-form-row optional-fields">
+        <div className="studio-form-field">
+          <label htmlFor={`${id}-companyName`}>
+            Įmonė <span>(nebūtina)</span>
+          </label>
+          <input
+            {...fieldAttributes("companyName")}
+            name="companyName"
+            autoComplete="organization"
+            placeholder="Įmonės pavadinimas"
+            maxLength={180}
+          />
+          {fieldError("companyName")}
+        </div>
+        <div className="studio-form-field">
+          <label htmlFor={`${id}-website`}>
+            Jūsų svetainė <span>(nebūtina)</span>
+          </label>
+          <input
+            {...fieldAttributes("website")}
+            name="website"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="imone.lt"
+            maxLength={500}
+          />
+          {fieldError("website")}
+        </div>
       </div>
       <div className="studio-form-honeypot" hidden aria-hidden="true">
         <label htmlFor={`${id}-faxNumber`}>Palikite šį lauką tuščią</label>
