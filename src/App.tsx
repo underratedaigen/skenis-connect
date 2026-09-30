@@ -24,6 +24,20 @@ const AdminGuard = lazy(() =>
     default: module.AdminGuard,
   })),
 );
+const TestimonialsPage = lazy(() =>
+  import("@/pages/testimonials-page").then((module) => ({
+    default: module.TestimonialsPage,
+  })),
+);
+const AdminTestimonialsPage = lazy(() =>
+  import("@/pages/admin-testimonials-page").then((module) => ({
+    default: module.AdminTestimonialsPage,
+  })),
+);
+// Vite removes this import and the 200 fixtures from production and prerender.
+const TestimonialsPreviewPage = import.meta.env.DEV
+  ? lazy(() => import("@/pages/testimonials-preview-page"))
+  : null;
 const RedirectPage = lazy(() =>
   import("@/pages/redirect-page").then((module) => ({
     default: module.RedirectPage,
@@ -104,6 +118,8 @@ function RouteEffects() {
       navigate(`/google-atsiliepimai${hash}`, { replace: true });
       return;
     }
+    // The demo center waits for its selected panel and responsive layout.
+    if (pathname === "/sprendimai" && ["#demonstracija", "#demo-website", "#demo-booking", "#demo-calculator"].includes(hash)) return;
     if (!hash) {
       window.scrollTo({ top: 0, behavior: "instant" });
       return;
@@ -154,6 +170,13 @@ export function AppRoutes() {
           <Route path="/apie" element={<AboutPage />} />
           <Route path="/google-atsiliepimai" element={<ReviewProductPage />} />
           <Route path="/kontaktai" element={<ContactPage />} />
+          <Route path="/atsiliepimai" element={<TestimonialsPage />} />
+          {TestimonialsPreviewPage && (
+            <Route
+              path="/testavimas/atsiliepimai"
+              element={<TestimonialsPreviewPage />}
+            />
+          )}
           <Route path="/privatumo-politika" element={<PrivacyPage />} />
           <Route path="/taisykles" element={<TermsPage />} />
           <Route path="/r/:token" element={<RedirectPage />} />
@@ -191,6 +214,10 @@ export function AppRoutes() {
             element={<AdminGuard>{() => <LeadsPage />}</AdminGuard>}
           />
           <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/admin/testimonials"
+            element={<AdminGuard>{() => <AdminTestimonialsPage />}</AdminGuard>}
+          />
         </Routes>
       </Suspense>
     </>

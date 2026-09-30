@@ -1,17 +1,13 @@
+import { serviceContent, serviceOrder } from "../data/public-content";
 import { z } from "zod";
 
 export const studioServiceOptions = [
-  { value: "svetaines", label: "Svetainė arba jos atnaujinimas" },
-  { value: "registracijos", label: "Registracija ir klientų aptarnavimas" },
-  { value: "pardavimu-irankiai", label: "Užklausos ir pardavimų įrankiai" },
-  { value: "skaiciuokles", label: "Skaičiuoklė ar individualus įrankis" },
-  { value: "verslo-sistemos", label: "Vidinė verslo sistema" },
-  { value: "automatizacijos", label: "Automatizacija arba integracija" },
-  { value: "ai-sprendimai", label: "AI sprendimas" },
-  { value: "e-komercija", label: "E. parduotuvė ar klientų platforma" },
-  { value: "atsiliepimai", label: "Google atsiliepimai, NFC ir QR" },
-  { value: "kita", label: "Kita idėja / dar nežinau" },
-] as const;
+  ...serviceOrder.map((value) => ({
+    value,
+    label: serviceContent[value].formLabel,
+  })),
+  { value: "kita", label: "Dar nežinau" },
+];
 
 export type StudioLeadIntent = "demo" | "project";
 

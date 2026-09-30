@@ -14,7 +14,7 @@ type FormStatus = "idle" | "loading" | "success" | "error";
 
 export function StudioContactForm({
   initialService = "kita",
-  intent = "demo",
+  intent = "project",
 }: {
   initialService?: string;
   intent?: StudioLeadIntent;
@@ -194,11 +194,13 @@ export function StudioContactForm({
         {fieldError("service")}
       </div>
       <div className="studio-form-field">
-        <label htmlFor={`${id}-message`}>Trumpai apie jūsų idėją</label>
+        <label htmlFor={`${id}-message`}>
+          Trumpai apie jūsų projektą ar poreikį
+        </label>
         <textarea
           {...fieldAttributes("message")}
           name="message"
-          placeholder="Ką norėtumėte pagerinti? Galbūt kažkas užima per daug laiko arba neveikia taip, kaip norėtųsi."
+          placeholder="Kokios svetainės ar sistemos reikia? Jei dar nežinote, aprašykite, kas trukdo dirbti ar aptarnauti klientus."
           rows={4}
           maxLength={2000}
           required
@@ -313,7 +315,7 @@ export function StudioContactForm({
           </>
         ) : (
           <>
-            {intent === "demo" ? "Gauti nemokamą pavyzdį" : "Aptarti projektą"}
+            Siųsti užklausą
             <ArrowUpRight size={18} aria-hidden="true" />
           </>
         )}

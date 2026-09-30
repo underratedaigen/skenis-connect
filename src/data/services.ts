@@ -1,3 +1,4 @@
+import { serviceContent } from "./public-content";
 import {
   Bot,
   Calculator,
@@ -29,14 +30,12 @@ export interface ServiceCategory {
   faq: { question: string; answer: string }[];
 }
 
-export const services: ServiceCategory[] = [
+const serviceDefinitions: Omit<
+  ServiceCategory,
+  "title" | "shortTitle" | "headline" | "description"
+>[] = [
   {
     slug: "svetaines",
-    title: "Svetainių kūrimas ir atnaujinimas",
-    shortTitle: "Svetainės",
-    headline: "Aiški svetainė. Lengvesnis kelias iki kliento.",
-    description:
-      "Kuriame greitas, patogias verslo svetaines, kuriose lankytojas supranta jūsų pasiūlymą ir žino, ką daryti toliau.",
     outcome: "Jūsų paslaugos suprantamos, o susisiekti paprasta.",
     problem:
       "Svetainė pasenusi, telefone ja nepatogu naudotis arba lankytojui sunku suprasti, kuo galite padėti. Kartais pakanka sutvarkyti kelias svarbias vietas, o kartais reikia naujos pradžios.",
@@ -97,11 +96,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "registracijos",
-    title: "Registracijos ir klientų aptarnavimas",
-    shortTitle: "Registracijos",
-    headline: "Klientas registruojasi. Jūs tęsiate darbą.",
-    description:
-      "Rezervacijos, priminimai ir klientų aptarnavimas vienoje aiškioje sistemoje. Mažiau skambučių dėl laiko, daugiau tvarkos kalendoriuje.",
     outcome: "Klientai randa laiką, o komanda mato visą dieną.",
     problem:
       "Registracijos ateina telefonu, žinutėmis ir el. paštu. Jas tenka perrašyti, tikrinti laisvus laikus bei atskirai priminti apie vizitą. Kuo daugiau klientų, tuo sunkiau viską sužiūrėti.",
@@ -157,11 +151,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "pardavimu-irankiai",
-    title: "Pardavimų ir užklausų įrankiai",
-    shortTitle: "Pardavimų įrankiai",
-    headline: "Nuo pirmos užklausos iki aiškaus pasiūlymo.",
-    description:
-      "Padedame surinkti reikalingą informaciją, laiku atsakyti ir matyti, kuriame etape yra kiekvienas potencialus klientas.",
     outcome: "Užklausos vienoje vietoje, kitas žingsnis aiškus.",
     problem:
       "Kontaktai išsibarstę, pasiūlymai ruošiami rankomis, o po pokalbio lengva pamiršti sugrįžti pas klientą. Pardavimui svarbi informacija lieka atskirose žinutėse.",
@@ -216,11 +205,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "skaiciuokles",
-    title: "Skaičiuoklės ir individualūs įrankiai",
-    shortTitle: "Skaičiuoklės",
-    headline: "Mažiau skaičiavimo rankomis. Greitesnis atsakymas.",
-    description:
-      "Jūsų kainodarą ir skaičiavimo taisykles paverčiame patogiu įrankiu klientams arba komandai.",
     outcome: "Vienodos taisyklės, aiškūs duomenys, greitesni pasiūlymai.",
     problem:
       "Kiekvienam klientui atsakymą skaičiuojate iš naujo, naudojate kelias lenteles arba gaištate rinkdami trūkstamus duomenis. Skirtingi darbuotojai kartais gauna skirtingą rezultatą.",
@@ -273,11 +257,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "verslo-sistemos",
-    title: "Vidinės verslo sistemos",
-    shortTitle: "Verslo sistemos",
-    headline: "Jūsų procesai. Viena aiški sistema.",
-    description:
-      "Klientai, užsakymai, dokumentai ir darbai vienoje vietoje. Kuriame sistemas pagal tai, kaip iš tikrųjų dirba jūsų komanda.",
     outcome: "Komanda mato tą pačią informaciją ir žino, kas už ką atsakingas.",
     problem:
       "Vienas procesas gyvena penkiose lentelėse, el. pašte ir žinutėse. Informaciją tenka dubliuoti, ieškoti naujausios versijos ir klausti kolegų, kokia darbų būsena.",
@@ -343,11 +322,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "automatizacijos",
-    title: "Automatizacijos ir integracijos",
-    shortTitle: "Automatizacijos",
-    headline: "Tai, kas kartojasi, gali vykti savaime.",
-    description:
-      "Sujungiame naudojamus įrankius ir automatizuojame pasikartojančius darbus, kad komandai nereikėtų perrašinėti tos pačios informacijos.",
     outcome: "Mažiau kopijavimo tarp sistemų. Daugiau laiko darbui.",
     problem:
       "Duomenys iš formos keliauja į lentelę, tada į CRM, tada į dokumentą. Kiekvienas žingsnis užima laiko, o praleista eilutė ar neteisingas skaičius sukelia papildomą darbą.",
@@ -403,11 +377,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "ai-sprendimai",
-    title: "AI sprendimai verslui",
-    shortTitle: "AI sprendimai",
-    headline: "AI ten, kur jis iš tiesų taupo laiką.",
-    description:
-      "Praktiški asistentai, padedantys rasti informaciją, atsakyti į pasikartojančius klausimus ar paruošti darbo juodraštį.",
     outcome: "Reikalinga informacija pasiekiama greičiau.",
     problem:
       "Komanda nuolat atsako į tuos pačius klausimus arba ieško informacijos dokumentuose. Šiems darbams nereikia naujos strategijos, bet jie kasdien atima dėmesį.",
@@ -459,11 +428,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "e-komercija",
-    title: "E. komercija ir klientų platformos",
-    shortTitle: "E. komercija",
-    headline: "Nuo produkto pasirinkimo iki užsakymo.",
-    description:
-      "E. parduotuvės, katalogai ir užsakymų platformos su aiškiu pirkimo keliu bei patogiu kasdieniu valdymu.",
     outcome: "Klientui patogu pirkti, komandai – tvarkyti užsakymus.",
     problem:
       "Klientai neranda reikiamo produkto, pirkimo eiga per ilga arba užsakymus tenka rankomis perkelti į kitas sistemas. Nauja parduotuvė nepadės, jei šios kliūtys liks.",
@@ -524,11 +488,6 @@ export const services: ServiceCategory[] = [
   },
   {
     slug: "atsiliepimai",
-    title: "Reputacija ir klientų atsiliepimai",
-    shortTitle: "Google atsiliepimai",
-    headline: "Gera patirtis verta būti pastebėta.",
-    description:
-      "NFC kortelės, QR sprendimai ir patogus kelias iki Google atsiliepimo. Esamas Skenis produktas – platesnės paslaugų šeimos dalis.",
     outcome: "Patenkintam klientui paprasčiau pasidalyti patirtimi.",
     problem:
       "Klientas išeina patenkintas, tačiau palikti atsiliepimą atideda. Ieškoti įmonės puslapio ir tinkamos nuorodos yra papildomas žingsnis, kurį galima sutrumpinti.",
@@ -581,6 +540,16 @@ export const services: ServiceCategory[] = [
     ],
   },
 ];
+
+export const services: ServiceCategory[] = serviceDefinitions.map(
+  (service) => ({
+    ...service,
+    title: serviceContent[service.slug].detailTitle,
+    shortTitle: serviceContent[service.slug].title,
+    headline: serviceContent[service.slug].detailTitle,
+    description: serviceContent[service.slug].description,
+  }),
+);
 
 export const primaryServices = services.filter((service) => service.primary);
 

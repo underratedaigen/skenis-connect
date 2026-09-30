@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from "react";
 import { LeadFormShell } from "@/components/public/lead-form-shell";
 import { SectionHeading } from "./studio-landing";
 import { getProductPrice } from "@/lib/product-pricing";
+import { AnimatedFAQ } from "@/motion/scenes";
+import { useSearchParams } from "react-router-dom";
 
 const money = (value: number) =>
   new Intl.NumberFormat("lt-LT", { style: "currency", currency: "EUR" }).format(
@@ -59,7 +61,11 @@ const faqItems = [
 ];
 
 export function SkenisLanding() {
-  const [quantity, setQuantity] = useState(1);
+  const [params] = useSearchParams();
+  const [quantity, setQuantity] = useState(() => {
+    const requested = Number(params.get('quantity'));
+    return Number.isInteger(requested) && requested >= 1 && requested <= 500 ? requested : 1;
+  });
   const [orderQuantity, setOrderQuantity] = useState<number | null>(null);
   const [photo, setPhoto] = useState(0);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -112,21 +118,18 @@ export function SkenisLanding() {
     };
   }, [orderQuantity]);
   return (
-    <main id="main-content" tabIndex={-1} className="product-page">
+    <main id="main-content" tabIndex={-1} className="product-page" data-theme="green">
       <section
         className="studio-container studio-page-intro product-hero"
+        data-theme="green"
         id="produktas"
       >
         <div>
           <p className="studio-eyebrow">Skenis produktas / NFC + QR</p>
-          <h1>
-            Gera patirtis.
-            <br />
-            <span>Vienu žingsniu arčiau atsiliepimo.</span>
-          </h1>
+          <h1>NFC ir QR kortelės „Google“ atsiliepimams</h1>
           <p className="studio-page-lead">
-            Klientas paliečia kortelę telefonu arba nuskaito QR kodą ir
-            atsiduria jūsų Google atsiliepimų puslapyje. Be nuorodos paieškų.
+            Klientui pakanka priglausti telefoną arba nuskaityti QR kodą, kad
+            būtų atidarytas jūsų „Google“ atsiliepimų puslapis.
           </p>
           <div className="product-hero-actions">
             <a className="studio-button" href="#kaina">
@@ -411,17 +414,7 @@ export function SkenisLanding() {
               įvertinimų.
             </p>
           </div>
-          <div className="studio-faq">
-            {faqItems.map((item) => (
-              <details key={item.question}>
-                <summary>
-                  {item.question}
-                  <ChevronDown size={19} aria-hidden />
-                </summary>
-                <p>{item.answer}</p>
-              </details>
-            ))}
-          </div>
+          <AnimatedFAQ items={faqItems} />
         </div>
       </section>
       {orderQuantity !== null && (

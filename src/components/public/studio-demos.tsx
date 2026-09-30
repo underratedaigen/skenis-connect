@@ -20,13 +20,10 @@ export {
   FormaSurface,
 };
 import { useId, useState } from "react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  FileText,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DemoResult } from "./demo-result";
+import { estimateArea } from "@/lib/demo-state";
 
 const money = (value: number) =>
   new Intl.NumberFormat("lt-LT", { style: "currency", currency: "EUR" }).format(
@@ -46,170 +43,44 @@ export function DemoLabel({
   );
 }
 
-export function BookingPreview({
-  variant = "full",
-}: {
-  variant?: "full" | "context";
-}) {
-  const id = useId();
-  const [day, setDay] = useState(23);
-  const [time, setTime] = useState("11:00");
-  const [service, setService] = useState("Konsultacija · 60 min.");
+export function BookingPreview({ variant = "full" }: { variant?: "full" | "context" }) {
+  const id = useId(), [service, setService] = useState("");
+  const [day, setDay] = useState<number | null>(null), [time, setTime] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
-  return (
-    <div className="demo-panel demo-booking">
-      <div className="demo-panel-head">
-        <span className="demo-symbol">R.</span>
-        <div>
-          <strong>Laikas jums</strong>
-          <span>Registracijos scenarijus</span>
-        </div>
-        <DemoLabel>Demo</DemoLabel>
-      </div>
-      <div className="demo-panel-body">
-        {variant === "full" ? (
-          <label className="demo-field" htmlFor={`${id}-service`}>
-            Paslauga
-            <select
-              id={`${id}-service`}
-              value={service}
-              onChange={(e) => {
-                setService(e.target.value);
-                setConfirmed(false);
-              }}
-            >
-              <option>Konsultacija · 60 min.</option>
-              <option>Susipažinimas · 30 min.</option>
-            </select>
-          </label>
-        ) : (
-          <p className="demo-context-line">{service}</p>
-        )}
-        <div className="demo-calendar-title">
-          <strong>Rugsėjis, 2026</strong>
-          <span>Pavyzdiniai laikai</span>
-        </div>
-        <div
-          className="demo-days"
-          role="group"
-          aria-label="Demonstracinė vizito diena"
-        >
-          {[21, 22, 23, 24, 25].map((d, i) => (
-            <button
-              type="button"
-              key={d}
-              aria-label={`Rugsėjo ${d}`}
-              aria-pressed={day === d}
-              onClick={() => {
-                setDay(d);
-                setConfirmed(false);
-              }}
-            >
-              <span>{["Pr", "An", "Tr", "Kt", "Pn"][i]}</span>
-              <b>{d}</b>
-            </button>
-          ))}
-        </div>
-        <div
-          className="demo-times"
-          role="group"
-          aria-label="Demonstracinis vizito laikas"
-        >
-          {["09:00", "11:00", "14:30"].map((t) => (
-            <button
-              key={t}
-              type="button"
-              aria-pressed={time === t}
-              onClick={() => {
-                setTime(t);
-                setConfirmed(false);
-              }}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          className="demo-action"
-          onClick={() => setConfirmed(!confirmed)}
-        >
-          {confirmed ? "Pasirinkti iš naujo" : "Patvirtinti demo laiką"}
-          {confirmed ? (
-            <Check size={18} aria-hidden />
-          ) : (
-            <ArrowRight size={18} aria-hidden />
-          )}
-        </button>
-        <p className="demo-status" role="status">
-          {confirmed
-            ? `Pavyzdinis patvirtinimas: rugsėjo ${day} d., ${time}. Tikras vizitas nesukurtas.`
-            : `Pasirinkta: rugsėjo ${day} d., ${time}. Tikra rezervacija nekuriama.`}
-        </p>
-      </div>
+  const step = confirmed ? 5 : time ? 4 : day ? 3 : service ? 2 : 1;
+  const reset = () => { setService(""); setDay(null); setTime(null); setConfirmed(false); };
+  return <div className={"demo-panel demo-booking demo-v2 " + variant}>
+    <div className="demo-panel-head"><strong>Laikas jums</strong><DemoLabel>Interaktyvi demonstracija</DemoLabel></div>
+    <div className="demo-panel-body">
+      <ol className="booking-progress" aria-label="Registracijos eiga">{["Paslauga", "Diena", "Laikas", "Patvirtinimas"].map((label, index) => <li key={label} aria-current={step === index + 1 ? "step" : undefined} className={step > index + 1 ? "is-done" : ""}><span>{step > index + 1 ? "✓" : index + 1}</span>{label}</li>)}</ol>
+      <label className="demo-field" htmlFor={id + "-service"}>Paslauga<select id={id + "-service"} value={service} onChange={event => { setService(event.target.value); setDay(null); setTime(null); setConfirmed(false); }}><option value="" disabled>Pasirinkite paslaugą</option><option>Konsultacija · 60 min.</option><option>Susipažinimas · 30 min.</option></select></label>
+      <div className="demo-calendar-title"><strong>Spalis, 2026</strong><span>Demonstraciniai laikai</span></div>
+      <div className="demo-days" role="group" aria-label="Demonstracinė vizito diena">{[5, 6, 7, 8, 9].map((value, index) => <button type="button" key={value} disabled={!service} aria-label={"Spalio " + value} aria-pressed={day === value} onClick={() => { setDay(value); setTime(null); setConfirmed(false); }}><span>{["Pr", "An", "Tr", "Kt", "Pn"][index]}</span><b>{value}</b></button>)}</div>
+      <div className="demo-times" role="group" aria-label="Demonstracinis vizito laikas">{["09:00", "11:00", "14:30"].map(value => <button key={value} type="button" disabled={!day} aria-pressed={time === value} onClick={() => { setTime(value); setConfirmed(false); }}>{value}</button>)}</div>
+      <p className="demo-status">{!service ? "Pirmiausia pasirinkite paslaugą." : !day ? "Pasirinkite dieną, tada – laiką." : !time ? "Pasirinkite vizito laiką." : "Pasirinkta: " + service + " · spalio " + day + " d. · " + time}</p>
+      <div className="demo-action-row"><button type="button" className="demo-action" disabled={!day || !time || confirmed} onClick={() => setConfirmed(true)}>Patvirtinti demonstracinį vizitą<ArrowRight size={18} aria-hidden /></button><button className="demo-reset" type="button" onClick={reset}>Pradėti iš naujo</button></div>
+      {confirmed && <DemoResult id="registracija" title="Demonstracinis vizitas užregistruotas"><p>{service} · 2026 m. spalio {day} d. · {time}</p><p>Kliento patvirtinime ir komandos kalendoriuje būtų ši paslauga, data ir laikas.</p></DemoResult>}
+      <p className="demo-status">Tikra registracija nekuriama, patvirtinimas nesiunčiamas.</p>
     </div>
-  );
+  </div>;
 }
-
 export function CalculatorPreview() {
-  const id = useId();
-  const [area, setArea] = useState(60);
-  const [finish, setFinish] = useState(false);
-  const rate = finish ? 22 : 15;
-  return (
-    <div className="demo-panel demo-calculator">
-      <div className="demo-panel-head">
-        <FileText size={22} aria-hidden />
-        <div>
-          <strong>Jūsų erdvės sąmata</strong>
-          <span>Apdailos darbų scenarijus</span>
-        </div>
-        <DemoLabel>Demo</DemoLabel>
-      </div>
-      <div className="demo-panel-body">
-        <label className="demo-range-label" htmlFor={`${id}-area`}>
-          Patalpų plotas{" "}
-          <strong>
-            {area}
-            <span> m²</span>
-          </strong>
-        </label>
-        <input
-          id={`${id}-area`}
-          type="range"
-          min="20"
-          max="200"
-          step="10"
-          value={area}
-          onChange={(e) => setArea(Number(e.target.value))}
-        />
-        <div className="demo-range-bounds" aria-hidden>
-          <span>20 m²</span>
-          <span>200 m²</span>
-        </div>
-        <label className="demo-check">
-          <input
-            type="checkbox"
-            checked={finish}
-            onChange={(e) => setFinish(e.target.checked)}
-          />
-          <span>
-            Su paviršiaus paruošimu <small>+7 € / m²</small>
-          </span>
-        </label>
-        <div className="demo-estimate" aria-live="polite">
-          <span>Preliminari suma</span>
-          <strong>{money(area * rate)}</strong>
-          <span>
-            {area} m² × {money(rate)} / m²
-          </span>
-        </div>
-        <p className="demo-status">
-          Iliustracinis įkainis. Tai nėra „Skenis“ paslaugų kaina.
-        </p>
-      </div>
+  const id = useId(), [area, setArea] = useState(60), [finish, setFinish] = useState(false);
+  const estimate = estimateArea(area, finish);
+  return <div className="demo-panel demo-calculator demo-v2">
+    <div className="demo-panel-head"><strong>Jūsų erdvės sąmata</strong><DemoLabel>Interaktyvi demonstracija</DemoLabel></div>
+    <div className="demo-panel-body">
+      <label className="demo-range-label" htmlFor={id + "-area"}>Patalpų plotas <strong>{area}<span> m²</span></strong></label>
+      <input id={id + "-area"} type="range" min="20" max="200" step="10" value={area} onChange={event => setArea(Number(event.target.value))} />
+      <div className="demo-range-bounds" aria-hidden><span>20 m²</span><span>200 m²</span></div>
+      <label className="demo-check"><input type="checkbox" checked={finish} onChange={event => setFinish(event.target.checked)} /><span>Su paviršiaus paruošimu <small>+7 € / m²</small></span></label>
+      <DemoResult id="skaiciuokle" title={"Preliminari suma: " + money(estimate.total)}>
+        <dl className="demo-record"><div><dt>Pagrindiniai darbai</dt><dd>{area} m² × 15 € = {money(estimate.base)}</dd></div><div><dt>Paviršiaus paruošimas</dt><dd>{finish ? area + " m² × 7 € = " + money(estimate.extra) : "Nepasirinktas · 0 €"}</dd></div></dl>
+      </DemoResult>
+      <button className="demo-reset" type="button" onClick={() => { setArea(60); setFinish(false); }}>Pradėti iš naujo</button>
+      <p className="demo-status">Iliustracinis skaičiavimas, ne „Skenis“ paslaugų kaina. Tikra sąmata nekuriama.</p>
     </div>
-  );
+  </div>;
 }
 
 export function ReputationVisual() {
@@ -319,7 +190,7 @@ export function ServiceTeaser({ slug }: { slug: string }) {
           <ArrowRight size={22} aria-hidden />
           <strong>900 €</strong>
         </div>
-        <small>Įvestis → aiškus rezultatas</small>
+        <small>Demonstracinė suma, ne „Skenis“ paslaugų kaina.</small>
       </div>
     );
   if (slug === "verslo-sistemos")
@@ -366,7 +237,7 @@ export function ServiceTeaser({ slug }: { slug: string }) {
         />
         <div>
           <strong>molė.</strong>
-          <span>Keramika namams</span>
+          <span>Demonstracinė prekė ir kaina</span>
           <b>24 €</b>
         </div>
       </div>

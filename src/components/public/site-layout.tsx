@@ -1,17 +1,14 @@
 import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
+import { MotionProvider, MotionPreference } from "@/motion/motion-provider";
+import {
+  navigation,
+  serviceContent,
+  serviceOrder,
+} from "@/data/public-content";
 import { trackConversion } from "@/lib/conversion-events";
-
-const navigation = [
-  { to: "/paslaugos", label: "Paslaugos" },
-  { to: "/sprendimai", label: "Sprendimai" },
-  { to: "/#kaip-dirbame", label: "Kaip dirbame" },
-  { to: "/apie", label: "Apie" },
-  { to: "/kontaktai", label: "Kontaktai" },
-];
 
 export function BrandLogo({ inverse = false }: { inverse?: boolean }) {
   return (
@@ -29,11 +26,7 @@ export function BrandLogo({ inverse = false }: { inverse?: boolean }) {
 function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const productPage =
-    location.pathname.replace(/\/+$/, "") === "/google-atsiliepimai";
-  const ctaPath = productPage
-    ? "/google-atsiliepimai#kaina"
-    : "/kontaktai?intent=demo";
+  const ctaPath = "/kontaktai?intent=project";
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -115,12 +108,9 @@ function Navbar() {
         <Link
           to={ctaPath}
           className="studio-button studio-nav-cta"
-          data-conversion={
-            productPage ? "product_quantity_cta" : "navigation_demo"
-          }
+          data-conversion={"navigation_project"}
         >
-          {productPage ? "Pasirinkti kortelių kiekį" : "Gauti nemokamą pavyzdį"}{" "}
-          <ArrowUpRight size={16} aria-hidden />
+          Aptarti projektą <ArrowUpRight size={16} aria-hidden />
         </Link>
         <button
           ref={toggleRef}
@@ -162,15 +152,21 @@ function Navbar() {
           <Link
             className="studio-button"
             to={ctaPath}
-            data-conversion={
-              productPage ? "product_quantity_cta" : "mobile_demo"
-            }
+            data-conversion="mobile_project"
           >
-            {productPage
-              ? "Pasirinkti kortelių kiekį"
-              : "Gauti nemokamą pavyzdį"}{" "}
-            <ArrowRight size={18} aria-hidden />
+            Aptarti projektą <ArrowRight size={18} aria-hidden />
           </Link>
+          <nav
+            className="mobile-service-links"
+            aria-label="Paslaugos mobiliajame meniu"
+          >
+            <strong>Mūsų paslaugos</strong>
+            {serviceOrder.map((slug) => (
+              <Link key={slug} to={`/paslaugos/${slug}`}>
+                {serviceContent[slug].title}
+              </Link>
+            ))}
+          </nav>
           <Link className="studio-mobile-product" to="/google-atsiliepimai">
             Ieškote NFC / QR kortelių? <ArrowUpRight size={16} aria-hidden />
           </Link>
@@ -181,8 +177,12 @@ function Navbar() {
 }
 
 export function PublicLayout({ children }: { children: ReactNode }) {
+  return <MotionProvider><PublicLayoutBody>{children}</PublicLayoutBody></MotionProvider>;
+}
+
+function PublicLayoutBody({ children }: { children: ReactNode }) {
   return (
-    <MotionConfig reducedMotion="user">
+    <>
       <div
         className="studio-site"
         onClick={(event) => {
@@ -201,49 +201,61 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         <Footer />
         <Toaster position="top-right" />
       </div>
-    </MotionConfig>
+    </>
   );
 }
 
 function Footer() {
+  const { pathname } = useLocation();
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 901px)');
+    const update = () => setDesktop(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  const service = pathname.match(/^\/paslaugos\/([^/]+)$/)?.[1];
+  const cta = `/kontaktai?intent=project${service && serviceContent[service] ? `&service=${service}` : ''}`;
   return (
-    <footer className="studio-footer">
+    <footer className="studio-footer" data-theme="dark">
       <div className="studio-container">
+        <div className="moto-footer-cta">
+          <p className="studio-eyebrow">Pradėkime nuo pokalbio</p>
+          <h2>Aptarkime jūsų<br />svetainę ar sistemą.</h2>
+          <Link to={cta} className="studio-button light" data-conversion="footer_project">Aptarti projektą <ArrowUpRight size={20} aria-hidden /></Link>
+        </div>
         <div className="footer-main">
           <div className="footer-brand">
             <Link to="/" aria-label="Skenis – pradžia">
               <BrandLogo inverse />
             </Link>
-            <p>
-              Mažiau rutinos.
-              <br />
-              Daugiau veikiančių sprendimų.
-            </p>
+            <p>Svetainės, verslo sistemos ir automatizavimas.</p>
           </div>
           <div className="footer-link-groups">
-            <details>
+            <details open={desktop}>
               <summary>
                 Svetainė <span aria-hidden>+</span>
               </summary>
               <nav aria-label="Footer navigacija">
                 <Link to="/paslaugos">Paslaugos</Link>
-                <Link to="/sprendimai">Sprendimai</Link>
+                <Link to="/sprendimai">Pavyzdžiai</Link>
                 <Link to="/apie">Apie Skenis</Link>
+                <Link to="/atsiliepimai">Darbo principai ir atsiliepimai</Link>
                 <Link to="/kontaktai">Kontaktai</Link>
               </nav>
             </details>
-            <details>
+            <details open={desktop}>
               <summary>
                 Ką kuriame <span aria-hidden>+</span>
               </summary>
               <nav aria-label="Footer paslaugos">
-                <Link to="/paslaugos/svetaines">Svetainės</Link>
-                <Link to="/paslaugos/registracijos">Registracijos</Link>
-                <Link to="/paslaugos/verslo-sistemos">Verslo sistemos</Link>
-                <Link to="/paslaugos/automatizacijos">Automatizacijos</Link>
-                <Link to="/paslaugos/ai-sprendimai">AI sprendimai</Link>
-                <Link to="/paslaugos/e-komercija">E. komercija</Link>
-                <Link to="/google-atsiliepimai">NFC / QR kortelės</Link>
+                {serviceOrder.map((slug) => (
+                  <Link key={slug} to={`/paslaugos/${slug}`}>
+                    {serviceContent[slug].title}
+                  </Link>
+                ))}
+                <Link to="/google-atsiliepimai">NFC ir QR kortelės</Link>
               </nav>
             </details>
           </div>
@@ -265,6 +277,7 @@ function Footer() {
         </div>
         <div className="studio-footer-bottom">
           <span>© {new Date().getFullYear()} Skenis</span>
+          <MotionPreference />
           <div>
             <Link to="/privatumo-politika">Privatumo politika</Link>
             <Link to="/taisykles">Taisyklės</Link>

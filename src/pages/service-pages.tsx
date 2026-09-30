@@ -8,14 +8,21 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { PublicLayout } from "@/components/public/site-layout";
 import { Seo } from "@/components/public/seo";
-import { DemoCTA, SectionHeading } from "@/components/public/studio-landing";
+import {
+  DemoCTA,
+  SectionHeading,
+  ProcessSection,
+} from "@/components/public/studio-landing";
 import { ServiceVisual, ServiceTeaser } from "@/components/public/studio-demos";
 import { getServiceBySlug, type ServiceCategory } from "@/data/services";
+import { servicePresentation } from "@/data/service-presentation";
 import {
-  catalogGroups,
-  servicePresentation,
-} from "@/data/service-presentation";
+  serviceContent,
+  serviceOrder,
+  demoOptions,
+} from "@/data/public-content";
 import { NotFoundPage } from "./public-pages";
+import { AnimatedFAQ, ServicesShowcase } from "@/motion/scenes";
 
 const capabilitySections: Record<string, [string, number, number?][]> = {
   svetaines: [
@@ -71,8 +78,16 @@ const relatedSlugs: Record<string, string[]> = {
 };
 
 function CatalogCard({ service }: { service: ServiceCategory }) {
+  const content = serviceContent[service.slug];
+  const groupId = (
+    {
+      svetaines: "klientai",
+      registracijos: "darbas",
+      automatizacijos: "jungtys",
+    } as Record<string, string>
+  )[service.slug];
   return (
-    <article className={`catalog-card catalog-${service.slug}`}>
+    <article className={`catalog-card catalog-${service.slug}`} id={groupId}>
       <div className="catalog-card-visual">
         <div className="catalog-preview-full">
           <ServiceTeaser slug={service.slug} />
@@ -85,10 +100,10 @@ function CatalogCard({ service }: { service: ServiceCategory }) {
                 {
                   svetaines: "forma.",
                   registracijos: "11:00",
-                  skaiciuokles: "900 €",
+                  skaiciuokles: "Pavyzdinė sąmata",
                   "pardavimu-irankiai": "Užklausa → pasiūlymas",
                   "verslo-sistemos": "Darbai + komanda",
-                  automatizacijos: "Forma → CRM",
+                  automatizacijos: "Forma → klientų sistema",
                   "ai-sprendimai": "Atsakymas + šaltinis",
                   "e-komercija": "molė.",
                   atsiliepimai: "NFC + QR",
@@ -99,14 +114,13 @@ function CatalogCard({ service }: { service: ServiceCategory }) {
         </div>
       </div>
       <div className="catalog-card-copy">
-        <h3>
-          {service.slug === "atsiliepimai"
-            ? "NFC ir atsiliepimai"
-            : service.shortTitle}
-        </h3>
-        <p>{service.outcome}</p>
+        <h3>{content.title}</h3>
+        <p>{content.summary}</p>
+        <p className="catalog-example">
+          <strong>Pavyzdys:</strong> {content.example}
+        </p>
         <Link className="studio-text-link" to={`/paslaugos/${service.slug}`}>
-          Pamatyti sprendimą <ArrowUpRight size={18} aria-hidden />
+          {content.link} <ArrowUpRight size={18} aria-hidden />
         </Link>
       </div>
     </article>
@@ -116,52 +130,23 @@ export function ServicesPage() {
   return (
     <PublicLayout>
       <Seo
-        title="Paslaugos: svetainės, sistemos ir automatizacijos | Skenis"
-        description="Svetainių kūrimas, rezervacijų sistemos, CRM, skaičiuoklės, verslo automatizavimas ir e. komercija. Parenkame sprendimą pagal jūsų verslo poreikį."
+        title="Svetainių kūrimas, verslo sistemos ir automatizavimas | Skenis"
+        description="Interneto svetainių ir elektroninių parduotuvių kūrimas, registracijos, užklausų valdymas, skaičiuoklės, individualios verslo sistemos ir automatizavimas."
         path="/paslaugos"
       />
       <main id="main-content" tabIndex={-1} className="catalog-page">
         <section className="studio-page-intro studio-container">
           <p className="studio-eyebrow">Kuriame tam, kad veiktų</p>
           <div className="page-intro-row">
-            <h1>
-              Kas jūsų versle
-              <br />
-              galėtų veikti geriau?
-            </h1>
+            <h1>Svetainių kūrimas, verslo sistemos ir automatizavimas.</h1>
             <p>
-              Nuo pirmo įspūdžio internete iki tvarkos komandos kasdienybėje.
-              Pasirinkite kryptį ir pamatykite, ką galime sukurti.
+              Kuriame skaitmeninius sprendimus pagal konkrečius verslo procesus:
+              nuo įmonės svetainės ar e. parduotuvės iki registracijų, klientų,
+              užsakymų ir vidinių darbų valdymo.
             </p>
           </div>
-          <nav className="catalog-jumps" aria-label="Paslaugų grupės">
-            {catalogGroups.map((group, i) => (
-              <a key={group.id} href={`#${group.id}`}>
-                <span>0{i + 1}</span>
-                {group.title}
-                <ArrowDown size={17} aria-hidden />
-              </a>
-            ))}
-          </nav>
         </section>
-        <div className="studio-container catalog-groups" id="paslaugu-kryptys">
-          {catalogGroups.map((group, i) => (
-            <section className="catalog-group" key={group.id} id={group.id}>
-              <header>
-                <span>0{i + 1}</span>
-                <div>
-                  <h2>{group.title}</h2>
-                  <p>{group.description}</p>
-                </div>
-              </header>
-              <div className="service-catalog">
-                {group.slugs.map((slug) => (
-                  <CatalogCard key={slug} service={getServiceBySlug(slug)!} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+        <ServicesShowcase catalog />
         <section className="studio-container catalog-help">
           <div>
             <h2>Nežinote, nuo ko pradėti?</h2>
@@ -174,7 +159,6 @@ export function ServicesPage() {
             Aptarti situaciją <ArrowUpRight size={18} aria-hidden />
           </Link>
         </section>
-        <DemoCTA compact />
       </main>
     </PublicLayout>
   );
@@ -187,6 +171,7 @@ export function ServiceDetailPage() {
   const sections = capabilitySections[service.slug];
   const presentation = servicePresentation[service.slug];
   const physical = presentation.family === "physical";
+  const content = serviceContent[service.slug];
   return (
     <PublicLayout>
       <Seo
@@ -211,24 +196,16 @@ export function ServiceDetailPage() {
             </nav>
             <div className="service-detail-hero">
               <div className="service-detail-copy">
-                <p className="studio-eyebrow">{service.title}</p>
-                <h1>{service.headline}</h1>
+                <p className="studio-eyebrow">Paslauga verslui</p>
+                <h1>{content.detailTitle}</h1>
                 <p>{service.description}</p>
                 <div className="service-detail-actions">
                   <Link
                     className="studio-button"
-                    to={
-                      physical
-                        ? "/google-atsiliepimai#kaina"
-                        : `/kontaktai?service=${service.slug}&intent=demo`
-                    }
-                    data-conversion={
-                      physical ? "product_quantity_cta" : "service_enquiry"
-                    }
+                    to={`/kontaktai?service=${service.slug}&intent=project`}
+                    data-conversion={"service_enquiry"}
                   >
-                    {physical
-                      ? "Pasirinkti NFC korteles"
-                      : "Gauti nemokamą pavyzdį"}
+                    {content.cta}
                     <ArrowUpRight size={18} aria-hidden />
                   </Link>
                   <a className="studio-text-link" href="#galimybes">
@@ -239,23 +216,34 @@ export function ServiceDetailPage() {
                 <div className="service-detail-note">
                   {physical
                     ? "Paruoštas produktas arba sprendimas pagal jūsų aptarnavimo eigą."
-                    : "Pradinė koncepcija tinkamiems projektams. Apimtį aptariame."}
+                    : "Pirmiausia aptarsime poreikį, darbų apimtį ir projekto eigą."}
                 </div>
               </div>
               <div className="service-detail-demo">
+                <p className="demo-stage-caption">
+                  {demoOptions.find((demo) => demo.slug === service.slug)
+                    ?.title || "Skenis produktas – NFC ir QR kortelė"}
+                </p>
                 <ServiceVisual slug={service.slug} variant="context" />
               </div>
             </div>
           </div>
         </section>
-        <section className="service-comparison studio-container">
+        <section className="service-audience studio-container">
+          <h2>Kam ši paslauga skirta</h2>
+          <p>{content.audience}</p>
+        </section>
+        <section
+          className="service-comparison studio-container"
+          aria-label="Problema ir paslaugos nauda"
+        >
           <div>
-            <span className="studio-eyebrow">Šiandien</span>
+            <span className="studio-eyebrow">Kokią problemą sprendžiame</span>
             <p>{presentation.before}</p>
           </div>
           <ArrowRight className="comparison-arrow" size={24} aria-hidden />
           <div>
-            <span className="studio-eyebrow">Su sprendimu</span>
+            <span className="studio-eyebrow">Ką pakeičia ši paslauga</span>
             <p>{presentation.after}</p>
           </div>
         </section>
@@ -291,7 +279,7 @@ export function ServiceDetailPage() {
         <section className="studio-section" id="galimybes">
           <div className="studio-container service-section-grid">
             <div>
-              <p className="studio-eyebrow">Sprendimo sudėtis</p>
+              <p className="studio-eyebrow">Ką konkrečiai galime sukurti</p>
               <h2>{presentation.heading}</h2>
               <p>{service.outcome}</p>
             </div>
@@ -357,22 +345,18 @@ export function ServiceDetailPage() {
             </div>
           </div>
         </section>
+        <ProcessSection service={service.slug} />
         <section className="studio-section section-divider">
           <div className="studio-container service-section-grid service-faq-related">
             <div>
               <p className="studio-eyebrow">Prieš pradedant</p>
-              <h2>
-                Apie{" "}
-                {service.shortTitle.toLocaleLowerCase("lt-LT") === "svetainės"
-                  ? "svetainės kūrimą"
-                  : "šį sprendimą"}
-              </h2>
+              <h2>Dažniausi klausimai</h2>
               <Link
                 className="studio-text-link"
                 to={`/kontaktai?service=${service.slug}&intent=project`}
                 data-conversion="service_enquiry"
               >
-                Aptarti savo situaciją <ArrowUpRight size={18} aria-hidden />
+                {content.cta} <ArrowUpRight size={18} aria-hidden />
               </Link>
               <p className="related-label">Dažnai veikia kartu</p>
               <div className="studio-related">
@@ -388,20 +372,10 @@ export function ServiceDetailPage() {
                 })}
               </div>
             </div>
-            <div className="studio-faq">
-              {service.faq.map((item) => (
-                <details key={item.question}>
-                  <summary>
-                    {item.question}
-                    <ChevronDown size={19} aria-hidden />
-                  </summary>
-                  <p>{item.answer}</p>
-                </details>
-              ))}
-            </div>
+            <AnimatedFAQ items={service.faq} />
           </div>
         </section>
-        <DemoCTA service={service.slug} />
+
       </main>
     </PublicLayout>
   );

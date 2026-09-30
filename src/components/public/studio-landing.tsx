@@ -1,8 +1,9 @@
-import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
-import { useId, useState, type ReactNode } from "react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { getServiceBySlug } from "@/data/services";
-import { projects } from "@/data/projects";
+import { serviceContent, demoOptions } from "@/data/public-content";
+import { TrustSection } from "./testimonials";
 import { trackConversion } from "@/lib/conversion-events";
 import { HeroDemo, ServiceTeaser } from "./studio-demos";
 export {
@@ -67,20 +68,21 @@ export function DemoCTA({
                   atsiliepimai: "Sutrumpinkime kelią iki kliento atsiliepimo.",
                 } as Record<string, string>
               )[service || ""] ||
-              "Ką jūsų versle galėtume supaprastinti?"}
+              "Aptarkime jūsų svetainę ar sistemą"}
           </h2>
         </div>
         <div>
           <p>
-            Papasakokite, kas stringa. Tinkamiems projektams paruošime nemokamą
-            pradinę koncepciją — jos apimtį sutarsime kartu.
+            Aprašykite, kokios svetainės ar sistemos reikia. Aptarsime darbų
+            apimtį, eigą ir pasiūlymą. Tinkamiems projektams po pirminio
+            aptarimo galime parengti nemokamą pradinę koncepciją.
           </p>
           <Link
-            to={`/kontaktai?intent=demo${service ? `&service=${service}` : ""}`}
+            to={`/kontaktai?intent=project${service ? `&service=${service}` : ""}`}
             className="studio-button light"
-            data-conversion={service ? "service_enquiry" : "free_demo_cta"}
+            data-conversion={service ? "service_enquiry" : "project_cta"}
           >
-            Gauti nemokamą pavyzdį
+            {service ? serviceContent[service].cta : "Aptarti projektą"}
             <ArrowUpRight size={19} aria-hidden />
           </Link>
           <span className="studio-demo-note">
@@ -93,30 +95,26 @@ export function DemoCTA({
 }
 
 export function ProjectGrid() {
-  const demos = {
-    website: "svetaine",
-    booking: "registracija",
-    calculator: "skaiciuokle",
-  };
+  const selection = ["registracija", "komanda", "skaiciuokle"].map((id) =>
+    demoOptions.find((demo) => demo.id === id)!,
+  );
   return (
     <div className="selected-projects">
-      {projects.map((project, i) => (
+      {selection.map((demo) => (
         <article
-          className={`selected-project selected-${project.preview}`}
-          key={project.id}
+          className={`selected-project selected-${demo.id}`}
+          key={demo.id}
         >
-          <div className={`selected-visual catalog-${project.serviceSlug}`}>
-            <ServiceTeaser slug={project.serviceSlug} />
+          <div className={`selected-visual catalog-${demo.slug}`}>
+            <ServiceTeaser slug={demo.slug} />
           </div>
           <div className="selected-copy">
-            <span className="studio-eyebrow">
-              {i === 0 ? "Svetainės koncepcija" : "Sprendimo pavyzdys"}
-            </span>
-            <h3>{project.name}</h3>
-            <p>{project.description}</p>
+            <span className="studio-eyebrow">Interaktyvi demonstracija</span>
+            <h3>{demo.title}</h3>
+            <p>{demo.problem}</p>
             <Link
               className="studio-text-link"
-              to={`/sprendimai?demo=${demos[project.preview]}#demonstracija`}
+              to={`/sprendimai?demo=${demo.id}#demonstracija`}
             >
               Išbandyti demonstraciją
               <ArrowUpRight size={17} aria-hidden />
@@ -128,172 +126,51 @@ export function ProjectGrid() {
   );
 }
 
-const groups = [
-  {
-    title: "Pritraukti klientus.",
-    text: "Aiškiai pristatykite vertę. Padėkite lankytojui tapti klientu.",
-    slugs: ["svetaines", "pardavimu-irankiai", "e-komercija"],
-    visual: "svetaines",
-  },
-  {
-    title: "Supaprastinti darbą.",
-    text: "Registracijos, sąmatos ir komandos darbai — savo vietose.",
-    slugs: ["registracijos", "skaiciuokles", "verslo-sistemos"],
-    visual: "registracijos",
-  },
-  {
-    title: "Sujungti ir automatizuoti.",
-    text: "Tegu informacija keliauja, o pasikartojantys darbai vyksta patys.",
-    slugs: ["automatizacijos", "ai-sprendimai", "atsiliepimai"],
-    visual: "automatizacijos",
-  },
-];
 function ServiceDirections() {
   return (
-    <section className="studio-section studio-directions" id="paslaugos">
+    <section className="studio-section home-services" id="paslaugos">
       <div className="studio-container">
         <SectionHeading
           label="Ką kuriame"
-          title="Trys kryptys. Jūsų verslo ritmu."
+          title="Mūsų paslaugos"
           action={
             <Link className="studio-text-link" to="/paslaugos">
-              Visos paslaugos
-              <ArrowUpRight size={18} aria-hidden />
+              Peržiūrėti visas paslaugas <ArrowUpRight size={18} aria-hidden />
             </Link>
           }
-        />{" "}
-        <div className="direction-list">
-          {groups.map((group, i) => (
-            <article className="direction-row" key={group.title}>
-              <span className="direction-number">0{i + 1}</span>
-              <div>
-                <h3>{group.title}</h3>
-                <p>{group.text}</p>
-              </div>
-              <div>
-                <div className="direction-links">
-                  {group.slugs.map((slug) => (
-                    <Link key={slug} to={`/paslaugos/${slug}`}>
-                      {getServiceBySlug(slug)?.shortTitle}
-                      <ArrowUpRight size={15} aria-hidden />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const needs = [
-  {
-    title: "Gauti daugiau užklausų",
-    situation: "Lankytojai ateina, bet nesusisiekia?",
-    heading: "Parodykime, kodėl verta rinktis jus.",
-    text: "Aiškus pasiūlymas, suprantamos paslaugos ir trumpas kelias iki pokalbio.",
-    slug: "svetaines",
-  },
-  {
-    title: "Sumažinti rankinį darbą",
-    situation: "Ta pati informacija keliauja per kelias lenteles?",
-    heading: "Tegu duomenys keliauja patys.",
-    text: "Sujungiame formas, el. paštą ir naudojamus įrankius. Komanda gali tęsti svarbesnį darbą.",
-    slug: "automatizacijos",
-  },
-  {
-    title: "Supaprastinti registracijas",
-    situation: "Skambučiai dėl laiko pertraukia darbą?",
-    heading: "Laisvus laikus mato pats klientas.",
-    text: "Registracija, patvirtinimas ir priminimas — vienoje aiškioje eigoje.",
-    slug: "registracijos",
-  },
-  {
-    title: "Valdyti užsakymus vienoje vietoje",
-    situation: "Neaišku, kas atsakingas ir kas jau padaryta?",
-    heading: "Visai komandai — bendras vaizdas.",
-    text: "Užsakymai, terminai, dokumentai ir darbų būsenos vienoje sistemoje.",
-    slug: "verslo-sistemos",
-  },
-  {
-    title: "Palengvinti atsiliepimų pateikimą",
-    situation: "Klientai patenkinti, bet sunkiai randa nuorodą?",
-    heading: "Trumpesnis kelias pasidalyti patirtimi.",
-    text: "Fizinė NFC / QR kortelė atveria jūsų atsiliepimo puslapį ir padeda stebėti kortelės naudojimą.",
-    slug: "atsiliepimai",
-  },
-];
-export function NeedsSelector() {
-  const [index, setIndex] = useState(0);
-  const id = useId();
-  return (
-    <section className="studio-section studio-needs" id="verslo-poreikiai">
-      <div className="studio-container">
-        <SectionHeading
-          label="Pradėkime nuo jūsų"
-          title="Ką norėtumėte supaprastinti?"
-        />
-        <div
-          className="needs-choice-grid"
-          role="group"
-          aria-label="Pasirinkite verslo poreikį"
         >
-          {needs.map((need, i) => (
-            <div className="need-choice" key={need.slug}>
-              <button
-                type="button"
-                aria-expanded={index === i}
-                aria-controls={index === i ? `${id}-${need.slug}` : undefined}
-                onClick={() => {
-                  setIndex(i);
-                  trackConversion("need_selected", { service: need.slug });
-                }}
-              >
-                <span className="need-number">0{i + 1}</span>
-                <span>{need.title}</span>
-                {index === i ? (
-                  <ArrowRight size={20} aria-hidden />
-                ) : (
-                  <Plus size={20} aria-hidden />
-                )}
-              </button>
-              {index === i && (
-                <div
-                  className={`need-result need-${need.slug}`}
-                  id={`${id}-${need.slug}`}
-                >
-                  <div className="need-preview">
-                    <ServiceTeaser slug={need.slug} />
-                  </div>
-                  <div>
-                    <p className="need-situation">{need.situation}</p>
-                    <h3>{need.heading}</h3>
-                    <p>{need.text}</p>
-                    <div className="studio-need-actions">
-                      <Link
-                        to={`/paslaugos/${need.slug}`}
-                        className="studio-text-link"
-                      >
-                        Apie sprendimą
-                        <ArrowUpRight size={17} aria-hidden />
-                      </Link>
-                      <Link
-                        to={`/kontaktai?service=${need.slug}&intent=project`}
-                        className="studio-button secondary"
-                        data-conversion="service_enquiry"
-                      >
-                        Aptarti poreikį
-                        <ArrowRight size={17} aria-hidden />
-                      </Link>
-                    </div>
-                  </div>
+          Nuo įmonės svetainės iki individualios sistemos kasdieniams procesams.
+        </SectionHeading>
+        <div className="home-service-list">
+          {[
+            "svetaines",
+            "e-komercija",
+            "registracijos",
+            "pardavimu-irankiai",
+            "verslo-sistemos",
+            "automatizacijos",
+          ].map((slug) => {
+            const content = serviceContent[slug];
+            const service = getServiceBySlug(slug)!;
+            return (
+              <article key={slug}>
+                <service.icon size={25} aria-hidden />
+                <div>
+                  <h3>{content.title}</h3>
+                  <p>{content.summary}</p>
+                  <Link className="studio-text-link" to={`/paslaugos/${slug}`}>
+                    {content.link}
+                    <ArrowUpRight size={16} aria-hidden />
+                  </Link>
                 </div>
-              )}
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
+        <p className="home-additional-services">
+          Taip pat kuriame kainų skaičiuokles, AI asistentus ir NFC bei QR
+          atsiliepimų sprendimus.
+        </p>
       </div>
     </section>
   );
@@ -321,15 +198,24 @@ export const processSteps = [
     deliverable: "Veikiantis įrankis ir aiškumas",
   },
 ];
-export function ProcessSection({ about = false }: { about?: boolean }) {
+export function ProcessSection({
+  about = false,
+  service,
+}: {
+  about?: boolean;
+  service?: string;
+}) {
   return (
-    <section className="studio-process studio-section" id="kaip-dirbame">
+    <section
+      className="studio-process studio-section"
+      id={service ? `projektas-${service}` : "kaip-dirbame"}
+    >
       <div className="studio-container">
         <SectionHeading
           label="Nuo pokalbio iki paleidimo"
-          title="Jūs žinote verslą. Mes sujungiame taškus."
+          title="Kaip vyksta projektas"
           action={
-            about ? undefined : (
+            about || service ? undefined : (
               <Link className="studio-text-link" to="/apie">
                 Apie mūsų požiūrį
                 <ArrowUpRight size={18} aria-hidden />
@@ -373,10 +259,10 @@ export function ProductSpotlight({ entry = false }: { entry?: boolean }) {
         )}
         <div>
           <p className="studio-eyebrow">Sukurtas Skenis produktas / NFC + QR</p>
-          <h2>Maža kortelė. Trumpesnis kelias.</h2>
+          <h2>NFC ir QR kortelės „Google“ atsiliepimams</h2>
           <p>
-            Jūsų atsiliepimų nuoroda vienu palietimu. Valdoma nuoroda ir
-            skenavimų statistika.
+            Kortelė atidaro jūsų „Google“ atsiliepimų puslapį. Nuorodą galima
+            keisti, o skenavimus – stebėti.
           </p>
         </div>
         <Link to="/google-atsiliepimai" className="studio-text-link">
@@ -397,32 +283,33 @@ export function StudioLanding() {
             <div className="studio-hero-copy">
               <p className="studio-eyebrow">
                 <span className="studio-status-dot" />
-                Skaitmeninių sprendimų studija
+                Svetainės · verslo sistemos · automatizavimas
               </p>
               <h1>
-                Mažiau rutinos.<span>Daugiau verslo.</span>
+                Kuriame interneto svetaines, e. parduotuves ir verslo sistemas.
               </h1>
               <p className="studio-hero-description">
-                Kuriame svetaines, verslo sistemas ir automatizacijas, kurios
-                padeda klientams jus pasirinkti, o komandai — dirbti paprasčiau.
+                Kuriame ir atnaujiname verslo svetaines, diegiame registracijos,
+                užsakymų ir klientų valdymo sistemas. Sujungiame naudojamas
+                programas ir automatizuojame pasikartojančius darbus.
               </p>
               <div className="studio-hero-actions">
                 <Link
-                  to="/kontaktai?intent=demo"
+                  to="/kontaktai?intent=project"
                   className="studio-button"
-                  data-conversion="hero_demo"
+                  data-conversion="hero_project"
                 >
-                  Gauti nemokamą pavyzdį
+                  Aptarti projektą
                   <ArrowUpRight size={19} aria-hidden />
                 </Link>
-                <Link to="/sprendimai" className="studio-text-link">
-                  Pamatyti sprendimus
+                <Link to="/paslaugos" className="studio-text-link">
+                  Peržiūrėti paslaugas
                   <ArrowRight size={18} aria-hidden />
                 </Link>
               </div>
               <p className="studio-hero-note">
-                Nemokama pradinė koncepcija tinkamiems projektams. Apimtį
-                aptariame kartu.
+                Pirmiausia aptarsime poreikį ir pasiūlysime tinkamiausią
+                sprendimo kryptį.
               </p>
             </div>
             <HeroDemo />
@@ -434,10 +321,10 @@ export function StudioLanding() {
         <div className="studio-container">
           <SectionHeading
             label="Ne tik idėjos. Išbandykite."
-            title="Taip atrodo paprasčiau."
+            title="Svetainių ir sistemų pavyzdžiai"
             action={
               <Link className="studio-text-link" to="/sprendimai">
-                Sprendimų galerija
+                Visi pavyzdžiai
                 <ArrowUpRight size={18} aria-hidden />
               </Link>
             }
@@ -448,9 +335,9 @@ export function StudioLanding() {
           <ProjectGrid />
         </div>
       </section>
-      <NeedsSelector />
-      <ProductSpotlight />
+      <TrustSection />
       <ProcessSection />
+      <ProductSpotlight />
       <DemoCTA />
     </main>
   );

@@ -1,3 +1,5 @@
+import { TrustPrinciples } from "@/components/public/testimonials";
+import { getContactIntent } from "@/data/public-content";
 import { DemoGallery } from "@/components/public/demo-gallery";
 import { lazy, Suspense } from "react";
 import { ArrowRight, ArrowUpRight, Mail, Phone } from "lucide-react";
@@ -10,6 +12,7 @@ import {
   ProductSpotlight,
 } from "@/components/public/studio-landing";
 import { Seo } from "@/components/public/seo";
+import { CinematicLanding } from "@/motion/scenes";
 const StudioContactForm = lazy(() =>
   import("@/components/public/studio-contact-form").then((module) => ({
     default: module.StudioContactForm,
@@ -26,49 +29,44 @@ export function HomePage() {
     <PublicLayout>
       <Seo
         title="Skenis – svetainės, sistemos ir automatizacijos verslui"
-        description="Kuriame interneto svetaines, rezervacijų sistemas, individualius verslo įrankius ir automatizacijas. Papasakokite savo idėją – pasiūlysime sprendimą."
+        description="Kuriame ir atnaujiname interneto svetaines, elektronines parduotuves, registracijos ir individualias verslo sistemas. Sujungiame programas ir automatizuojame darbą."
         path="/"
       />
-      <StudioLanding />
+      <CinematicLanding />
     </PublicLayout>
   );
 }
 export function ContactPage() {
   const [params] = useSearchParams();
-  const intent = params.get("intent") === "project" ? "project" : "demo";
+  const intent = getContactIntent(params.get("intent"));
   return (
     <PublicLayout>
       <Seo
         title="Aptarkime jūsų projektą | Skenis"
-        description="Papasakokite, ką norėtumėte pagerinti savo versle. Aptarsime svetainę, sistemą ar automatizaciją ir galimybę paruošti nemokamą pradinį pavyzdį."
+        description="Aptarkime jūsų interneto svetainę, e. parduotuvę, registracijos ar vidinę verslo sistemą. Parašykite apie projektą arba kasdienio darbo problemą."
         path="/kontaktai"
       />
       <main
         id="main-content"
         tabIndex={-1}
-        className="studio-container studio-page-intro"
+        className="studio-container studio-page-intro studio-contact-page"
       >
         <div className="studio-contact-grid">
           <div className="studio-contact-copy">
             <p className="studio-eyebrow">Geras pokalbis — gera pradžia</p>
-            <h1>
-              {intent === "demo" ? (
-                <>
-                  Pirmiausia —<br />
-                  jūsų idėja.
-                </>
-              ) : (
-                <>
-                  Aptarkime
-                  <br />
-                  jūsų projektą.
-                </>
-              )}
-            </h1>
+            <h1>Aptarkime jūsų svetainę ar sistemą.</h1>
             <p>
-              Nežinote, kokios sistemos reikia? Papasakokite, kas užima per daug
-              laiko arba galėtų veikti geriau. Kryptį pasiūlysime mes.
+              Parašykite, ar jums reikia svetainės, e. parduotuvės,
+              registracijos, vidinės sistemos ar automatizavimo. Jei dar
+              nežinote tinkamo sprendimo, aprašykite, kas šiuo metu trukdo
+              dirbti arba aptarnauti klientus.
             </p>
+            {intent === "demo" && (
+              <p className="contact-demo-explanation">
+                Pradinę koncepciją parengiame tinkamiems projektams po pirminio
+                aptarimo. Jos apimtį sutariame kartu.
+              </p>
+            )}
             <div className="studio-contact-details">
               <span>Patogiau pasikalbėti tiesiogiai?</span>
               <a
@@ -114,8 +112,8 @@ export function ContactPage() {
                 <li>
                   <b>02</b>
                   <span>
-                    Tinkamam projektui sutarsime nemokamos pradinės koncepcijos
-                    apimtį.
+                    Pasiūlysime tinkamą svetainės, sistemos ar automatizavimo
+                    kryptį.
                   </span>
                 </li>
                 <li>
@@ -136,23 +134,19 @@ export function SolutionsPage() {
   return (
     <PublicLayout>
       <Seo
-        title="Sprendimų pavyzdžiai ir koncepcijos | Skenis"
+        title="Svetainių ir sistemų pavyzdžiai | Skenis"
         description="Išbandykite registracijos ir skaičiuoklės demonstracijas, apžiūrėkite svetainės koncepciją. Konkretūs skaitmeninių sprendimų pavyzdžiai jūsų verslui."
         path="/sprendimai"
       />
       <main id="main-content" tabIndex={-1}>
-        <section className="studio-container studio-page-intro">
-          <p className="studio-eyebrow">Sprendimų laboratorija</p>
+        <section className="studio-container studio-page-intro solutions-intro">
+          <p className="studio-eyebrow">Demonstracijų centras</p>
           <div className="page-intro-row">
-            <h1>
-              Mažiau aiškinimo.
-              <br />
-              Daugiau išbandymo.
-            </h1>
+            <h1>Svetainių ir sistemų pavyzdžiai</h1>
             <div>
               <p>
-                Pasirinkite laiką. Pakeiskite skaičių. Perduokite demo užklausą.
-                Taip lengviau įsivaizduoti, kas tiktų jūsų verslui.
+                Pasirinkite vieną scenarijų, atlikite veiksmą ir pamatykite,
+                ką gauna klientas bei jūsų komanda.
               </p>
               <p className="studio-page-lead">
                 Vidinės koncepcijos ir demonstracijos. Tikri klientų duomenys
@@ -163,7 +157,7 @@ export function SolutionsPage() {
         </section>
         <DemoGallery />
         <ProductSpotlight entry />
-        <DemoCTA compact />
+
       </main>
     </PublicLayout>
   );
@@ -173,72 +167,112 @@ export function AboutPage() {
     <PublicLayout>
       <Seo
         title="Apie Skenis – skaitmeninių sprendimų studiją"
-        description="Padedame verslui supaprastinti darbą svetainėmis, sistemomis ir automatizacijomis. Pradedame nuo problemos, kartu sutariame sprendimą."
+        description="Kuriame interneto svetaines, verslo sistemas ir automatizavimo sprendimus smulkiam bei augančiam verslui. Aptariame procesą, apimtį ir tikriname naudojimo eigą."
         path="/apie"
       />
       <main id="main-content" tabIndex={-1}>
         <section className="studio-container studio-page-intro about-story">
           <p className="studio-eyebrow">Apie Skenis</p>
           <div className="page-intro-row">
-            <h1>
-              Pradedame nuo to,
-              <br />
-              kas trukdo.
-            </h1>
+            <h1>Apie „Skenis“</h1>
             <p>
-              Paprastesnis kelias klientui. Aiškesnė diena komandai. Šį principą
-              taikome ir mažam fiziniam produktui, ir visai verslo sistemai.
+              Kuriame interneto svetaines, verslo sistemas ir automatizavimo
+              sprendimus smulkiam bei augančiam verslui.
             </p>
           </div>
-          <div className="about-chapters">
-            <article>
-              <span>01 / Klausimas</span>
-              <h2>Kaip palikti atsiliepimą paprasčiau?</h2>
+        </section>
+        <section className="studio-section about-focus">
+          <div className="studio-container">
+            <div className="about-focus-heading">
+              <p className="studio-eyebrow">Kam padedame</p>
+              <h2>
+                Verslui, kuriam reikia aiškios svetainės ir patogesnio darbo.
+              </h2>
               <p>
-                Nuo šio konkretaus klausimo ir NFC / QR kortelės prasidėjo
-                „Skenis“. Vietoje nuorodos paieškų – vienas telefono
-                prisilietimas.
+                Kuriame paslaugų pristatymą ir e. prekybos eigą, klientų
+                registraciją bei vidinius komandos įrankius. Sprendimą parenkame
+                pagal konkretų poreikį ir naudojamas programas.
               </p>
-            </article>
-            <article className="about-product-chapter">
-              <span>02 / Veikiantis ryšys</span>
-              <div>
-                <img
-                  src="/images/skenis-product-front.jpg"
-                  alt="Pirmasis Skenis produktas – NFC ir QR kortelė"
-                  width="1280"
-                  height="1024"
-                  loading="lazy"
-                />
-                <h2>
-                  Fizinė kortelė.
-                  <br />
-                  Valdoma nuoroda.
-                </h2>
-              </div>
+            </div>
+            <div className="about-focus-grid">
+              <article>
+                <span>01 / Klientams</span>
+                <h3>Svetainė, parduotuvė ar registracija</h3>
+                <p>
+                  Padedame suprasti jūsų pasiūlymą, išsirinkti ir pateikti
+                  užklausą, užsakymą ar registraciją.
+                </p>
+                <Link to="/paslaugos/svetaines" className="studio-text-link">
+                  Apie svetainių kūrimą
+                  <ArrowUpRight size={17} aria-hidden />
+                </Link>
+              </article>
+              <article>
+                <span>02 / Komandai</span>
+                <h3>Užduotys, klientai ir procesai</h3>
+                <p>
+                  Sujungiame užklausas, dokumentus ir darbus. Automatizuojame
+                  sutartus veiksmus tarp naudojamų sistemų.
+                </p>
+                <Link
+                  to="/paslaugos/verslo-sistemos"
+                  className="studio-text-link"
+                >
+                  Apie verslo sistemas
+                  <ArrowUpRight size={17} aria-hidden />
+                </Link>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section className="studio-container about-evidence">
+          <div className="about-evidence-copy">
+            <p className="studio-eyebrow">Galima pamatyti ir išbandyti</p>
+            <h2>Veikimo eiga svarbiau už pažadų sąrašą.</h2>
+            <p>
+              Pavyzdžių puslapyje išbandykite registraciją, skaičiuoklę ar
+              komandos darbų sistemą. Tai aiškiai pažymėtos demonstracijos,
+              skirtos aptarti galimą jūsų sprendimą.
+            </p>
+            <Link to="/sprendimai" className="studio-text-link">
+              Išbandyti pavyzdžius
+              <ArrowUpRight size={17} aria-hidden />
+            </Link>
+          </div>
+          <article className="about-evidence-product">
+            <img
+              src="/images/skenis-product-front.jpg"
+              alt="Skenis NFC ir QR atsiliepimų kortelė"
+              width="1280"
+              height="1024"
+              loading="lazy"
+            />
+            <div>
+              <h3>Mūsų NFC ir QR produktas</h3>
               <p>
-                Produktą sujungėme su keičiama nuoroda ir skenavimų statistika.
+                Kortelė su valdoma atsiliepimų nuoroda. Nuorodos keitimas ir
+                skenavimų statistika vienoje sistemoje.
               </p>
               <Link to="/google-atsiliepimai" className="studio-text-link">
-                Pamatyti produktą <ArrowUpRight size={18} aria-hidden />
+                Produktas ir kainos
+                <ArrowUpRight size={17} aria-hidden />
               </Link>
-            </article>
-            <article>
-              <span>03 / Tas pats požiūris</span>
-              <h2>Nuo vieno veiksmo iki viso proceso.</h2>
-              <p>
-                Šiandien kuriame svetaines, verslo sistemas ir automatizacijas.
-                Pradžia ta pati: suprasti problemą ir sujungti veiksmus į aiškų
-                kelią.
-              </p>
-              <Link to="/sprendimai" className="studio-text-link">
-                Išbandyti sprendimus <ArrowUpRight size={18} aria-hidden />
-              </Link>
-            </article>
+            </div>
+          </article>
+        </section>
+        <section className="studio-section">
+          <div className="studio-container">
+            <div className="studio-section-heading">
+              <div>
+                <p className="studio-eyebrow">Prieš bendrą darbą</p>
+                <h2>Ką sutariame kartu</h2>
+              </div>
+            </div>
+            <TrustPrinciples />
           </div>
         </section>
         <ProcessSection about />
-        <DemoCTA />
+
       </main>
     </PublicLayout>
   );

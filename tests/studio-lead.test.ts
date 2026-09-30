@@ -1,3 +1,4 @@
+import { getContactIntent } from "../src/data/public-content";
 import { describe, expect, it } from "vitest";
 import { studioLeadSchema, toStudioLeadPayload } from "../src/lib/studio-lead";
 
@@ -100,8 +101,26 @@ describe("existing lead integration compatibility", () => {
       google_review_url: null,
     });
     expect(payload.message).toContain("Nemokamas pradinis pavyzdys");
-    expect(payload.message).toContain("Automatizacija arba integracija");
+    expect(payload.message).toContain("Automatizavimas arba integracija");
     expect(payload.message).toContain("https://imone.lt");
     expect(payload.message).toContain(enquiry.message);
+  });
+});
+
+describe("contact page intent", () => {
+  it("defaults direct, project and unknown enquiries to a project discussion", () => {
+    for (const value of [null, "", "project", "other"])
+      expect(getContactIntent(value)).toBe("project");
+    const lead = studioLeadSchema.parse({ ...enquiry, service: "kita" });
+    expect(toStudioLeadPayload(lead, getContactIntent(null)).message).toContain(
+      "Projekto aptarimas",
+    );
+  });
+  it("preserves the explicitly requested initial-concept enquiry", () => {
+    expect(getContactIntent("demo")).toBe("demo");
+    const lead = studioLeadSchema.parse(enquiry);
+    expect(
+      toStudioLeadPayload(lead, getContactIntent("demo")).message,
+    ).toContain("Nemokamas pradinis pavyzdys");
   });
 });

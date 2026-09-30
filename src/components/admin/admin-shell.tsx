@@ -1,4 +1,11 @@
-import { BarChart3, ClipboardList, LogOut, PackagePlus, Package, QrCode } from "lucide-react";
+import {
+  BarChart3,
+  ClipboardList,
+  LogOut,
+  PackagePlus,
+  Package,
+  QrCode,
+} from "lucide-react";
 import type React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,15 +14,26 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/admin", label: "Apžvalga", icon: BarChart3, end: true },
-  { href: "/admin/batches/new", label: "Generuoti partiją", icon: PackagePlus, end: false },
+  {
+    href: "/admin/batches/new",
+    label: "Generuoti partiją",
+    icon: PackagePlus,
+    end: false,
+  },
   { href: "/admin/batches", label: "Partijos", icon: Package, end: false },
   { href: "/admin/links", label: "QR nuorodos", icon: QrCode, end: false },
-  { href: "/admin/leads", label: "Užklausos", icon: ClipboardList, end: false }
+  { href: "/admin/leads", label: "Užklausos", icon: ClipboardList, end: false },
+  {
+    href: "/admin/testimonials",
+    label: "Atsiliepimai",
+    icon: ClipboardList,
+    end: false,
+  },
 ] as const;
 
 export function AdminShell({
   user,
-  children
+  children,
 }: {
   user: AdminSession;
   children: React.ReactNode;
@@ -33,7 +51,9 @@ export function AdminShell({
         <Link to="/admin" className="block">
           <img src="/skenis-logo.png" alt="Skenis" className="h-14 w-auto" />
         </Link>
-        <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">Admin sistema</p>
+        <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">
+          Admin sistema
+        </p>
 
         <nav className="mt-8 grid gap-1">
           {navItems.map((item) => {
@@ -48,7 +68,7 @@ export function AdminShell({
                     "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition",
                     isActive
                       ? "bg-brand-50 text-brand-700"
-                      : "text-slate-700 hover:bg-slate-50 hover:text-ink"
+                      : "text-slate-700 hover:bg-slate-50 hover:text-ink",
                   )
                 }
               >
@@ -63,7 +83,9 @@ export function AdminShell({
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Prisijungta kaip
           </p>
-          <p className="mt-1 truncate text-sm font-semibold text-ink">{user.email}</p>
+          <p className="mt-1 truncate text-sm font-semibold text-ink">
+            {user.email}
+          </p>
         </div>
       </aside>
 
@@ -71,7 +93,9 @@ export function AdminShell({
         <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
           <div className="flex min-h-16 items-center justify-between gap-4 px-5 sm:px-8">
             <div>
-              <p className="text-sm font-semibold text-ink">Skenis.lt administravimas</p>
+              <p className="text-sm font-semibold text-ink">
+                Skenis.lt administravimas
+              </p>
               <p className="text-xs text-slate-500 lg:hidden">{user.email}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -103,7 +127,7 @@ export function AdminShell({
                       "flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
                       isActive
                         ? "bg-brand-50 text-brand-700"
-                        : "text-slate-700 hover:bg-slate-50 hover:text-ink"
+                        : "text-slate-700 hover:bg-slate-50 hover:text-ink",
                     )
                   }
                 >
